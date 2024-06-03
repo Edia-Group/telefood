@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tabbar } from '@telegram-apps/telegram-ui';
 import { TabbarItem } from '@telegram-apps/telegram-ui/dist/components/Layout/Tabbar/components/TabbarItem/TabbarItem';
 import { FaFeather, FaGhost } from "react-icons/fa";
