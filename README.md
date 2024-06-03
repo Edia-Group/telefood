@@ -1,30 +1,30 @@
-<p align="center">
-  <br>
-  <img width="240" src="./src/assets/tapps.png" alt="logo of telegram web apps">
-  <br>
-  <br>
-</p>
+# React + TypeScript + Vite
 
-# Telegram Mini Apps(TMA) + React + TypeScript + Vite
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Vite (which means "fast" in French) is a front-end build tool and development server that aims to provide a faster and leaner development experience for modern web projects. We will utilise Vite to create Telegram Mini App example.
+Currently, two official plugins are available:
 
-This template provides a minimal setup to get TMA working in Vite with React, TypeScript, HMR and some ESLint rules.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Usage
+## Expanding the ESLint configuration
 
-```bash
-# npm
-npm install
-npm run dev --host
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
 ```
-```bash
-# yarn
-yarn
-yarn dev --host
-```
 
-# Links
-- [Doc](https://docs.ton.org/develop/dapps/twa)
-- [Example TMA](https://t.me/vite_twa_example_bot/app)
-- [Link](https://twa-dev.github.io/vite-boilerplate/)
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
