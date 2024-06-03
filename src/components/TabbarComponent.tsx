@@ -6,7 +6,7 @@ import { FaFeather, FaGhost } from "react-icons/fa";
 const TabbarComponent = () => {
   const [selectedIndex, setSelectedIndex] = useState(0); // Initial selected index
 
-  const handleTabClick = (index) => {
+  const handleTabClick = (index: number) => {
     setSelectedIndex(index);
   };
 
