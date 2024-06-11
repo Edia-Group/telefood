@@ -1,12 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
-import { NhostService } from '../nhost/nhost.service';
-
+import { SupabaseClient } from '@supabase/supabase-js';
 @Injectable()
 export class TelegrafService implements OnModuleInit {
   private bot: Telegraf;
 
-  constructor(private nhostService: NhostService) {
+  constructor(private supabaseClient: SupabaseClient) {
     this.bot = new Telegraf('7365563125:AAG_OahrfOOaG2vxg-6z3pQkUy0Cs91XX2E');
   }
 
@@ -18,12 +17,7 @@ export class TelegrafService implements OnModuleInit {
 
     this.bot.command('login', async (ctx) => {
       const [email, password] = ctx.message.text.split(' ').slice(1);
-      try {
-        const session = await this.nhostService.signIn(email, password);
-        ctx.reply(`Logged in: ${JSON.stringify(session)}`);
-      } catch (error) {
-        ctx.reply(`Login failed: ${error.message}`);
-      }
+      // login ...
     });
 
     this.bot.launch();
