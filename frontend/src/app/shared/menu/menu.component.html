@@ -9,7 +9,7 @@
   <ion-content class="bg-orange-100">
     <ion-list class="bg-orange-100">  
       @for (page of appPages; track $index) {
-        <ion-item [routerLink]="['/reservation']">
+        <ion-item [routerLink]="['/page.url']">
           <ion-icon [name]="page.icon" slot="start"></ion-icon>
           <ion-label>{{ page.title }}</ion-label>
         </ion-item>
