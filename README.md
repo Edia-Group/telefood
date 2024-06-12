@@ -49,7 +49,7 @@ For interacting with Telegram in your project, refer to the [Telegram JS SDK Doc
     ```bash
     cd backend
     npm install
-    nest start
+    npm run start:dev
     ```
 
 ## Start the Frontend

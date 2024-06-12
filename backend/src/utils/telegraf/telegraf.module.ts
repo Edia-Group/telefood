@@ -1,10 +1,11 @@
 import { Module, Global } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SupabaseModule } from '../supabase/supabase.module';
 
 @Global()
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, SupabaseModule],
   providers: [
     {
       provide: 'TELEGRAF_BOT',
