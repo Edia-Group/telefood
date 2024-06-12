@@ -32,4 +32,3 @@ jobs:
         channelId: live
         projectId: telefood-4ee40
         entryPoint: frontend
-
