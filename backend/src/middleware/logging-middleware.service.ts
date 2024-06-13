@@ -4,6 +4,9 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 const chalk = require('chalk');
 
 /**
+ * Questo middleware serve a loggare tutte le richieste che arrivano al backend e mostrare 
+ * lo status code della risposta http ritornato. Di default non c'era quindi serviva 
+ * creare questo middleware
  * https://docs.nestjs.com/techniques/logger#logger
  */
 

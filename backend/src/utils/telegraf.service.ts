@@ -1,9 +1,10 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Global, Injectable, OnModuleInit } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 
 @Injectable()
+@Global()
 export class TelegrafService implements OnModuleInit {
   private bot: Telegraf;
 

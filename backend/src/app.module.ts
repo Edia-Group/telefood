@@ -2,11 +2,10 @@ import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/c
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { SupabaseModule } from './utils/supabase/supabase.module';
-import { TelegrafModule } from './utils/telegraf/telegraf.module';
 import { CoreModule } from './core/core.module';
 import { TenantMiddlewareService } from './middleware/tenant-middleware.service';
 import { LoggingMiddlewareService } from './middleware/logging-middleware.service';
+import { TenantsModule } from './tenants/tenants.module';
 
 
 /**
@@ -20,9 +19,8 @@ import { LoggingMiddlewareService } from './middleware/logging-middleware.servic
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    SupabaseModule,
-    TelegrafModule,
-    CoreModule
+    CoreModule,
+    TenantsModule
   ],
   controllers: [AppController],
   providers: [AppService],

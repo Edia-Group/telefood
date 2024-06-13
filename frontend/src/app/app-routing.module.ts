@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { ReservationPage } from './reservation/reservation.page';
+import { HomeComponent } from './pages/home/home.component';
+import { ReservationComponent } from './pages/reservation/reservation.component';
 
 
 const routes: Routes = [
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'reservation',
-    component: ReservationPage
+    component: ReservationComponent
   },
 ];
 
