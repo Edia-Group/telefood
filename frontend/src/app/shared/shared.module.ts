@@ -1,29 +1,23 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MenuComponent } from './menu/menu.component';
-import { ReservationPage } from '../reservation/reservation.page';
-import { HomeComponent } from '../home/home.component';
+import { AppRoutingModule } from '../app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [
-    HomeComponent,
-    MenuComponent,
-    ReservationPage,
+    MenuComponent
   ],
-  imports: [
-    CommonModule,
-    IonicModule
+  imports: [ 
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule,
   ],
   exports: [
-    MenuComponent,
-    HomeComponent,
-    ReservationPage,
-    CommonModule,
-    IonicModule
+    MenuComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
-  ],
+  ]
 })
 export class SharedModule { }
