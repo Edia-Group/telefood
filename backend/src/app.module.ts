@@ -2,28 +2,26 @@ import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/c
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { CoreModule } from './core/core.module';
 import { TenantMiddlewareService } from './middleware/tenant-middleware.service';
 import { LoggingMiddlewareService } from './middleware/logging-middleware.service';
-import { TenantsModule } from './tenants/tenants.module';
-
+import { CoreModule } from './core/core.module';
+import { UtilsModule } from './utils/utils.module';
 
 /**
- * Per registrare dei middleware, un modulo deve implementare NestModule e poi 
- * devi indicare controller o path diretto su quali applicarlo
+ * To register a middleware, a module must implement NestModule and then you must
+ * tell which controller or paths on which to apply it
  * https://docs.nestjs.com/middleware
  */
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    CoreModule,
-    TenantsModule
-  ],
   controllers: [AppController],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, }),
+    CoreModule,
+    UtilsModule
+  ],
   providers: [AppService],
+  exports: []
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

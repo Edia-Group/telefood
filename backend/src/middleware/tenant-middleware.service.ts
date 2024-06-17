@@ -2,8 +2,8 @@ import { Injectable, NestMiddleware, Logger  } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 /**
- * Questo middleware serve a identificare da quale cliente arriva la richiesta.
- * Il middleware è registrato globalmente alla radice su src/app.module.ts e cattura a prescindere tutte le richieste che arrivano
+ * This middleware is useful for identify from which tenant the request is coming from.
+ * It is registered globally at the root on src/app.module.ts and it captures  ALL the requests incoming.
  * https://docs.nestjs.com/middleware
  */
 
@@ -13,9 +13,14 @@ export class TenantMiddlewareService implements NestMiddleware {
 
     use(req: Request, res: Response, next: NextFunction) {
         this.logger.log("##### tenant middleware triggered ######");
-        const tenantId = req.headers['x-tenant-id'] || 'defaultTenant';
-        req['tenantId'] = tenantId;
+        /**
+        const tenantId = req.headers['x-tenant-id'];
+        if (!tenantId) {
+          throw new Error('Tenant ID not provided');
+        }  */
+    
+        req['tenantId'] = 1 //tenantId;
         next();
-      }
+    }
     
 }

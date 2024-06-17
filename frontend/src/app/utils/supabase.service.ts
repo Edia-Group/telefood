@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 /**
- * Servizio singleton globale che mette a disposizione il client di supabase per le operazioni semplici sul db lato client. 
- * La anonKey è sicura da esporre se si attiva la  row level security (RLS) da supabase
+ * Global singleton service that instanciates supabase clients for any db operations client-side.
+ * AnonKey can be exposed safely if row level security (RLS) is active on supabase
  */
 
 @Injectable({

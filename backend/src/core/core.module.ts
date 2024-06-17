@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TenantMiddlewareService } from '../middleware/tenant-middleware.service';
-import { TmaModule } from './tma/tma.module';
+import { TenantsController } from './tenants/tenants.controller';
+import { TenantsService } from './tenants/tenants.service';
+import { TmaController } from './tma/tma.controller';
+import { TmaService } from './tma/tma.service';
+import { Utils } from '@tma.js/sdk';
 
 @Module({
-  providers: [TenantMiddlewareService],
-  exports: [TenantMiddlewareService],
-  imports: [TmaModule]
+  controllers: [TenantsController, TmaController],
+  imports: [Utils],
+  providers: [TenantsService, TmaService],
+  exports: [],
 })
 export class CoreModule {}
