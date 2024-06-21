@@ -6,6 +6,7 @@ import { TenantMiddlewareService } from './middleware/tenant-middleware.service'
 import { LoggingMiddlewareService } from './middleware/logging-middleware.service';
 import { CoreModule } from './core/core.module';
 import { UtilsModule } from './utils/utils.module';
+import { MiddlewareModule } from './middleware/middleware.module';
 
 /**
  * To register a middleware, a module must implement NestModule and then you must
@@ -18,7 +19,8 @@ import { UtilsModule } from './utils/utils.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true, }),
     CoreModule,
-    UtilsModule
+    UtilsModule,
+    MiddlewareModule
   ],
   providers: [AppService],
   exports: []

@@ -1,34 +1,67 @@
 import { Global, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { TenantsService } from '../core/tenants/tenants.service';
+import { Tenant } from '../core/tenants/entities/tenant.entity';
+const chalk = require('chalk');
+
+/**
+ * Given that we want to handle multiple telegram bots from this unique backend, we manage multiple bot instances using a
+ * Map. Keys are tenantsIds, values are Instances of the bots, which is the Telegraf class:
+ * 
+ * https://telegraf.js.org
+ */
 
 @Injectable()
 @Global()
 export class BotsService implements OnModuleDestroy {
 
-  private botInstances: Map<string, Telegraf> = new Map();
   private readonly logger = new Logger('HTTP');
+  private botInstances: Map<number, Telegraf> = new Map();
 
-  constructor( private readonly tenantsService: TenantsService ) {}
+  constructor(private readonly tenantsService: TenantsService ) {}
 
-  async getBotInstance(tenantId: string): Promise<Telegraf> {
+  async startAllBots(): Promise<boolean> {
+    const tenants = await this.tenantsService.findAll();
+
+    tenants.forEach((tenant, index) => {
+      this.startBotInstance(tenant);
+    })
+
+    return true;
+  }
+
+  startBotInstance(tenant: Tenant): boolean {
+    if (this.botInstances.has(tenant.id)) {
+      // If the instance is already up
+      return false;
+    }
+
+    if(!tenant) {
+      this.logger.error(chalk.red(`Tenant number ${tenant.id} not found`));
+    } else if(!tenant.bot_token) {
+      this.logger.error(chalk.red(`Bot token not found for tenant number ${tenant.id}`));
+    } else {
+      const bot = new Telegraf(tenant.bot_token);
+      this.botInstances.set(tenant.id, bot);
+  
+      this.initBot(bot);
+  
+      return true;
+    }
+  }
+
+  async getAllBots(): Promise<Map<number, Telegraf>> {
+    return this.botInstances;
+  }
+
+  async getBotInstance(tenantId: number): Promise<Telegraf> {
     if (this.botInstances.has(tenantId)) {
       return this.botInstances.get(tenantId);
     }
 
-    const tenant = await this.tenantsService.findOne(+tenantId);  //+ operator parses string -> number
-
-    if (!tenant || !tenant.bot_token) {
-      throw new Error('Tenant or bot token not found');
-    }
-
-    const bot = new Telegraf(tenant.bot_token);
-    this.botInstances.set(tenantId, bot);
-
-    this.initBot(bot);
-
-    return bot;
+    throw new Error(`Bot instance not found for tenant n. ${tenantId}`);
   }
+
   
   initBot(bot: Telegraf) {
     bot.start((ctx) => ctx.reply('Welcome, CARL'));
@@ -43,7 +76,7 @@ export class BotsService implements OnModuleDestroy {
 
     bot.launch();
     
-    this.logger.log("Bot succesfully started!")
+    this.logger.log(`Bot succesfully started: ${bot.telegram.token}`);
   }
 
   onModuleDestroy() {

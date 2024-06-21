@@ -35,7 +35,7 @@ For interacting with Telegram in your project, refer to the [Telegram JS SDK Doc
 ## Before Starting the Project
 
 1. **Install Node.js**: Ensure you have Node.js version `v20.12.2` installed.
-2. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic & Angular.
+2. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic, Angular, Nestjs & Javascript debugger.
 3. **Global CLI Tools**: Install Ionic and Nest CLI globally by running the following commands:
     ```bash
     npm install -g @ionic/cli @nestjs/cli

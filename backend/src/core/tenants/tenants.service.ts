@@ -19,7 +19,7 @@ export class TenantsService {
     let { data: spTenants, error } = await this.supabaseService.getClient().from('Tenants').select("*");
    
     if(spTenants) {
-      let tenants = plainToInstance(Tenant, spTenants)
+      let tenants = plainToInstance(Tenant, spTenants);
       return tenants;
     } else {
       throw new Error(error.message)
@@ -33,7 +33,6 @@ export class TenantsService {
 
     if(tenant) {
       let tenantz = plainToInstance(Tenant, tenant)[0]
-      console.log("plainToInstance result", tenantz)
       return tenantz;
     } else {
       throw new Error(error.message)
