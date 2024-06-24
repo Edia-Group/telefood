@@ -39,10 +39,11 @@ For interacting with Telegram in your project, refer to the [Telegram JS SDK Doc
     git checkout dev
     ```
 2. **Install Node.js**: Ensure you have Node.js version `v20.12.2` installed. Use [nvm](https://nvm.sh) command line to manage nodejs versions
-3. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic, Angular, Nestjs & Javascript debugger.
+3. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic, Angular, Nestjs, Javascript debugger, **Thunder Client**.
 4. **Global CLI Tools**: Install Ionic and Nest CLI globally by running the following commands:
     ```bash
-    npm install -g @ionic/cli @nestjs/cli
+    npm install -g @ionic/cli @nestjs/cli localtunnel
+
     ```
 
 ## Configure and Start the Backend
@@ -68,5 +69,11 @@ For interacting with Telegram in your project, refer to the [Telegram JS SDK Doc
     npm install
     ionic serve
     ```
+
+## Make example requests to the backend
+Test if the backend works correctly using postman or the vscode extension **Thunder Client**. 
+You can try the endpoints:
+- http://localhost:3000/
+- http://localhost:3000/tenants
 
 done 🎉

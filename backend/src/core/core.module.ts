@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TenantsController } from './tenants/tenants.controller';
 import { TenantsService } from './tenants/tenants.service';
-import { TmaController } from './tma/tma.controller';
-import { TmaService } from './tma/tma.service';
 import { UsersService } from './users/users.service';
 import { UtilsModule } from 'src/utils/utils.module';
 import { UsersController } from './users/users.controller';
-import { MealsModule } from './meals/meals.module';
+import { TelegramController } from './telegram/telegram.controller';
+import { MealsController } from './meals/meals.controller';
+import { MealsService } from './meals/meals.service';
 
 @Module({
-  controllers: [TenantsController, UsersController, TmaController],
-  imports: [UtilsModule, MealsModule],
-  providers: [TenantsService, UsersService, TmaService],
+  controllers: [TenantsController, UsersController, TelegramController, MealsController],
+  imports: [UtilsModule],
+  providers: [TenantsService, UsersService, MealsService],
   exports: []
 })
 export class CoreModule {}
