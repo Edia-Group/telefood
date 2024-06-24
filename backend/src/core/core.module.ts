@@ -6,10 +6,11 @@ import { TmaService } from './tma/tma.service';
 import { UsersService } from './users/users.service';
 import { UtilsModule } from 'src/utils/utils.module';
 import { UsersController } from './users/users.controller';
+import { MealsModule } from './meals/meals.module';
 
 @Module({
   controllers: [TenantsController, UsersController, TmaController],
-  imports: [UtilsModule],
+  imports: [UtilsModule, MealsModule],
   providers: [TenantsService, UsersService, TmaService],
   exports: []
 })
