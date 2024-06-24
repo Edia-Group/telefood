@@ -1,7 +1,7 @@
+import 'source-map-support/register';
 import { NestApplicationContext, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BotsService } from './utils/bots.service';
-import { UtilsModule } from './utils/utils.module';
 
 declare const module: any;
 

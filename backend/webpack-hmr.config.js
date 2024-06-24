@@ -4,6 +4,7 @@ const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 module.exports = function (options, webpack) {
   return {
     ...options,
+    devtool: 'source-map', // Important to map dist/main.js to project file for logging error exact location
     entry: ['webpack/hot/poll?100', options.entry],
     externals: [
       nodeExternals({
