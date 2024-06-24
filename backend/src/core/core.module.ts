@@ -11,6 +11,6 @@ import { UsersController } from './users/users.controller';
   controllers: [TenantsController, UsersController, TmaController],
   imports: [UtilsModule],
   providers: [TenantsService, UsersService, TmaService],
-  exports: [],
+  exports: []
 })
 export class CoreModule {}

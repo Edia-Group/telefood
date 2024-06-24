@@ -133,5 +133,4 @@ export class TenantMiddlewareService implements NestMiddleware {
     return next(new Error('Unauthorized'));
   }
 
-
 }
