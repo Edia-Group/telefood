@@ -37,8 +37,7 @@ export class TenantMiddlewareService implements NestMiddleware {
 
     // In development we ignore authentication checks
     if (process.env.ENVIRONMENT === 'dev') {
-      throw new Error('You do not have permission to request this');
-      //return next();
+      return next();
     }
 
     // We expect passing init data in the Authorization header in the following format:
