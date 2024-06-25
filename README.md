@@ -1,6 +1,6 @@
 # Project Starter Guide 🚀😡
 
-Oooh ciccioooo
+Oooh cicciooooa
 
 ## Stack
 
