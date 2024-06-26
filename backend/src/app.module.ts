@@ -7,7 +7,7 @@ import { LoggingMiddlewareService } from './middleware/logging-middleware.servic
 import { CoreModule } from './core/core.module';
 import { UtilsModule } from './utils/utils.module';
 import { MiddlewareModule } from './middleware/middleware.module';
-import { PbmTenantService } from './tenants/pizza-by-mike/pbm-tenant-service/pbm-tenant.service';
+import { TenantsModule } from './tenants/tenants.module';
 
 /**
  * To register a middleware, a module must implement NestModule and then you must
@@ -21,9 +21,10 @@ import { PbmTenantService } from './tenants/pizza-by-mike/pbm-tenant-service/pbm
     ConfigModule.forRoot({ isGlobal: true, }),
     CoreModule,
     UtilsModule,
-    MiddlewareModule
+    MiddlewareModule,
+    TenantsModule
   ],
-  providers: [AppService, PbmTenantService],
+  providers: [AppService],
   exports: []
 })
 export class AppModule implements NestModule {

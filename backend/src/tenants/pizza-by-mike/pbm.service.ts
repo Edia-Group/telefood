@@ -5,7 +5,7 @@ import { UpdateTenantDto } from 'src/core/tenants/dto/update-tenant.dto';
 import { Tenant } from 'src/core/tenants/entities/tenant.entity';
 
 @Injectable()
-export class PbmTenantService extends TenantsService {
+export class PbmService extends TenantsService {
   // Override the create method to add custom logic
   async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
     // Call the base class method
