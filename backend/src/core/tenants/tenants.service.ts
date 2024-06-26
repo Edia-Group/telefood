@@ -28,6 +28,17 @@ export class TenantsService implements ITenantService {
     }
 
   }
+  async findNames(): Promise<Tenant[]> {
+    let { data: spTenants, error } = await this.supabaseService.getClient().from('Tenants').select("name");
+   
+    if(spTenants) {
+      let tenants = plainToInstance(Tenant, spTenants);
+      return tenants;
+    } else {
+      throw new Error(error.message)
+    }
+
+  }
 
   async findOne(id: number): Promise<Tenant> {
     let { data: tenant, error } = await this.supabaseService.getClient().from('Tenants').select("*").eq('id', id);
