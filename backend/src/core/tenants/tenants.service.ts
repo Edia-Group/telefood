@@ -4,19 +4,32 @@ import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { plainToInstance } from 'class-transformer';
 import { Tenant } from './entities/tenant.entity';
 import { SupabaseService } from 'src/utils/supabase.service';
+import { ITenantService } from './interfaces/tenant.interface';
 
 @Global()
 @Injectable()
-export class TenantsService {
+export class TenantsService implements ITenantService {
 
   constructor(private readonly supabaseService: SupabaseService ) {}
 
-  create(createTenantDto: CreateTenantDto) {
-    return 'This adds a new tenant';
+  async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+      return new Promise((resolve) => resolve({} as Tenant)); // Temporary fake object
   }
+
 
   async findAll(): Promise<Tenant[]> {
     let { data: spTenants, error } = await this.supabaseService.getClient().from('Tenants').select("*");
+   
+    if(spTenants) {
+      let tenants = plainToInstance(Tenant, spTenants);
+      return tenants;
+    } else {
+      throw new Error(error.message)
+    }
+
+  }
+  async findNames(): Promise<Tenant[]> {
+    let { data: spTenants, error } = await this.supabaseService.getClient().from('Tenants').select("name");
    
     if(spTenants) {
       let tenants = plainToInstance(Tenant, spTenants);
@@ -40,11 +53,11 @@ export class TenantsService {
 
   }
 
-  update(id: number, updateTenantDto: UpdateTenantDto) {
-    return `This action updates a #${id} tenant`;
+  update(id: number, updateTenantDto: UpdateTenantDto): Promise<Tenant> {
+    return new Promise((resolve) => resolve({} as Tenant)); // Fake
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} tenant`;
+  
+  remove(id: number): Promise<void> {
+    return new Promise((resolve) => resolve()); // Fake
   }
 }

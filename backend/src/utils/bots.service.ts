@@ -18,14 +18,14 @@ export class BotsService implements OnModuleDestroy {
   private readonly logger = new Logger('HTTP');
   private botInstances: Map<number, Telegraf> = new Map();
 
-  constructor(private readonly tenantsService: TenantsService ) {}
+  constructor(private readonly tenantsService: TenantsService) {}
 
   async startAllBots(): Promise<boolean> {
     const tenants = await this.tenantsService.findAll();
 
     tenants.forEach((tenant, index) => {
       this.startBotInstance(tenant);
-    })
+    });
 
     return true;
   }
@@ -36,16 +36,16 @@ export class BotsService implements OnModuleDestroy {
       return false;
     }
 
-    if(!tenant) {
+    if (!tenant) {
       this.logger.error(chalk.red(`Tenant number ${tenant.id} not found`));
-    } else if(!tenant.bot_token) {
+    } else if (!tenant.bot_token) {
       this.logger.error(chalk.red(`Bot token not found for tenant number ${tenant.id}`));
     } else {
       const bot = new Telegraf(tenant.bot_token);
       this.botInstances.set(tenant.id, bot);
-  
-      this.initBot(bot);
-  
+
+      this.initBot(bot, tenant);
+
       return true;
     }
   }
@@ -62,8 +62,7 @@ export class BotsService implements OnModuleDestroy {
     throw new Error(`Bot instance not found for tenant n. ${tenantId}`);
   }
 
-  
-  initBot(bot: Telegraf) {
+  initBot(bot: Telegraf, tenant: Tenant) {
     bot.start((ctx) => ctx.reply('Welcome, CARL'));
     bot.help((ctx) => ctx.reply('Send me a sticker'));
     bot.on('sticker', (ctx) => ctx.reply('👍'));
@@ -74,12 +73,15 @@ export class BotsService implements OnModuleDestroy {
       // login ...
     });
 
-    bot.launch();
-    
-    this.logger.log(`Bot succesfully started: ${bot.telegram.token}`);
+    // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
+    const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
+
+    bot.telegram.setWebhook(webhookUrl);
+
+    this.logger.log(`Bot successfully started with webhook: ${bot.telegram.token}`);
   }
 
   onModuleDestroy() {
-    this.botInstances.forEach((bot) => bot.stop());
+    this.botInstances.forEach((bot) => bot.stop('Bot stopped due to module destroy'));
   }
 }

@@ -16,6 +16,10 @@ export class TenantsController {
   findAll() {
     return this.tenantsService.findAll();
   }
+  @Get('nomi')
+  findNames() {
+    return this.tenantsService.findNames();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
