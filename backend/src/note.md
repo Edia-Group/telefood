@@ -1,18 +1,10 @@
-# Librerie utili
-Both class-transformer and class-validator are used for validation in Nestjs Pipes:
+# Cambiamenti importanti che tutti devono sapere
 
-[Che robba so le pipe](https://docs.nestjs.com/pipes) e 
-[nestjs Pipes validation](https://docs.nestjs.com/techniques/validation#using-the-built-in-validationpipe)
-
-## [class-transformer](https://www.npmjs.com/package/class-transformer)
-It is used to properly map Plain JS objects to entities or DTOs so that you can then use the various class methods for each object.
-See the example of users in the docs link
+## 27/06
+ Aggiunta colonna "environment" sulla tabella tenants per distinguere quali istanze di bot devono essere startate in locale e quali no. Questo perchè solamente un singolo server può essere registrato al webhook a cui telegram inoltra le interazioni dell'utente col bot. Se lo stesso bot viene startato sia in locale che su Koyeb in prod, il bot non funziona più perchè i due backend vanno in conflitto. 
+ - dev: istanze che devono essere eseguite solamente in locale sulla tua macchina
+ - test: istanze che devono essere eseguite solamente sulla macchina di test di Koyeb
+ - prod: istanze che devono essere eseguite solamente sulla macchina di produzione "reale" Koyeb
 
 
-## [class-validator](https://www.npmjs.com/package/class-validator)
-Useful for using validation through validators placed on a class, such as @IsEmail(), @IsInt(), @Min(0), @Max(10) etc.
 
-
-# Middleware
-## [nestjs middlewares](https://docs.nestjs.com/middleware)
-To register middleware, a module must implement NestModule and then you must indicate the controller or direct path to which to apply it.

@@ -1,3 +1,4 @@
+import { environment } from '../../../../../frontend/src/environments/environment';
 export class Tenant {
   id: number;
 
@@ -8,4 +9,8 @@ export class Tenant {
   address: string;
 
   bot_token: string;
+
+  bot_username: string;
+
+  environment: string;
 }
