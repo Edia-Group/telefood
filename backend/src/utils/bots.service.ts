@@ -24,7 +24,12 @@ export class BotsService implements OnModuleDestroy {
     const tenants = await this.tenantsService.findAll();
 
     tenants.forEach((tenant, index) => {
-      this.startBotInstance(tenant);
+      if(
+        (process.env.ENVIRONMENT == "dev" && tenant.environment == "dev") || 
+        (process.env.ENVIRONMENT == "test" && tenant.environment == "test")
+      ) {
+        this.startBotInstance(tenant);
+      }
     });
 
     return true;

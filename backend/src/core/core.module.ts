@@ -9,11 +9,13 @@ import { MealsController } from './meals/meals.controller';
 import { MealsService } from './meals/meals.service';
 import { OrdersController } from './orders/orders.controller';
 import { OrdersService } from './orders/orders.service';
+import { GlovoController } from './glovo/glovo.controller';
+import { GlovoService } from './glovo/glovo.service';
 
 @Module({
-  controllers: [TenantsController, UsersController, TelegramController, MealsController, OrdersController],
+  controllers: [TenantsController, UsersController, TelegramController, MealsController, OrdersController, GlovoController],
   imports: [UtilsModule, ],
-  providers: [TenantsService, UsersService, MealsService, OrdersService],
+  providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService],
   exports: []
 })
 export class CoreModule {}
