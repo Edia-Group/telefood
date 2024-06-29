@@ -1,4 +1,4 @@
-import { environment } from '../../../../../frontend/src/environments/environment';
+
 export class Tenant {
   id: number;
 
