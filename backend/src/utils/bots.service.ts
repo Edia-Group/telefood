@@ -83,7 +83,7 @@ export class BotsService implements OnModuleDestroy {
 
     bot.telegram.setWebhook(webhookUrl);
 
-    this.logger.log(`Bot successfully started with webhook: ${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`);
+    this.logger.log(`Bot ${tenant.bot_username} successfully started with webhook: ${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`);
   }
 
   onModuleDestroy() {

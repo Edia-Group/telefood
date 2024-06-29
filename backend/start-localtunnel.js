@@ -11,48 +11,43 @@ const { spawn } = require('child_process');
 const fs = require('fs/promises');
 const path = require('path');
 
-async function updateEnvAndStartTunnel() {
+async function updateEnvFile(url) {
+  const envPath = path.join(__dirname, '.env');
+  
   try {
-    // Spawn the localtunnel process
+    let existingEnv = await fs.readFile(envPath, 'utf-8');
+    const updatedEnv = existingEnv.includes('WEBHOOK_URL=')
+      ? existingEnv.replace(/WEBHOOK_URL=.*/, `WEBHOOK_URL=${url}`)
+      : `${existingEnv}\nWEBHOOK_URL=${url}`;
+    await fs.writeFile(envPath, updatedEnv);
+    console.log('.env file updated successfully');
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      await fs.writeFile(envPath, `WEBHOOK_URL=${url}`);
+      console.log('.env file created successfully');
+    } else {
+      console.error('Error reading or writing .env file:', error);
+    }
+  }
+}
+
+async function startLocalTunnel() {
+  return new Promise((resolve, reject) => {
     const localtunnel = spawn('lt', ['--port', 3000]);
 
-    let url = '';
-
-    // Capture the localtunnel output
-    localtunnel.stdout.on('data', (data) => {
+    localtunnel.stdout.on('data', async (data) => {
       console.log(`LocalTunnel output: ${data.toString()}`);
       const output = data.toString().trim();
       const matches = output.match(/https:\/\/[^\s]+/);
       if (matches) {
-        url = matches[0];
+        const url = matches[0];
         console.log(`LocalTunnel URL: ${url}`);
-
-        // Update the .env file with the extracted URL
-        const envPath = path.join(__dirname, '.env');
-
-        fs.readFile(envPath, 'utf-8')
-          .then(existingEnv => {
-            // Replace the existing WEBHOOK_URL if it exists
-            const updatedEnv = existingEnv.includes('WEBHOOK_URL=')
-              ? existingEnv.replace(/WEBHOOK_URL=.*/, `WEBHOOK_URL=${url}`)
-              : `${existingEnv}\nWEBHOOK_URL=${url}`;
-
-            return fs.writeFile(envPath, updatedEnv);
-          })
-          .then(() => {
-            console.log('.env file updated successfully');
-          })
-          .catch(error => {
-            if (error.code === 'ENOENT') {
-              // Handle case where .env file does not exist
-              return fs.writeFile(envPath, `WEBHOOK_URL=${url}`)
-                .then(() => {
-                  console.log('.env file created successfully');
-                });
-            } else {
-              console.error('Error reading or writing .env file:', error);
-            }
-          });
+        try {
+          await updateEnvFile(url);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
       }
     });
 
@@ -62,11 +57,23 @@ async function updateEnvAndStartTunnel() {
 
     localtunnel.on('exit', (code) => {
       if (code !== 0) {
-        console.error(`LocalTunnel process exited with code ${code}`);
+        reject(new Error(`LocalTunnel process exited with code ${code}`));
       }
     });
+  });
+}
+
+async function updateEnvAndStartTunnel() {
+  try {
+    await startLocalTunnel();
+    console.log('Starting NestJS server...');
+    const nestProcess = spawn('npm', ['run', 'start:dev:nest'], { stdio: 'inherit' });
+    
+    nestProcess.on('close', (code) => {
+      console.log(`NestJS process exited with code ${code}`);
+    });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Failed to start LocalTunnel:', error);
   }
 }
 
