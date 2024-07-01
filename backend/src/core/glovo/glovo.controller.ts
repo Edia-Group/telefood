@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
 import { GlovoService } from './glovo.service';
 import { CreateGlovoDto } from './dto/create-glovo.dto';
 import { UpdateGlovoDto } from './dto/update-glovo.dto';
+import { validate } from 'class-validator';
 
 @Controller('glovo')
 export class GlovoController {
@@ -9,6 +10,15 @@ export class GlovoController {
 
   @Post()
   create(@Body() createGlovoDto: CreateGlovoDto) {
+    //screateGlovoDto: CreateGlovoDto =     
+
+    validate(createGlovoDto).then(errors => {
+      if (errors.length > 0) {  
+        console.log('validation failed. errors: ', errors);
+      } else {
+        console.log('validation succeed');    
+      }
+    });
     return this.glovoService.create(createGlovoDto);
   }
 

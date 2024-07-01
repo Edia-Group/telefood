@@ -1,12 +1,3 @@
-/**
- * This script is started always before running the backend with any command (check package.json scripts).
- * It is required because we cannot manage multiple telegram bot instances in the same nodejs instance with the default
- * polling way. We need webhooks to handle multiple processes, and we need a public secure domain to use webhooks, we can't
- * use localhost and http only. Instead of ngrok we use localtunnel:
- * 
- * https://theboroer.github.io/localtunnel-www/
- */
-
 const { spawn } = require('child_process');
 const fs = require('fs/promises');
 const path = require('path');
@@ -31,9 +22,11 @@ async function updateEnvFile(url) {
   }
 }
 
+let localtunnel;
+
 async function startLocalTunnel() {
   return new Promise((resolve, reject) => {
-    const localtunnel = spawn('lt', ['--port', 3000]);
+    localtunnel = spawn('lt', ['--port', 3000]);
 
     localtunnel.stdout.on('data', async (data) => {
       console.log(`LocalTunnel output: ${data.toString()}`);
@@ -63,18 +56,21 @@ async function startLocalTunnel() {
   });
 }
 
+async function stopLocalTunnel() {
+  if (localtunnel) {
+    localtunnel.kill();
+  }
+}
+
 async function updateEnvAndStartTunnel() {
   try {
     await startLocalTunnel();
-    console.log('Starting NestJS server...');
-    const nestProcess = spawn('npm', ['run', 'start:dev:nest'], { stdio: 'inherit' });
-    
-    nestProcess.on('close', (code) => {
-      console.log(`NestJS process exited with code ${code}`);
-    });
   } catch (error) {
     console.error('Failed to start LocalTunnel:', error);
   }
 }
 
-updateEnvAndStartTunnel();
+module.exports = {
+  updateEnvAndStartTunnel,
+  stopLocalTunnel,
+};

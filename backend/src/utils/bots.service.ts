@@ -4,19 +4,16 @@ import { TenantsService } from '../core/tenants/tenants.service';
 import { Tenant } from '../core/tenants/entities/tenant.entity';
 const chalk = require('chalk');
 
-/**
- * Given that we want to handle multiple telegram bots from this unique backend, we manage multiple bot instances using a
- * Map. Keys are tenantsIds, values are Instances of the bots, which is the Telegraf class:
- * 
- * https://telegraf.js.org
- */
+interface BotInstance {
+  bot: Telegraf;
+  isRunning: boolean;
+}
 
 @Injectable()
 @Global()
 export class BotsService implements OnModuleDestroy {
-
   private readonly logger = new Logger('HTTP');
-  private botInstances: Map<number, Telegraf> = new Map();
+  private botInstances: Map<number, BotInstance> = new Map();
 
   constructor(private readonly tenantsService: TenantsService) {}
 
@@ -24,9 +21,9 @@ export class BotsService implements OnModuleDestroy {
     const tenants = await this.tenantsService.findAll();
 
     tenants.forEach((tenant, index) => {
-      if(
-        (process.env.ENVIRONMENT == "dev" && tenant.environment == "dev") || 
-        (process.env.ENVIRONMENT == "test" && tenant.environment == "test")
+      if (
+        (process.env.ENVIRONMENT == 'dev' && tenant.environment == 'dev') ||
+        (process.env.ENVIRONMENT == 'test' && tenant.environment == 'test')
       ) {
         this.startBotInstance(tenant);
       }
@@ -47,7 +44,7 @@ export class BotsService implements OnModuleDestroy {
       this.logger.error(chalk.red(`Bot token not found for tenant number ${tenant.id}`));
     } else {
       const bot = new Telegraf(tenant.bot_token);
-      this.botInstances.set(tenant.id, bot);
+      this.botInstances.set(tenant.id, { bot, isRunning: false });
 
       this.initBot(bot, tenant);
 
@@ -55,13 +52,13 @@ export class BotsService implements OnModuleDestroy {
     }
   }
 
-  async getAllBots(): Promise<Map<number, Telegraf>> {
+  async getAllBots(): Promise<Map<number, BotInstance>> {
     return this.botInstances;
   }
 
   async getBotInstance(tenantId: number): Promise<Telegraf> {
     if (this.botInstances.has(tenantId)) {
-      return this.botInstances.get(tenantId);
+      return this.botInstances.get(tenantId).bot;
     }
 
     throw new Error(`Bot instance not found for tenant n. ${tenantId}`);
@@ -81,12 +78,29 @@ export class BotsService implements OnModuleDestroy {
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
     const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
 
-    bot.telegram.setWebhook(webhookUrl);
-
-    this.logger.log(`Bot ${tenant.bot_username} successfully started with webhook: ${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`);
+    bot.telegram.setWebhook(webhookUrl).then(() => {
+      const botInstance = this.botInstances.get(tenant.id);
+      if (botInstance) {
+        botInstance.isRunning = true;
+      }
+      this.logger.log(`${tenant.bot_username} successfully started with webhook: ${webhookUrl}`);
+    }).catch(err => {
+      this.logger.error(`Failed to set webhook for ${tenant.bot_username}: ${err.message}`);
+    });
   }
 
   onModuleDestroy() {
-    this.botInstances.forEach((bot) => bot.stop('Bot stopped due to module destroy'));
+    this.botInstances.forEach(({ bot, isRunning }, tenantId) => {
+      if (isRunning) {
+        try {
+          bot.stop('Bot stopped due to module destroy');
+          this.logger.log(`Bot for tenant ${tenantId} stopped successfully.`);
+        } catch (error) {
+          this.logger.warn(`Failed to stop bot for tenant ${tenantId}: ${error.message}`);
+        }
+      } else {
+        this.logger.warn(`Bot for tenant ${tenantId} was not running.`);
+      }
+    });
   }
 }
