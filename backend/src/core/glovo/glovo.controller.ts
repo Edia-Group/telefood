@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, HttpCode } from '@nestjs/common';
 import { GlovoService } from './glovo.service';
 import { CreateGlovoDto } from './dto/create-glovo.dto';
 import { UpdateGlovoDto } from './dto/update-glovo.dto';
@@ -22,6 +22,22 @@ export class GlovoController {
     return this.glovoService.create(createGlovoDto);
   }
 
+  @HttpCode(200)
+  @Post('orders/dispatched')
+  ordersDispatchedNotification(@Body() glovoOrderObject: any) {
+    console.log("glovoOrderObject",glovoOrderObject)
+
+    return 'Test endpoint for glovo api request dispatched orders' // this.glovoService.create(glovoOrderObject);
+  }
+
+  @HttpCode(200)
+  @Post('orders/canceled')
+  ordersCanceledNotification(@Body() glovoOrderObject: any) {
+    console.log("glovoOrderObject",glovoOrderObject)
+
+    return 'Test endpoint for glovo api request canceled orders' // this.glovoService.delete(glovoOrderObject);
+  }
+  
   @Get()
   findAll() {
     return this.glovoService.findAll();

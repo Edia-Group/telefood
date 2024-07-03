@@ -4,7 +4,7 @@ import { TenantsService } from '../core/tenants/tenants.service';
 import { Tenant } from '../core/tenants/entities/tenant.entity';
 const chalk = require('chalk');
 
-interface BotInstance {
+export interface BotInstance {
   bot: Telegraf;
   isRunning: boolean;
 }
@@ -83,6 +83,7 @@ export class BotsService implements OnModuleDestroy {
 
   async getBotInstance(tenantId: number): Promise<Telegraf> {
     if (this.botInstances.has(tenantId)) {
+      console.log("isrujnning",this.botInstances.get(tenantId).isRunning)
       return this.botInstances.get(tenantId).bot;
     }
 
@@ -103,6 +104,7 @@ export class BotsService implements OnModuleDestroy {
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
     const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
 
+    console.log("webhookUrl",webhookUrl)
     bot.telegram.setWebhook(webhookUrl).then(() => {
       const botInstance = this.botInstances.get(tenant.id);
       if (botInstance) {

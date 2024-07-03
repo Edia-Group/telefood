@@ -11,9 +11,10 @@ import { OrdersService } from './orders/orders.service';
 import { GlovoController } from './glovo/glovo.controller';
 import { GlovoService } from './glovo/glovo.service';
 import { BotsController } from './bots/bots.controller';
+import { TelegramController } from './telegram/telegram.controller';
 
 @Module({
-  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController],
+  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController, TelegramController],
   imports: [UtilsModule, ],
   providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService],
   exports: []

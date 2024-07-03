@@ -1,9 +1,19 @@
+/**
+ * This script is started always before running the backend with any command (check main.ts).
+ * It is required because we cannot manage multiple telegram bot instances in the same nodejs instance with the default
+ * polling way. We need webhooks to handle multiple processes, and we need a public secure domain to use webhooks, we can't
+ * use localhost and http only. Instead of ngrok we use localtunnel:
+ * 
+ * https://theboroer.github.io/localtunnel-www/
+ */
+
 const { spawn } = require('child_process');
 const fs = require('fs/promises');
 const path = require('path');
 
 async function updateEnvFile(url) {
-  const envPath = path.join(__dirname, '.env');
+  const envPath = path.join(process.cwd(), '.env');
+  console.log("PATH",envPath)
   
   try {
     let existingEnv = await fs.readFile(envPath, 'utf-8');

@@ -35,7 +35,7 @@ export class BotsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    //return this.botsService.findOne(+id);
+    return this.botsService.getBotInstance(+id);
   }
 
   @Patch(':id')
