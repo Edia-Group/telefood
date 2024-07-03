@@ -13,8 +13,24 @@ export class BotsController {
   }
 
   @Get()
-  findAll() {
-    //return this.botsService.findAll();
+  getAllBots() {
+    return this.botsService.getAllBots();
+  }
+  @Get('stop/:id')
+  stopBot(@Param('id') id: string) {
+    return this.botsService.stopBot(+id);
+  }
+  @Get('start/:id')
+  startBot(@Param('id') id: string) {
+    return this.botsService.stopBot(+id);
+  }
+  @Get('startAll')
+  startAll(@Param('id') id: string) {
+    return this.botsService.startAllBots();
+  }
+  @Get('stopAll')
+  stopAll(@Param('id') id: string) {
+    return this.botsService.stopAllBots();
   }
 
   @Get(':id')

@@ -8,7 +8,6 @@ interface BotInstance {
   bot: Telegraf;
   isRunning: boolean;
 }
-
 @Injectable()
 @Global()
 export class BotsService implements OnModuleDestroy {
@@ -52,9 +51,35 @@ export class BotsService implements OnModuleDestroy {
     }
   }
 
-  async getAllBots(): Promise<Map<number, BotInstance>> {
-    return this.botInstances;
+  async getAllBots(): Promise<Array<[number, BotInstance]>> {
+
+    const keyValueArray = Array.from(this.botInstances.entries());
+    console.log()
+    return keyValueArray;
   }
+
+  async stopBot(id: number): Promise<String> {
+    const botInstance = this.botInstances.get(id);
+    botInstance.bot.stop();
+    botInstance.isRunning = false;
+    return 'success';
+  }
+  async startBot(id: number): Promise<String> {
+    const botInstance = this.botInstances.get(id);
+    const tenant = await this.tenantsService.findOne(id);
+    this.initBot(botInstance.bot, tenant)
+    botInstance.isRunning = true;
+    return 'success';
+  }
+  async stopAllBots(): Promise<String> {
+    const keyValueArray = Array.from(this.botInstances.entries());
+    keyValueArray.forEach(element => {
+      element[1].bot.stop();
+      element[1].isRunning = false;
+    });
+    return 'success';
+  }
+
 
   async getBotInstance(tenantId: number): Promise<Telegraf> {
     if (this.botInstances.has(tenantId)) {
