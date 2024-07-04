@@ -46,7 +46,7 @@ export class BotsService implements OnModuleDestroy {
       this.botInstances.set(tenant.id, { bot, isRunning: false });
 
       this.initBot(bot, tenant);
-
+ 
       return true;
     }
   }
@@ -83,7 +83,6 @@ export class BotsService implements OnModuleDestroy {
 
   async getBotInstance(tenantId: number): Promise<Telegraf> {
     if (this.botInstances.has(tenantId)) {
-      console.log("isrujnning",this.botInstances.get(tenantId).isRunning)
       return this.botInstances.get(tenantId).bot;
     }
 

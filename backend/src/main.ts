@@ -18,10 +18,10 @@ async function loadEnv() {
 declare const module: any;
 
 async function bootstrap() {
-  await updateEnvAndStartTunnel();
-  
-  // Reload environment variables after updateEnvAndStartTunnel
-  await loadEnv();
+  if(process.env.ENVIRONMENT == 'dev') {
+    await updateEnvAndStartTunnel();
+    await loadEnv(); // Reload environment variables after updateEnvAndStartTunnel
+  }
 
   const app = await NestFactory.create(AppModule);
 
