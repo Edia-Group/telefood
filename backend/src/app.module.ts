@@ -18,7 +18,10 @@ import { TenantsModule } from './tenants/tenants.module';
 @Module({
   controllers: [AppController],
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, }),
+    ConfigModule.forRoot({ 
+      isGlobal: true, 
+      envFilePath: 'backend/.env'
+    }),
     CoreModule,
     UtilsModule,
     MiddlewareModule,

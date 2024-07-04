@@ -104,7 +104,6 @@ export class BotsService implements OnModuleDestroy {
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
     const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
 
-    console.log("webhookUrl",webhookUrl)
     bot.telegram.setWebhook(webhookUrl).then(() => {
       const botInstance = this.botInstances.get(tenant.id);
       if (botInstance) {
