@@ -22,9 +22,12 @@ export class BotsService implements OnModuleDestroy {
     tenants.forEach((tenant, index) => {
       if (
         (process.env.ENVIRONMENT == 'dev' && tenant.environment == 'dev') ||
-        (process.env.ENVIRONMENT == 'test' && tenant.environment == 'test')
+        (process.env.ENVIRONMENT == 'test' && tenant.environment == 'test') ||
+        (process.env.ENVIRONMENT == 'prod' && tenant.environment == 'prod') 
       ) {
-        this.startBotInstance(tenant);
+        if(process.env.DEV_OWNER == tenant.dev_owner) {
+          this.startBotInstance(tenant);
+        }
       }
     });
 
