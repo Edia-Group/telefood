@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers } from '@nestjs/common';
 import { AppService } from './app.service';
 import express, {
   type ErrorRequestHandler,
@@ -17,5 +17,16 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Post()
+  receiveInitData(@Headers('Authorization') authHeader: string): string {
+    if (!authHeader) {
+      return 'Error: Authorization header is missing';
+    }
+    const token = authHeader.split(' ')[1];
+
+    return `Success! initData received. Auth token: ${token}`;
+  }
+
 
 }

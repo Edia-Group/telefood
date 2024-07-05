@@ -25,6 +25,12 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: '*', // Allowed origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, responseType, Accept, Authorization',
+  });
+
   // Access the application context and the service AFTER the app is created
   const botsService = app.get(BotsService);
 

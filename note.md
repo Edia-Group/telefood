@@ -1,5 +1,10 @@
 # Cambiamenti importanti che tutti devono sapere
 
+## 05/07
+Leggi guide su come testare e debuggare miniapp tg:
+[text](https://docs.google.com/document/d/1ZFopIMfVqP2MgXgOA1dRU71IUQRWwqWZXjbPx3u5LLc/edit)
+[text](https://core.telegram.org/bots/webapps#testing-mini-apps)
+
 ## 29/06
 Se i server di localtunnel sono instabili, cioè se npm run start:dev non funziona, allora devi fare manualmente lt --port 3000 e poi su un altro terminale npm run start:dev:nest
 

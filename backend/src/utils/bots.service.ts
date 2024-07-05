@@ -94,14 +94,9 @@ export class BotsService implements OnModuleDestroy {
 
   initBot(bot: Telegraf, tenant: Tenant) {
     bot.start((ctx) => ctx.reply('Welcome, CARL'));
-    bot.help((ctx) => ctx.reply('Send me a sticker'));
+    bot.help((ctx) => ctx.reply('Mandame uno sticchio'));
     bot.on('sticker', (ctx) => ctx.reply('👍'));
-    bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-
-    bot.command('login', async (ctx) => {
-      const [email, password] = ctx.message.text.split(' ').slice(1);
-      // login ...
-    });
+    bot.hears('ciao', (ctx) => ctx.reply('Bella a chicco'));
 
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
     const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
