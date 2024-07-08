@@ -16,19 +16,21 @@ export class MealsController {
   findAll() {
     return this.mealsService.findAll();
   }
-
+  @Get('nomi')
+  findNames() {
+    return this.mealsService.findNames();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.mealsService.findOne(+id);
   }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMealDto: UpdateMealDto) {
-    return this.mealsService.update(+id, updateMealDto);
+    //return this.mealsService.update(+id, updateMealDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.mealsService.remove(+id);
+    //return this.mealsService.remove(+id);
   }
 }

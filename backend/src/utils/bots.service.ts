@@ -61,25 +61,34 @@ export class BotsService implements OnModuleDestroy {
     return keyValueArray;
   }
 
+  async startAllBot(): Promise<String> {
+    for (const [key, value] of this.botInstances.entries()) {
+      this.startBot(key);
+    }
+    return 'success';
+  }
+  async stopAllBots(): Promise<String> {
+    for (const [key, value] of this.botInstances.entries()) {
+      this.stopBot(key);
+    }
+    return 'success';
+  }
   async stopBot(id: number): Promise<String> {
     const botInstance = this.botInstances.get(id);
-    botInstance.bot.stop();
+    botInstance.bot.telegram.deleteWebhook();
     botInstance.isRunning = false;
     return 'success';
   }
   async startBot(id: number): Promise<String> {
     const botInstance = this.botInstances.get(id);
-    const tenant = await this.tenantsService.findOne(id);
-    this.initBot(botInstance.bot, tenant)
+    const tenantInstance = await this.tenantsService.findOne(id);
+    this.initBot(botInstance.bot, tenantInstance);
     botInstance.isRunning = true;
     return 'success';
   }
-  async stopAllBots(): Promise<String> {
+  async findOne(id: number): Promise<String> {
+    const botInstance = this.botInstances.get(id);
     const keyValueArray = Array.from(this.botInstances.entries());
-    keyValueArray.forEach(element => {
-      element[1].bot.stop();
-      element[1].isRunning = false;
-    });
     return 'success';
   }
 

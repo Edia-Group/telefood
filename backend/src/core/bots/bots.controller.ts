@@ -26,7 +26,7 @@ export class BotsController {
   }
   @Get('startAll')
   startAll(@Param('id') id: string) {
-    return this.botsService.startAllBots();
+    return this.botsService.startAllBot();
   }
   @Get('stopAll')
   stopAll(@Param('id') id: string) {
