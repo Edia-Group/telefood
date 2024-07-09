@@ -1,0 +1,34 @@
+<ion-content class="bg-gray-400 text-white">
+  <div class="flex flex-col h-full">
+    <!-- Image Placeholder -->
+    <div class="bg-gray-400 h-48 flex items-center justify-center">
+      <span class="text-lg uppercase">Immagine Piatto</span>
+    </div>
+    
+    <!-- Dish Details -->
+    <div class="p-4 flex-grow">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-xl font-bold">Antipasto X</h2>
+        <span class="text-xl font-bold">{{price}} €</span>
+      </div>
+      <p class="text-gray-400 mb-8">descrizione antipasto</p>
+      
+      <!-- Quantity Selector -->
+      <div class="mb-8">
+        <p class="mb-2">Seleziona Quantità</p>
+        <div class="flex items-center">
+          <button (click)="decrementQuantity()" class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">-</button>
+          <span class="mx-4 text-xl">{{quantity}}</span>
+          <button (click)="incrementQuantity()" class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">+</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Add to Cart Button -->
+    <div class="p-4">
+      <button class="w-full bg-white text-black py-3 rounded-full text-lg font-semibold shadow-[0_6px_0_0_#f9e8a5]">
+        Aggiungi al carrello
+      </button>
+    </div>
+  </div>
+</ion-content>

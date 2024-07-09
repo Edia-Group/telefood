@@ -3,10 +3,12 @@ import { MenuComponent } from './menu/menu.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
+import { TabsComponent } from './tabs/tabs.component';
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenuComponent,
+    TabsComponent
   ],
   imports: [ 
     BrowserModule, 
@@ -14,7 +16,8 @@ import { IonicModule } from '@ionic/angular';
     AppRoutingModule,
   ],
   exports: [
-    MenuComponent
+    MenuComponent,
+    TabsComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

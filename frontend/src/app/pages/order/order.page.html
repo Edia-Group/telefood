@@ -1,0 +1,36 @@
+<ion-content class="bg-gray-900 text-white">
+  <div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-xl font-bold">asporto/delivery/tavolo</h1>
+      <div class="flex space-x-2">
+        <ion-icon name="search-outline" class="text-xl"></ion-icon>
+        <ion-icon name="funnel-outline" class="text-xl"></ion-icon>
+      </div>
+    </div>
+
+    <div class="flex space-x-2 overflow-x-auto mb-4">
+      <ion-chip class="bg-white text-black px-3 py-1 rounded-full">Antipasti</ion-chip>
+      <ion-chip class="bg-gray-700 text-white px-3 py-1 rounded-full">Primi</ion-chip>
+      <ion-chip class="bg-gray-700 text-white px-3 py-1 rounded-full">Secondi</ion-chip>
+      <ion-chip class="bg-gray-700 text-white px-3 py-1 rounded-full">Contorni</ion-chip>
+      <ion-chip class="bg-gray-700 text-white px-3 py-1 rounded-full">Dolci</ion-chip>
+    </div>
+
+    <h2 class="text-lg font-semibold mb-2">Antipasti</h2>
+
+    <div class="space-y-4">
+      <div class="flex items-center space-x-4" *ngFor="let i of [1,2,3,4]">
+        <div class="w-16 h-16 bg-gray-700 flex items-center justify-center">
+          <span class="text-xs">Foto Piatto</span>
+        </div>
+        <div class="flex-grow">
+          <h3 class="font-semibold">Antipasto X</h3>
+          <p class="text-sm text-gray-400">descrizione antipasto</p>
+        </div>
+        <div class="text-right">
+          <span class="font-semibold">10$</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

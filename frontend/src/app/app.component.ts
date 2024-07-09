@@ -4,6 +4,9 @@ import { retrieveLaunchParams } from '@tma.js/sdk';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { GlobalStateService } from './utils/global-state.service';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
   selector: 'app-root',
@@ -35,9 +38,9 @@ export class AppComponent implements OnInit {
   initializeApp() {
 
     // GET test call
-    this.http.get(environment.apiUrl, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
+    // this.http.get(environment.apiUrl, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
     // POST test call
-    this.http.post(environment.apiUrl + '/glovo/orders/dispatched', null, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
+    // this.http.post(environment.apiUrl + '/glovo/orders/dispatched', null, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
 
     if (this.currentPlatform == 'telegram') {
       console.log('Retrieving InitData...');

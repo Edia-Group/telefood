@@ -3,3 +3,14 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+:root {
+    --ion-font-family: 'Roboto', sans-serif;
+    --ion-tab-bar-background: #e8f5e9;  // Light green background
+    --ion-tab-bar-color: #2e7d32;       // Dark green for inactive text/icons
+    --ion-tab-bar-color-selected: #00c853;  // Bright green for active tab
+    //--ion-tab-bar-color-disabled: #c8e6c9;  // Color for disabled tabs
+  }
+
+  :root {
+  }

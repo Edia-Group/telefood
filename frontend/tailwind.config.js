@@ -1,8 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: true,
   content: ['./src/**/*.{html,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'pastel-blue': '#AEC6CF',
+        'pastel-green': '#77DD77',
+        'pastel-yellow': '#FFB347',
+      },
+      fontFamily: {
+        sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
+      }
+    },
   },
   plugins: [require('@tailwindcss/aspect-ratio')
 ,require('@tailwindcss/forms')
