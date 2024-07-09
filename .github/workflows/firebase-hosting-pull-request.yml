@@ -23,7 +23,7 @@ jobs:
 
       - name: Build the Ionic project
         working-directory: frontend
-        run: npx ionic build --prod --release
+        run: npx ionic build --test --release
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3 
