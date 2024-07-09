@@ -1,0 +1,31 @@
+<ion-content>
+  <div class="flex flex-col justify-end h-full">
+    <div class="flex justify-center mt-8">
+      <div class="bg-blue-600 text-black rounded-full w-24 h-24 flex items-center justify-center">
+        <span class="text-xl font-bold">CARLO</span>
+      </div>
+    </div>
+    <div class="bg-white border-t border-black pt-8 pb-32 px-6 rounded-t-3xl ">
+      <h1 class="text-center text-2xl mb-4">Carl Carlo</h1>
+
+      <ion-list [inset]="true">
+        <ion-item [button]="true">
+          <ion-icon color="success" slot="start" name="list-outline" size="large"></ion-icon>
+          <ion-label>Storico ordini</ion-label>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-icon color="tertiary" slot="start" name="bookmarks-outline" size="large"></ion-icon>
+          <ion-label>Prenotazioni</ion-label>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-icon color="danger" slot="start" name="card-outline" size="large"></ion-icon>
+          <ion-label>Programma fedeltà</ion-label>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-icon color="warning" slot="start" name="exit-outline" size="large"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

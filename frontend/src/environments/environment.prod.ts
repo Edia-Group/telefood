@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: 'prod',
+  apiUrl: 'https://api.edia.cloud'
 };

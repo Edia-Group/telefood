@@ -13,4 +13,8 @@ export class Tenant {
   bot_username: string;
 
   environment: string;
+
+  dev_owner: string;
+
+  mini_app_url: string;
 }

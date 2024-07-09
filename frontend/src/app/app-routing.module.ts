@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { ReservationComponent } from './pages/reservation/reservation.component';
-
+import { HomePage } from './pages/home/home.page';
+import { NewPage } from './pages/new/new.page';
+import { MealPage } from './pages/meal/meal.page';
+import { CartPage } from './pages/cart/cart.page';
+import { ProfilePage } from './pages/profile/profile.page';
+import { OrderPage } from './pages/order/order.page';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: HomePage
   },
   {
     path: '',
@@ -15,9 +18,34 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'reservation',
+    path: 'new',
+    component: NewPage
+  },
+  {
+    path: 'meal',
+    component: MealPage
+  },
+  {
+    path: 'cart',
+    component: CartPage
+  },
+  {
+    path: 'profilo',
+    component: ProfilePage
+  },
+  {
+    path: 'order',
+    component: OrderPage
+  },
+  /**
+  {
+    path: 'promozioni',
     component: ReservationComponent
   },
+  {
+    path: 'profilo',
+    component: ReservationComponent
+  },  */
 ];
 
 @NgModule({

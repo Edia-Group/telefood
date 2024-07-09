@@ -3,10 +3,9 @@ import { UpdateTenantDto } from "../dto/update-tenant.dto";
 import { Tenant } from "../entities/tenant.entity";
 
 export interface ITenantService {
-    create(createTenantDto: CreateTenantDto): Promise<Tenant>;
-    findAll(): Promise<Tenant[]>;
-    findOne(id: number): Promise<Tenant>;
-    update(id: number, updateTenantDto: UpdateTenantDto): Promise<Tenant>;
-    remove(id: number): Promise<void>;
-  }
-  
+  create(createTenantDto: CreateTenantDto): Promise<Tenant>;
+  findAll(): Promise<Tenant[]>;
+  findOne(id: number): Promise<Tenant>;
+  update(id: number, updateTenantDto: UpdateTenantDto): Promise<Tenant>;
+  remove(id: number): Promise<void>;
+}

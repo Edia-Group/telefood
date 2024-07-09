@@ -6,23 +6,20 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './pages/home/home.component';
-import { ReservationComponent } from './pages/reservation/reservation.component';
 import { provideHttpClient } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
-
+import { PagesModule } from './pages/pages.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    ReservationComponent
   ],
   
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    PagesModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
