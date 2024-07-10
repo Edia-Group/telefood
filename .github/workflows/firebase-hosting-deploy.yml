@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on merge
+name: Deploy to Firebase Hosting on push/pull/manual
 on:
   workflow_dispatch:
     inputs:
@@ -10,6 +10,16 @@ on:
       - master
     paths:
       - 'frontend/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'frontend/**'
+      
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
 
 jobs:
   build_and_deploy:
