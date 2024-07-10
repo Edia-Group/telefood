@@ -1,5 +1,10 @@
 name: Deploy to Firebase Hosting on merge
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        description: 'The environment to deploy to (e.g., dev, test, prod)'
   push:
     branches:
       - master
@@ -18,7 +23,7 @@ jobs:
 
       - name: Build the Ionic project
         working-directory: frontend
-        run: npx ionic build --test --release
+        run: npx ionic build --{{ github.event.inputs.environment }} --release
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3 
