@@ -33,7 +33,7 @@ jobs:
 
       - name: Build the Ionic project
         working-directory: frontend
-        run: npx ionic build --{{ github.event.inputs.environment }} --release
+        run: npx ng build --configuration={{ github.event.inputs.environment }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3 
