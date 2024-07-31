@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/telefood-backend/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/telefood-backend/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/telefood-backend",
+  "projects": {
+    "telefood-backend": {
+      "type": "application",
+      "root": "apps/telefood-backend",
+      "entryFile": "main",
+      "sourceRoot": "apps/telefood-backend/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telefood-backend/tsconfig.app.json"
+      }
+    },
+    "telefood": {
+      "type": "application",
+      "root": "apps/telefood",
+      "entryFile": "main",
+      "sourceRoot": "apps/telefood/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telefood/tsconfig.app.json"
+      }
+    }
   }
 }

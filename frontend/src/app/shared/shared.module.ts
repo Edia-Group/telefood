@@ -4,6 +4,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { TabsComponent } from './tabs/tabs.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { TabsComponent } from './tabs/tabs.component';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
+    FormsModule
   ],
   exports: [
     MenuComponent,
