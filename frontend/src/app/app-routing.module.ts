@@ -6,6 +6,7 @@ import { MealPage } from './pages/meal/meal.page';
 import { CartPage } from './pages/cart/cart.page';
 import { ProfilePage } from './pages/profile/profile.page';
 import { OrderPage } from './pages/order/order.page';
+import { MenuPage } from './pages/menu/menu.page';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
     component: NewPage
   },
   {
-    path: 'meal',
+    path: 'meals/:id',
     component: MealPage
   },
   {
@@ -37,11 +38,11 @@ const routes: Routes = [
     path: 'order',
     component: OrderPage
   },
-  /**
   {
-    path: 'promozioni',
-    component: ReservationComponent
+    path: 'menu',
+    component: MenuPage
   },
+  /**
   {
     path: 'profilo',
     component: ReservationComponent

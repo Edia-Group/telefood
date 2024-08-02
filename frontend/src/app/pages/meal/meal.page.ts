@@ -1,4 +1,8 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MealService } from '../../utils/meal.service';
+import { Meal } from '@shared/entity/meal.entity';
 
 @Component({
   selector: 'app-meal',
@@ -7,13 +11,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MealPage implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  mealId!: number;
+  meal?: Meal
   price = 499
   quantity = 1;
+
+  constructor(private route: ActivatedRoute, private mealService: MealService) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.mealId = +params['id']; 
+      this.loadMealDetails();
+    });
+  }
+  
+
+  loadMealDetails() {
+    this.mealService.getMealById(this.mealId).subscribe(meal => {
+      if (meal) {
+        this.meal = meal;
+      } else {
+        console.error('Meal not found');
+      }
+    });
+  }
+
 
   incrementQuantity() {
     this.quantity++;
@@ -28,5 +50,4 @@ export class MealPage implements OnInit {
   addToCart() {
     console.log(`Added ${this.quantity} to cart`);
   }
-
 }

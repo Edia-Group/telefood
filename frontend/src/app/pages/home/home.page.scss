@@ -1,3 +1,11 @@
 ion-content {
   --background: #ecfdf5;
 }
+
+.category-scroll {
+  &::-webkit-scrollbar {
+    display: none;  /* for Chrome, Safari, and newer versions of Opera */
+  }
+  -ms-overflow-style: none;  /* for Internet Explorer and Edge */
+  scrollbar-width: none;  /* for Firefox */
+}

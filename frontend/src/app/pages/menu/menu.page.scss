@@ -1,0 +1,25 @@
+.category-scroll {
+    &::-webkit-scrollbar {
+      display: none;  /* for Chrome, Safari, and newer versions of Opera */
+    }
+    -ms-overflow-style: none;  /* for Internet Explorer and Edge */
+    scrollbar-width: none;  /* for Firefox */
+  }
+
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+
+  
+  .custom-ripple {
+    color: #b4b2b2;
+  }
+
+
+  .selected-category {
+    background-color: black !important;
+    color: white;
+  }

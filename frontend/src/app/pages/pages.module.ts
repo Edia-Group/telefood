@@ -1,7 +1,6 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomePage } from './home/home.page';
-import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
@@ -10,8 +9,10 @@ import { MealPage } from './meal/meal.page';
 import { CartPage } from './cart/cart.page';
 import { ProfilePage } from './profile/profile.page';
 import { OrderPage } from './order/order.page';
-
-
+import { MenuPage } from './menu/menu.page';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -20,14 +21,17 @@ import { OrderPage } from './order/order.page';
     MealPage,
     CartPage,
     ProfilePage,
-    OrderPage
+    OrderPage,
+    MenuPage
   ],
   imports: [
     CommonModule,
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    SharedModule
+    FormsModule,
+    BrowserAnimationsModule,
+    ComponentsModule
   ],
   exports: [
     HomePage,
@@ -35,7 +39,8 @@ import { OrderPage } from './order/order.page';
     MealPage,
     CartPage,
     ProfilePage,
-    OrderPage
+    OrderPage,
+    MenuPage
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

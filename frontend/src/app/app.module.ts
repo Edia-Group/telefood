@@ -1,14 +1,15 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { provideHttpClient } from '@angular/common/http';
-import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
+import { ComponentsModule } from './components/components.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,8 +19,9 @@ import { PagesModule } from './pages/pages.module';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    SharedModule,
-    PagesModule
+    PagesModule,
+    BrowserAnimationsModule,
+    ComponentsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

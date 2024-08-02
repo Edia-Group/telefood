@@ -1,5 +1,5 @@
 <ion-content class="bg-gray-400 text-white">
-  <div class="flex flex-col h-full">
+  <div class="flex flex-col h-full" *ngIf="meal; else loading">
     <!-- Image Placeholder -->
     <div class="bg-gray-400 h-48 flex items-center justify-center">
       <span class="text-lg uppercase">Immagine Piatto</span>
@@ -8,18 +8,18 @@
     <!-- Dish Details -->
     <div class="p-4 flex-grow">
       <div class="flex justify-between items-center mb-2">
-        <h2 class="text-xl font-bold">Antipasto X</h2>
-        <span class="text-xl font-bold">{{price}} €</span>
+        <h2 class="text-xl font-bold">{{meal.name}}</h2>
+        <span class="text-xl font-bold">{{meal.price}} €</span>
       </div>
-      <p class="text-gray-400 mb-8">descrizione antipasto</p>
+      <p class="text-gray-400 mb-8">{{meal.description}}</p>
       
       <!-- Quantity Selector -->
       <div class="mb-8">
         <p class="mb-2">Seleziona Quantità</p>
         <div class="flex items-center">
-          <button (click)="decrementQuantity()" class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">-</button>
+          <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl"> <ion-ripple-effect></ion-ripple-effect> - </button>
           <span class="mx-4 text-xl">{{quantity}}</span>
-          <button (click)="incrementQuantity()" class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">+</button>
+          <button (click)="incrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl"> <ion-ripple-effect></ion-ripple-effect> +</button>
         </div>
       </div>
     </div>
@@ -31,4 +31,10 @@
       </button>
     </div>
   </div>
+
+  <ng-template #loading>
+    <div class="flex items-center justify-center h-full">
+      <ion-spinner></ion-spinner>
+    </div>
+  </ng-template>
 </ion-content>
