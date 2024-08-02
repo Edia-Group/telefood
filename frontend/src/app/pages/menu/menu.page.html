@@ -29,7 +29,7 @@
   <h2 *ngIf="!(searchTerm$ | async)" class="text-xl mb-4">{{ selectedCategory$ | async }}</h2>
 
   <div class="space-y-4">
-    <div *ngFor="let item of filteredMeals$ | async" class="flex items-center p-2 rounded-lg cursor-pointer relative overflow-hidden ion-activatable ripple-parent " [routerLink]="['/meals', item.id]">
+    <div *ngFor="let item of filteredMeals$ | async" class="flex items-center p-2 rounded-lg cursor-pointer relative overflow-hidden ion-activatable ripple-parent " (click)="navigateToMeal(item.id)">
       <ion-ripple-effect class="custom-ripple"></ion-ripple-effect>
 
       <div class="w-20 h-20 bg-gray-200 flex-shrink-0 mr-4 flex items-center justify-center">

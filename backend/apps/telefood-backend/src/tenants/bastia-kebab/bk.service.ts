@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TenantsService } from '../../core/tenants/tenants.service';
 import { CreateTenantDto } from '../../core/tenants/dto/create-tenant.dto';
 import { UpdateTenantDto } from '../../core/tenants/dto/update-tenant.dto';
-import { Tenant } from '@shared/tenant.entity';
+import { Tenant } from '@shared/entity/tenant.entity';
 
 @Injectable()
 export class BkService extends TenantsService {

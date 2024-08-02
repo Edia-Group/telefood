@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
-import { Meal } from '@shared/meal.entity';
-import { environment } from '../../../environments/environment';
+import { Meal } from '@shared/entity/meal.entity';
+import { environment } from '@frontend/environments/environment';
 
 @Injectable({
   providedIn: 'root'

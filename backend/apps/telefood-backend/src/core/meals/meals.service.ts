@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMealDto } from './dto/create-meal.dto';
-import { Meal } from '@shared/meal.entity';
+import { Meal } from '@shared/entity/meal.entity';
 import { SupabaseService } from '../../utils/supabase.service'
 import { plainToInstance } from 'class-transformer';
 
@@ -25,7 +25,6 @@ export class MealsService {
   else {
     throw new Error(error.message)
   }
-
 }
 
 async findNames(): Promise<Meal []> {

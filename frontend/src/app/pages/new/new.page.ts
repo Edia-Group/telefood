@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MealService } from '../meal/meal.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,27 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./new.page.scss'],
 })
 export class NewPage implements OnInit {
-  loading = true;
+  constructor() { }
 
-  constructor(
-    private mealService: MealService,
-    private router: Router
-  ) { }
+  ngOnInit() {  }
 
-  ngOnInit() {
-    this.fetchMeals();
-  }
-
-  fetchMeals() {
-    this.mealService.fetchAllMeals().subscribe(
-      meals => {
-        console.log('Meals fetched successfully');
-        this.loading = false;
-      },
-      error => {
-        console.error('Error fetching meals:', error);
-        this.loading = false;
-      }
-    );
-  }
 }

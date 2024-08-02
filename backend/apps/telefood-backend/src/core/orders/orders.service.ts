@@ -3,7 +3,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { SupabaseService } from '../../utils/supabase.service';
 import { plainToInstance } from 'class-transformer';
-import {Order} from '@shared/order.entity';
+import {Order} from '@shared/entity/order.entity';
 
 @Injectable()
 export class OrdersService {
@@ -15,7 +15,7 @@ export class OrdersService {
   }
 
   async findAll() :Promise<Order []> {
-    let {data: order, error} = await this.supabaseService.getClient().from('Orders').select('*');
+    let {data: order, error} = await this.supabaseService.getClient().from('Orders').select("*, Meals_to_Order(*, Meals(*, MealCategories(name)))");
 
     if(order){
       let returnOrder = plainToInstance(Order,order);
@@ -27,7 +27,7 @@ export class OrdersService {
   }
 
   async findOne(id: number): Promise<Order> {
-    let {data: order, error} = await this.supabaseService.getClient().from('Orders').select('*').eq('id',id);
+    let {data: order, error} = await this.supabaseService.getClient().from('Orders').select("*, Meals_to_Order(*, Meals(*,  MealCategories(name)))").eq('id',id);
 
     if(order){
       let returnOrder = plainToInstance(Order,order)[0];

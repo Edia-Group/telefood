@@ -1,7 +1,7 @@
 import { Global, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { TenantsService } from '../core/tenants/tenants.service';
-import { Tenant } from '@shared/tenant.entity';
+import { Tenant } from '@shared/entity/tenant.entity';
 const chalk = require('chalk');
 
 export interface BotInstance {

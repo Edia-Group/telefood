@@ -1,74 +1,42 @@
 <ion-content>
-  <div class="flex flex-col justify-end h-full">
-    <div class="bg-gray-300 flex justify-center items-center h-48">
+  <div *ngIf="loading" class="absolute inset-0 flex items-center justify-center z-10 bg-white">
+    <ion-spinner></ion-spinner>
+    <p class="ml-2">Loading meals...</p>
+  </div>
+
+  <div class="flex flex-col h-full">
+    <div class="bg-gray-300 flex justify-center items-center h-60 flex-shrink-0">
       <h1 class="text-2xl font-bold">LOGO RISTORANTE</h1>
     </div>
   
-    <div class="px-4 my-4 max-h-40">
-      <h2 class="text-lg">Ordini Recenti</h2>
-      <ion-scroll scrollX="true" class="flex space-x-2">
-  
-        <!-- For loop cards of ongoing orders -->
-        <ion-card class="min-w-40">
-          <ion-card-header class="p-1">
-            <ion-card-subtitle class="text-red-600 font-bold p-0">In sospeso</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content class="pl-1 py-0 m-0">
-            <ul>
-              <li class="m-0 text-xs">Antipasto x 10$</li>
-              <li class="m-0 text-xs">Primo x 12$</li>
-              <li class="m-0 text-xs">Secondo x 12$</li>
-              <li class="m-0 text-xs">TOTALE 34$</li>
-            </ul>
-          </ion-card-content>
-        </ion-card>
-  
-        <ion-card class="min-w-40">
-          <ion-card-header class="p-1">
-            <ion-card-subtitle class="text-green-600 font-bold p-0">Confermato</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content class="pl-1 py-0 m-0">
-            <ul>
-              <li class="m-0 text-xs">Antipasto x 10$</li>
-              <li class="m-0 text-xs">Primo x 12$</li>
-              <li class="m-0 text-xs">Secondo x 12$</li>
-              <li class="m-0 text-xs">TOTALE 34$</li>
-            </ul>
-          </ion-card-content>
-        </ion-card>
-
-
-        <ion-card class="min-w-40">
-          <ion-card-header class="p-1">
-            <ion-card-subtitle class="text-yellow-600 font-bold p-0">Warning</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content class="pl-1 py-0 m-0">
-            <ul>
-              <li class="m-0 text-xs">Antipasto x 10$</li>
-              <li class="m-0 text-xs">Primo x 12$</li>
-              <li class="m-0 text-xs">Secondo x 12$</li>
-              <li class="m-0 text-xs">TOTALE 34$</li>
-            </ul>
-          </ion-card-content>
-        </ion-card>
-      </ion-scroll>
-    </div>
-  
-    <div class="bg-green-200 px-6 py-4">
-      <h2 class="text-white text-lg mb-2">MENU</h2>
-      <h6 class="text-gray-400 text-sm mb-2">Promozioni</h6>
-      <div class="flex justify-between">
-        <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
-          Promozione
-        </div>
-        <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
-          Promozione
-        </div>
-        <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
-          Promozione
+    <div class="flex-grow overflow-y-auto mt-2">
+      <div *ngIf="orders.length > 0" class="px-4">
+        <h2 class="text-lg">Ordini Recenti</h2>
+        <div class="overflow-x-auto flex pb-2 category-scroll">
+          <app-order-card *ngFor="let order of orders"
+            [status]="order.state"
+            [items]="order.Meals_to_Order"
+            [orderId]="order.id"
+          ></app-order-card>
         </div>
       </div>
+    
+      <div class="px-6 py-4">
+        <h2 class="text-lg mb-2">MENU</h2>
+        <h6 class="text-gray-400 text-sm mb-2">Promozioni</h6>
+        <div class="flex justify-between">
+          <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
+            Promozione
+          </div>
+          <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
+            Promozione
+          </div>
+          <div class="bg-gray-300 h-24 w-1/4 flex items-center justify-center">
+            Promozione
+          </div>
+        </div>
+      </div>
+      
     </div>
-  
   </div>
 </ion-content>

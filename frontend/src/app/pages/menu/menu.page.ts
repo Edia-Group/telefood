@@ -1,9 +1,11 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { MealService } from '../meal/meal.service';
-import { Meal } from '@shared/meal.entity';
+import { MealService } from '../../utils/meal.service';
+import { Meal } from '@shared/entity/meal.entity';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { NavController, AnimationController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-menu',
@@ -35,7 +37,7 @@ export class MenuPage implements OnInit {
   meals$: Observable<Meal[]>;
   filteredMeals$: Observable<Meal[]>;
 
-  constructor(private mealService: MealService) {
+  constructor(private mealService: MealService, private navCtrl: NavController) {
     this.meals$ = this.mealService.getAllMeals();
     console.log("this.meals$",this.meals$)
 
@@ -84,5 +86,13 @@ export class MenuPage implements OnInit {
   onSearchTermChange(term: string) {
     this.searchTerm$.next(term);
   }
+
+  navigateToMeal(mealId: number) {
+    this.navCtrl.navigateForward(`/meals/${mealId}`, {
+      animated: true,
+      animationDirection: 'forward'
+    });
+  }
+
 }
 

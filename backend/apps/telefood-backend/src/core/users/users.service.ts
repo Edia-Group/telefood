@@ -1,6 +1,6 @@
 import { Global, Injectable } from '@nestjs/common';
 import { CreateTgUserDto } from '../telegram/dto/create-tg-user.dto';
-import { User } from '@shared/user.entity';
+import { User } from '@shared/entity/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { SupabaseService } from '../../utils/supabase.service';
 

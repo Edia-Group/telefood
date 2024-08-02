@@ -1,6 +1,6 @@
 import { CreateTenantDto } from "../dto/create-tenant.dto";
 import { UpdateTenantDto } from "../dto/update-tenant.dto";
-import { Tenant } from "@shared/tenant.entity";
+import { Tenant } from "@shared/entity/tenant.entity";
 
 export interface ITenantService {
   create(createTenantDto: CreateTenantDto): Promise<Tenant>;

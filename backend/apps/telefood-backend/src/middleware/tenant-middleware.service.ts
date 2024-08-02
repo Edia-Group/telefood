@@ -8,7 +8,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validate, parse, type InitDataParsed } from '@tma.js/init-data-node';
 import { BotsService } from '../utils/bots.service';
 import { UsersService } from '../core/users/users.service';
-import { User } from '@shared/user.entity';
+import { User } from '@shared/entity/user.entity';
 import { CreateTgUserDto } from '../core/users/dto/create-user.dto';
 
 /**
