@@ -28,6 +28,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
+        working-directory: shared
+        run: npm install
+
+      - name: Install dependencies
         working-directory: frontend
         run: npm install
 
