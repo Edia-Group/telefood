@@ -13,7 +13,7 @@ import { TabsComponent } from './tabs/tabs.component';
   declarations: [
     OrderCardComponent,
     MenuComponent,
-    TabsComponent
+    TabsComponent,
   ],
   imports: [
     CommonModule,
@@ -26,7 +26,7 @@ import { TabsComponent } from './tabs/tabs.component';
   exports: [
     OrderCardComponent,
     MenuComponent,
-    TabsComponent
+    TabsComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

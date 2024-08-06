@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./new.page.scss'],
 })
 export class NewPage implements OnInit {
-  constructor() { }
+
+  constructor(private router: Router) { }
 
   ngOnInit() {  }
 
