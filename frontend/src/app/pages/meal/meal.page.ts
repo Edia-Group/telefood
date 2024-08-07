@@ -14,7 +14,6 @@ export class MealPage implements OnInit {
 
   mealId!: number;
   meal?: Meal
-  price = 499
   quantity = 1;
 
   constructor(private route: ActivatedRoute, private mealService: MealService, private toastService: ToastService) {}

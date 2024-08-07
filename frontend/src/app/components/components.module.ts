@@ -8,12 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrderCardComponent } from './order-card/order-card.component';
 import { MenuComponent } from './menu/menu.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { DiscountCardComponent } from './discount-card/discount-card.component';
+
 
 @NgModule({
   declarations: [
     OrderCardComponent,
     MenuComponent,
     TabsComponent,
+    DiscountCardComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { TabsComponent } from './tabs/tabs.component';
     OrderCardComponent,
     MenuComponent,
     TabsComponent,
+    DiscountCardComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

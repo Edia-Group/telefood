@@ -1,10 +1,10 @@
 <ion-content>
   <div class="flex flex-col items-center text-center p-5">
     <div class="relative w-full mb-10">
-      <img src="assets/images/logo.png" alt="Logo Ristorante" class="w-24 h-24 mx-auto relative z-10">
-      <div class="absolute -bottom-4 left-0 right-0 h-8 bg-green-200 bg-opacity-50 backdrop-blur-md -z-0"></div>
+      <img [src]="tenant.logo_url || 'assets/default-meal-image.jpg'" [alt]="tenant.name" class="shadow-xl rounded-sm" >      
     </div>
-    <h1 class="text-2xl font-bold mb-5">Nome RistoBar</h1>
+
+    <h1 class="text-2xl font-bold mb-5">{{ tenant.name }}</h1>
     <button [routerLink]="['/menu/ASPORTO']" class="w-full bg-pastel-blue text-black py-4 rounded-full mb-6 shadow-[0_6px_0_0_#b3cde0] hover:shadow-[0_4px_0_0_#b3cde0] active:shadow-[0_0_0_0_#b3cde0] transition-all duration-150 relative overflow-hidden transform hover:-translate-y-0.5 active:translate-y-1.5">
       ASPORTO
     </button>

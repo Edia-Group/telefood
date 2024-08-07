@@ -30,7 +30,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 export class MenuPage implements OnInit {
   @Input() orderType!: string;
 
-  categories = ['Antipasti', 'Primi', 'Secondi', 'Contorni', 'Dolci', 'Nigiri'];
+  categories = ['Antipasti', 'Primi', 'Secondi', 'Contorni', 'Dolci', 'Nigiri', 'Uramaki'];
   selectedCategory$ = new BehaviorSubject<string>('Antipasti');
 
   showSearch = false;
@@ -40,7 +40,7 @@ export class MenuPage implements OnInit {
   meals$: Observable<Meal[]>;
   filteredMeals$: Observable<Meal[]>;
 
-  constructor(private mealService: MealService, private navCtrl: NavController, private route: ActivatedRoute, private router: Router) {
+  constructor(private mealService: MealService, private navCtrl: NavController) {
 
     this.meals$ = this.mealService.getAllMeals();
 
