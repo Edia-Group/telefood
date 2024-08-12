@@ -19,10 +19,22 @@ export class MealPage implements OnInit {
   constructor(private route: ActivatedRoute, private mealService: MealService, private toastService: ToastService) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.mealId = +params['id']; 
-      this.loadMealDetails();
-    });
+    if (this.mealService.areMealsLoaded()) {
+      this.route.params.subscribe(params => {
+        this.mealId = +params['id']; 
+        this.loadMealDetails();
+      });
+    } else {
+      this.mealService.fetchAllMeals().subscribe(
+        () => {
+          this.route.params.subscribe(params => {
+            this.mealId = +params['id']; 
+            this.loadMealDetails();
+          });
+        },
+        error => console.error('Error fetching meals:', error)
+      );
+    }
   }
   
 

@@ -21,6 +21,7 @@ export class Order {
   type!: string;
   state!: string;
   id_tenant!: number;
+  notes?: string;
 
   @Type(() => OrderItem)
   Meals_to_Order!: OrderItem[];

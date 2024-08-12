@@ -9,4 +9,5 @@ import { Meal } from '@shared/entity/meal.entity';
 })
 export class DiscountCardComponent {
   @Input() discount!: Discount;
+
 }
