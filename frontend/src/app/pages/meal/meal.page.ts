@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MealService } from '../../utils/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
+import { ToastService } from '@frontend/app/utils/toast.service';
 
 @Component({
   selector: 'app-meal',
@@ -13,16 +14,27 @@ export class MealPage implements OnInit {
 
   mealId!: number;
   meal?: Meal
-  price = 499
   quantity = 1;
 
-  constructor(private route: ActivatedRoute, private mealService: MealService) {}
+  constructor(private route: ActivatedRoute, private mealService: MealService, private toastService: ToastService) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.mealId = +params['id']; 
-      this.loadMealDetails();
-    });
+    if (this.mealService.areMealsLoaded()) {
+      this.route.params.subscribe(params => {
+        this.mealId = +params['id']; 
+        this.loadMealDetails();
+      });
+    } else {
+      this.mealService.fetchAllMeals().subscribe(
+        () => {
+          this.route.params.subscribe(params => {
+            this.mealId = +params['id']; 
+            this.loadMealDetails();
+          });
+        },
+        error => console.error('Error fetching meals:', error)
+      );
+    }
   }
   
 
@@ -48,6 +60,7 @@ export class MealPage implements OnInit {
   }
 
   addToCart() {
-    console.log(`Added ${this.quantity} to cart`);
+    
+    this.toastService.showToast('Toast pollo cane acqua', 'info');
   }
 }

@@ -10,18 +10,36 @@ import { Order } from '@shared/entity/order.entity'
   export class OrderService { 
     private apiUrl = `${environment.apiUrl}`;
     private ordersSubject = new BehaviorSubject<Order[]>([]);
+    private ordersLoaded = false;
     orders$ = this.ordersSubject.asObservable();
-
+    
     constructor(private http: HttpClient) {}
 
     fetchAllOrders(): Observable<Order[]> {
       return this.http.get<Order[]>(`${this.apiUrl}/orders`).pipe(
-        tap(meals => this.ordersSubject.next(meals))
+        tap(orders => {
+          this.ordersSubject.next(orders);
+          this.ordersLoaded = true;
+        })
       );
     }
   
     getAllOrders(): Observable<Order[]> {
       return this.orders$;
+    }
+
+    getOrderById(id: number): Observable<Order | undefined> {
+      return new Observable(observer => {
+        this.orders$.subscribe(orders => {
+          const order = orders.find(o => o.id === id);
+          observer.next(order);
+          observer.complete();
+        });
+      });
+    }
+
+    areOrdersLoaded(): boolean {
+      return this.ordersLoaded;
     }
     
     createOrder(meal: Omit<Order, 'id'>): Observable<Order> {

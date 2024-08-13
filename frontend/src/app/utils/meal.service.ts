@@ -11,12 +11,16 @@ export class MealService {
   private apiUrl = `${environment.apiUrl}`;
   private mealsSubject = new BehaviorSubject<Meal[]>([]);
   meals$ = this.mealsSubject.asObservable();
+  private mealsLoaded = false;
 
   constructor(private http: HttpClient) { }
 
   fetchAllMeals(): Observable<Meal[]> {
     return this.http.get<Meal[]>(`${this.apiUrl}/meals`).pipe(
-      tap(meals => this.mealsSubject.next(meals))
+      tap(meals => {
+        this.mealsSubject.next(meals);
+        this.mealsLoaded = true;
+      })
     );
   }
 
@@ -32,6 +36,10 @@ export class MealService {
         observer.complete();
       });
     });
+  }
+  
+  areMealsLoaded(): boolean {
+    return this.mealsLoaded;
   }
   
   createMeal(meal: Omit<Meal, 'id'>): Observable<Meal> {

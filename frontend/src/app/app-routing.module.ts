@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes, withComponentInputBinding } from '@angular/router';
 import { HomePage } from './pages/home/home.page';
 import { NewPage } from './pages/new/new.page';
 import { MealPage } from './pages/meal/meal.page';
@@ -35,11 +35,11 @@ const routes: Routes = [
     component: ProfilePage
   },
   {
-    path: 'order',
+    path: 'orders/:id',
     component: OrderPage
   },
   {
-    path: 'menu',
+    path: 'menu/:orderType',
     component: MenuPage
   },
   /**
@@ -51,7 +51,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { 
+      preloadingStrategy: PreloadAllModules,
+      bindToComponentInputs: true
+    })
   ],
   exports: [RouterModule]
 })

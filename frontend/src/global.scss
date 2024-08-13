@@ -49,3 +49,31 @@
       font-family: Roboto, system-ui, sans-serif;
     }
   }
+
+.custom-toast {
+  --max-width: 90%;
+  --width: fit-content;
+  
+  &.toast-stacked {
+    margin-top: 10px;  // Add space between stacked toasts
+  }
+
+  .toast-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .toast-message {
+    flex-grow: 1;
+  }
+
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}
+
+// Ensure stacked toasts don't overlap with the top of the screen
+ion-toast.toast-top {
+  padding-top: env(safe-area-inset-top);
+}

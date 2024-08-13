@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { TenantsService } from '@frontend/app/utils/tenants.service';
+import { Tenant } from '@shared/entity/tenant.entity';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new',
@@ -7,7 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./new.page.scss'],
 })
 export class NewPage implements OnInit {
-  constructor() { }
+
+  tenant: Tenant = {} as Tenant;
+
+  constructor(private tenantsService: TenantsService) { 
+    this.tenantsService.getTenantInfo().subscribe(tenant => {
+      this.tenant = tenant;
+    });
+  }
 
   ngOnInit() {  }
 

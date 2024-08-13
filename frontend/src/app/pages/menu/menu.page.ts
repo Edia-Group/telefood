@@ -1,10 +1,11 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MealService } from '../../utils/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { NavController, AnimationController } from '@ionic/angular';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 
 @Component({
@@ -27,7 +28,9 @@ import { NavController, AnimationController } from '@ionic/angular';
 
 })
 export class MenuPage implements OnInit {
-  categories = ['Antipasti', 'Primi', 'Secondi', 'Contorni', 'Dolci', 'Nigiri'];
+  @Input() orderType!: string;
+
+  categories = ['Antipasti', 'Primi', 'Secondi', 'Contorni', 'Dolci', 'Nigiri', 'Uramaki'];
   selectedCategory$ = new BehaviorSubject<string>('Antipasti');
 
   showSearch = false;
@@ -38,8 +41,8 @@ export class MenuPage implements OnInit {
   filteredMeals$: Observable<Meal[]>;
 
   constructor(private mealService: MealService, private navCtrl: NavController) {
+
     this.meals$ = this.mealService.getAllMeals();
-    console.log("this.meals$",this.meals$)
 
     this.filteredMeals$ = combineLatest([
       this.meals$,
@@ -58,6 +61,7 @@ export class MenuPage implements OnInit {
       error => console.error('Error fetching meals:', error)
     );
   }
+
 
   private filterMeals(meals: Meal[], category: string, searchTerm: string): Meal[] {
     if (searchTerm) {
