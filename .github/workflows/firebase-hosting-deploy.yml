@@ -1,6 +1,15 @@
-name: Deploy to Firebase Hosting on PR
-
+name: Deploy to Firebase Hosting on push/pull/manual
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        description: 'The environment to deploy to (e.g., dev, test, prod)'
+  push:
+    branches:
+      - master
+    paths:
+      - 'frontend/**'
   pull_request:
     branches:
       - master
@@ -11,6 +20,7 @@ permissions:
   checks: write
   contents: read
   pull-requests: write
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -18,12 +28,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
+        working-directory: shared
+        run: npm install
+
+      - name: Install dependencies
         working-directory: frontend
         run: npm install
 
       - name: Build the Ionic project
         working-directory: frontend
-        run: npx ionic build --prod --release
+        run: npx ng build --configuration=${{ github.event.inputs.environment }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3 

@@ -1,10 +1,11 @@
 const nodeExternals = require('webpack-node-externals');
 const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const path = require('path');
 
 module.exports = function (options, webpack) {
   return {
     ...options,
-    devtool: 'source-map', // Important to map dist/main.js to project file for logging error exact location
+    devtool: 'source-map',
     entry: ['webpack/hot/poll?100', options.entry],
     externals: [
       nodeExternals({
@@ -19,5 +20,12 @@ module.exports = function (options, webpack) {
       }),
       new RunScriptWebpackPlugin({ name: options.output.filename, autoRestart: false }),
     ],
+    resolve: {
+      ...options.resolve,
+      alias: {
+        ...options.resolve.alias,
+        '@shared': path.resolve(__dirname, '../../shared'),
+      },
+    },
   };
 };
