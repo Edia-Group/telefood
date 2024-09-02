@@ -12,8 +12,29 @@
 # https://www.bretfisher.com/node-docker-good-defaults/
 # http://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
-FROM node:16-alpine as builder
+FROM node:20-alpine
 
-ENV NODE_ENV build
+WORKDIR /app
 
-USER node
+# Copy package.json and package-lock.json from backend directory
+COPY backend/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the backend source code and shared folder
+COPY backend ./backend
+COPY shared ./shared
+
+# Build the application
+WORKDIR /app/backend
+RUN npm run build
+
+# Install production dependencies
+RUN npm ci --only=production
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "dist/apps/telefood-backend/main"]
