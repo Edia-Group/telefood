@@ -20,9 +20,12 @@ WORKDIR /app
 COPY backend ./backend
 COPY shared ./shared
 
-# Build the application
+# Install dependencies of shared entities
+WORKDIR /app/shared
+RUN npm install
+
+# Install dependencies of backend app
 WORKDIR /app/backend
-# Install dependencies
 RUN npm install
 
 # Build the production app
