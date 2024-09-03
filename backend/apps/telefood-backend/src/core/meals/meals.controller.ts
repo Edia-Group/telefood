@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MealsService } from './meals.service';
 import { CreateMealDto } from './dto/create-meal.dto';
 import { UpdateMealDto } from './dto/update-meal.dto';
@@ -6,6 +6,16 @@ import { UpdateMealDto } from './dto/update-meal.dto';
 @Controller('meals')
 export class MealsController {
   constructor(private readonly mealsService: MealsService) {}
+
+  @Get('categories')
+  findCategories(@Query('tenantId') idTenant: string) {
+    return this.mealsService.findCategoriesByTenant(+idTenant);
+  }
+
+  @Get('nomi')
+  findNames() {
+    return this.mealsService.findNames();
+  }
 
   @Post()
   create(@Body() createMealDto: CreateMealDto) {
@@ -22,11 +32,6 @@ export class MealsController {
     return this.mealsService.findOne(+id);
   }
 
-  @Get('nomi')
-  findNames() {
-    return this.mealsService.findNames();
-  }
-  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMealDto: UpdateMealDto) {
     //return this.mealsService.update(+id, updateMealDto);

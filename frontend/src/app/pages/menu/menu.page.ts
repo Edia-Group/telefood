@@ -6,6 +6,7 @@ import { Meal } from '@shared/entity/meal.entity';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { NavController, AnimationController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Category } from '@shared/entity/category.entity';
 
 
 @Component({
@@ -30,18 +31,18 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 export class MenuPage implements OnInit {
   @Input() orderType!: string;
 
-  categories = ['Antipasti', 'Primi', 'Secondi', 'Contorni', 'Dolci', 'Nigiri', 'Uramaki'];
-  selectedCategory$ = new BehaviorSubject<string>('Antipasti');
-
   showSearch = false;
   searchTerm$ = new BehaviorSubject<string>('');
   searchState = 'collapsed';
 
   meals$: Observable<Meal[]>;
   filteredMeals$: Observable<Meal[]>;
+  categories$: Observable<string[]>;
+  selectedCategory$ = new BehaviorSubject<string>('Antipasti');
 
   constructor(private mealService: MealService, private navCtrl: NavController) {
 
+    this.categories$ = this.mealService.getAllCategoriesByTenant(5);
     this.meals$ = this.mealService.getAllMeals();
 
     this.filteredMeals$ = combineLatest([
@@ -56,6 +57,11 @@ export class MenuPage implements OnInit {
   }
 
   ngOnInit() {
+    this.mealService.fetchAllCategoriesByTenant(5).subscribe(
+      () => {},
+      error => console.error('Error fetching categories:', error)
+    );
+
     this.mealService.fetchAllMeals().subscribe(
       () => {},
       error => console.error('Error fetching meals:', error)

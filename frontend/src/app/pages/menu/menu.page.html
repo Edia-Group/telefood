@@ -17,12 +17,17 @@
 
   <div *ngIf="!(searchTerm$ | async)" class="category-scroll mb-4 overflow-x-auto">
     <div class="flex space-x-2">
-      <button *ngFor="let category of categories"
-              (click)="selectCategory(category)"
-              [class.selected-category]="category === (selectedCategory$ | async)"
-              class="bg-gray-200 px-3 py-1 rounded-full text-sm whitespace-nowrap">
-        {{ category }}
-      </button>
+      <ng-container *ngIf="categories$ | async as categories; else loadingCategories">
+        <button *ngFor="let category of categories"
+                (click)="selectCategory(category)"
+                [class.selected-category]="category === (selectedCategory$ | async)"
+                class="bg-gray-200 px-3 py-1 rounded-full text-sm whitespace-nowrap">
+          {{ category }}
+        </button>
+      </ng-container>
+      <ng-template #loadingCategories>
+        <div class="text-gray-500">Loading categories...</div>
+      </ng-template>
     </div>
   </div>
 

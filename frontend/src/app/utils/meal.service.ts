@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Meal } from '@shared/entity/meal.entity';
+import { Category } from '@shared/entity/category.entity'
 import { environment } from '@frontend/environments/environment';
 
 @Injectable({
@@ -13,6 +14,10 @@ export class MealService {
   meals$ = this.mealsSubject.asObservable();
   private mealsLoaded = false;
 
+  private categoriesSubject = new BehaviorSubject<string[]>([]);
+  categories$ = this.categoriesSubject.asObservable();
+  private categoriesLoaded = false;
+
   constructor(private http: HttpClient) { }
 
   fetchAllMeals(): Observable<Meal[]> {
@@ -22,6 +27,19 @@ export class MealService {
         this.mealsLoaded = true;
       })
     );
+  }
+
+  fetchAllCategoriesByTenant(tenantId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/meals/categories?tenantId=${tenantId}`).pipe(
+      tap(category => {
+        this.categoriesSubject.next(category);
+        this.categoriesLoaded = true;
+      })
+    );
+  }
+  
+  getAllCategoriesByTenant(tenantId: number): Observable<string[]> {
+    return this.categories$;
   }
 
   getAllMeals(): Observable<Meal[]> {
