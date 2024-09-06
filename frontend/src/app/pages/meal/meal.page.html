@@ -1,39 +1,45 @@
 <ion-content class="bg-gray-400 text-white">
-  <div class="flex flex-col h-full" *ngIf="meal; else loading">
-    <!-- Image Container -->
-    <div class="bg-gray-400 h-60 flex-shrink-0 overflow-hidden">
-      <img [src]="meal.image_url || 'assets/default-meal-image.jpg'" [alt]="meal.name" class="w-full h-full object-cover">
-    </div>
-    
-    <!-- Scrollable Content Area -->
-    <div class="flex-grow overflow-y-auto">
-      <!-- Dish Details -->
-      <div class="p-4">
-        <div class="flex justify-between items-center mb-2">
-          <h2 class="text-xl font-bold">{{meal.name}}</h2>
-          <span class="text-xl font-bold">{{meal.price}} €</span>
-        </div>
-        <p class="text-gray-400 mb-8">{{meal.description}}</p>
-        
-        <!-- Quantity Selector -->
-        <div class="mb-8">
-          <p class="mb-2">Seleziona Quantità</p>
-          <div class="flex items-center">
-            <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl"> <ion-ripple-effect></ion-ripple-effect> - </button>
-            <span class="mx-4 text-xl">{{quantity}}</span>
-            <button (click)="incrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl"> <ion-ripple-effect></ion-ripple-effect> +</button>
+  <ng-container *ngIf="meal$ | async as meal; else loading">
+    <div class="flex flex-col h-full">
+      <!-- Image Container -->
+      <div class="bg-gray-400 h-60 flex-shrink-0 overflow-hidden">
+        <img [src]="meal.image_url || 'assets/default-meal-image.jpg'" [alt]="meal.name" class="w-full h-full object-cover">
+      </div>
+      
+      <!-- Scrollable Content Area -->
+      <div class="flex-grow overflow-y-auto">
+        <!-- Dish Details -->
+        <div class="p-4">
+          <div class="flex justify-between items-center mb-2">
+            <h2 class="text-xl font-bold">{{meal.name}}</h2>
+            <span class="text-xl font-bold">{{meal.price}} €</span>
+          </div>
+          <p class="text-gray-400 mb-8">{{meal.description}}</p>
+          
+          <!-- Quantity Selector -->
+          <div class="mb-8">
+            <p class="mb-2">Seleziona Quantità</p>
+            <div class="flex items-center">
+              <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">
+                <ion-ripple-effect></ion-ripple-effect> -
+              </button>
+              <span class="mx-4 text-xl">{{quantity}}</span>
+              <button (click)="incrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">
+                <ion-ripple-effect></ion-ripple-effect> +
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      
+      <!-- Add to Cart Button -->
+      <div class="p-4 flex-shrink-0">
+        <button (click)="addToCart()" class="w-full bg-white text-black py-3 rounded-full text-lg font-semibold shadow-[0_6px_0_0_#f9e8a5]">
+          Aggiungi al carrello
+        </button>
+      </div>
     </div>
-    
-    <!-- Add to Cart Button -->
-    <div class="p-4 flex-shrink-0">
-      <button (click)="addToCart()" class="w-full bg-white text-black py-3 rounded-full text-lg font-semibold shadow-[0_6px_0_0_#f9e8a5]">
-        Aggiungi al carrello
-      </button>
-    </div>
-  </div>
+  </ng-container>
 
   <ng-template #loading>
     <div class="flex items-center justify-center h-full">

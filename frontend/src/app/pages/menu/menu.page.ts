@@ -1,13 +1,10 @@
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MealService } from '../../utils/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { NavController, AnimationController } from '@ionic/angular';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Category } from '@shared/entity/category.entity';
-
+import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { NavController } from '@ionic/angular';
+import { switchMap, catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
@@ -26,7 +23,6 @@ import { Category } from '@shared/entity/category.entity';
       transition('collapsed <=> expanded', animate('300ms ease-in-out'))
     ])
   ]
-
 })
 export class MenuPage implements OnInit {
   @Input() orderType!: string;
@@ -41,9 +37,9 @@ export class MenuPage implements OnInit {
   selectedCategory$ = new BehaviorSubject<string>('Antipasti');
 
   constructor(private mealService: MealService, private navCtrl: NavController) {
-
-    this.categories$ = this.mealService.getAllCategoriesByTenant(5);
     this.meals$ = this.mealService.getAllMeals();
+    this.categories$ = this.mealService.getAllCategories();
+    this.searchTerm$.pipe(tap(term => console.log(term)))
 
     this.filteredMeals$ = combineLatest([
       this.meals$,
@@ -57,17 +53,14 @@ export class MenuPage implements OnInit {
   }
 
   ngOnInit() {
-    this.mealService.fetchAllCategoriesByTenant(5).subscribe(
-      () => {},
-      error => console.error('Error fetching categories:', error)
-    );
-
-    this.mealService.fetchAllMeals().subscribe(
-      () => {},
-      error => console.error('Error fetching meals:', error)
-    );
+    this.mealService.fetchAllCategoriesByTenant(5).pipe(
+      switchMap(() => this.mealService.fetchAllMeals()),
+      catchError(error => {
+        console.error('Error fetching categories:', error);
+        return of([]);  // Return an empty array in case of error
+      })
+    ).subscribe();
   }
-
 
   private filterMeals(meals: Meal[], category: string, searchTerm: string): Meal[] {
     if (searchTerm) {
@@ -76,7 +69,7 @@ export class MenuPage implements OnInit {
         (item.description?.toLowerCase() ?? '').includes(searchTerm.toLowerCase())
       );
     } else {
-      return meals.filter(item => item.MealCategories.name === category);
+      return meals.filter(item => item.MealCategories?.name === category);
     }
   }
 
@@ -103,6 +96,4 @@ export class MenuPage implements OnInit {
       animationDirection: 'forward'
     });
   }
-
 }
-

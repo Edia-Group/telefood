@@ -1,0 +1,38 @@
+<ion-content>
+    <div class=" p-4">
+        <h1 class="text-2xl font-bold mb-4">Promozioni</h1>
+        
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-2">Programma Fedeltà</h2>
+            <p class="text-sm mb-2">Ogni 10 ordini 1 paninazzo gratis</p>
+            <div class="p-2 rounded-lg">
+                <div class="flex justify-between">
+                    <div class="flex space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-white"></div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-white"></div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-white"></div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-white"></div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-white"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="text-lg font-semibold mb-2">Promozioni</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <app-discount-card *ngFor="let discount of discounts" 
+                [discount]="discount"
+            ></app-discount-card>
+        </div>
+    </div>
+</ion-content>

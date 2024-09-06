@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { DiscountsService } from '@frontend/app/utils/discounts.service';
 import { OrderService } from '@frontend/app/utils/order.service';
 import { TenantsService } from '@frontend/app/utils/tenants.service';

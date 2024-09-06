@@ -7,7 +7,7 @@ export class Discount {
   price!: number;
 
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  created_at!: Date;
+  created_at?: Date;
 
   @Type(() => Meal)
   Meals?: Meal;

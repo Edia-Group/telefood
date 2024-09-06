@@ -10,6 +10,7 @@ import { CartPage } from './cart/cart.page';
 import { ProfilePage } from './profile/profile.page';
 import { OrderPage } from './order/order.page';
 import { MenuPage } from './menu/menu.page';
+import { PromotionsPage } from './promotion/promotions.page';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from '../components/components.module';
@@ -22,7 +23,8 @@ import { ComponentsModule } from '../components/components.module';
     CartPage,
     ProfilePage,
     OrderPage,
-    MenuPage
+    MenuPage,
+    PromotionsPage
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { ComponentsModule } from '../components/components.module';
     CartPage,
     ProfilePage,
     OrderPage,
-    MenuPage
+    MenuPage,
+    PromotionsPage
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

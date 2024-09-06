@@ -1,9 +1,10 @@
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MealService } from '../../utils/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { ToastService } from '@frontend/app/utils/toast.service';
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-meal',
@@ -11,43 +12,31 @@ import { ToastService } from '@frontend/app/utils/toast.service';
   styleUrls: ['./meal.page.scss'],
 })
 export class MealPage implements OnInit {
-
-  mealId!: number;
-  meal?: Meal
+  meal$: Observable<Meal | undefined> | undefined;
   quantity = 1;
 
-  constructor(private route: ActivatedRoute, private mealService: MealService, private toastService: ToastService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private mealService: MealService, 
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
-    if (this.mealService.areMealsLoaded()) {
-      this.route.params.subscribe(params => {
-        this.mealId = +params['id']; 
-        this.loadMealDetails();
-      });
-    } else {
-      this.mealService.fetchAllMeals().subscribe(
-        () => {
-          this.route.params.subscribe(params => {
-            this.mealId = +params['id']; 
-            this.loadMealDetails();
-          });
-        },
-        error => console.error('Error fetching meals:', error)
-      );
-    }
-  }
-  
+    this.meal$ = this.route.params.pipe(
+      switchMap(params => {
+        const mealId = +params['id'];
+        return this.mealService.getAllMeals().pipe(
+          map(meals => meals.find(meal => meal.id === mealId))
+        );
+      })
+    );
 
-  loadMealDetails() {
-    this.mealService.getMealById(this.mealId).subscribe(meal => {
-      if (meal) {
-        this.meal = meal;
-      } else {
-        console.error('Meal not found');
-      }
-    });
+    // Fetch meals if they haven't been loaded yet
+    this.mealService.fetchAllMeals().subscribe(
+      () => {},
+      error => console.error('Error fetching meals:', error)
+    );
   }
-
 
   incrementQuantity() {
     this.quantity++;
@@ -60,7 +49,6 @@ export class MealPage implements OnInit {
   }
 
   addToCart() {
-    
-    this.toastService.showToast('Toast pollo cane acqua', 'info');
+    this.toastService.showToast('Toast pollo pane acqua', 'info');
   }
 }

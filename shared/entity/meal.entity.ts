@@ -6,7 +6,7 @@ export class Meal {
   description!: string;
   id_tenant!: number;
   image_url!: string;
-  MealCategories!: {
+  MealCategories?: {
     id: number;
     name: string;
   };

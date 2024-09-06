@@ -7,6 +7,7 @@ import { CartPage } from './pages/cart/cart.page';
 import { ProfilePage } from './pages/profile/profile.page';
 import { OrderPage } from './pages/order/order.page';
 import { MenuPage } from './pages/menu/menu.page';
+import { PromotionsPage } from './pages/promotion/promotions.page';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
     component: CartPage
   },
   {
-    path: 'profilo',
+    path: 'profile',
     component: ProfilePage
   },
   {
@@ -42,11 +43,10 @@ const routes: Routes = [
     path: 'menu/:orderType',
     component: MenuPage
   },
-  /**
   {
-    path: 'profilo',
-    component: ReservationComponent
-  },  */
+    path: 'promotions',
+    component: PromotionsPage
+  },
 ];
 
 @NgModule({
