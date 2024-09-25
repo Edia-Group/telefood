@@ -4,7 +4,7 @@ export class CreateTgUserDto {
   
     role: string;
   
-    tenantId: number;
+    tenant_id: number;
 
     platform: string;
 

@@ -72,6 +72,11 @@ If you are using windows, you must use WSL.
     npm install
     ionic serve
     ```
+    if you want to start the frontend alongside localtunnel to expose its port, you can run:
+    ```bash
+    npm run start:tunnel
+    ```
+
 
 ## Make example requests to the backend
 Test if the backend works correctly using postman or the vscode extension **Thunder Client**. 

@@ -12,7 +12,7 @@ import { User } from '@shared/entity/user.entity';
 import { CreateTgUserDto } from '../core/users/dto/create-user.dto';
 
 /**
- * This middleware is useful for identify from which tenant the request is coming from.
+ * This middleware is useful for identifying from which tenant the request is coming from.
  * It is registered globally at the root on src/app.module.ts and it captures  ALL the requests incoming.
  * https://docs.nestjs.com/middleware
  *
@@ -36,11 +36,11 @@ export class TenantMiddlewareService implements NestMiddleware {
     this.logger.log('##### Tenant middleware triggered ######');
 
     // In development we ignore authentication checks
-    if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'test') {
+    if (process.env.ENVIRONMENT === 'adev' || process.env.ENVIRONMENT === 'test') {
       return next();
     }
 
-    // We expect passing init data in the Authorization header in the following format:
+    // We expect the frontend passing init data in the Authorization header in the following format:
     // <auth-type> <auth-data>
     // <auth-type> must be "tma", and <auth-data> is Telegram Mini Apps init data.
     // <auth-type> must be "mba", and <auth-data> is mobile app token
@@ -80,8 +80,10 @@ export class TenantMiddlewareService implements NestMiddleware {
 
 
   async handleTelegramAuth(req: Request, res: Response, next: NextFunction, authData: string) {
+    console.log("Request coming from telegram user captured...");
+
     try {
-      const tenantId = +req.headers['x-tenant-id']; // + operator parses string -> number
+      const tenantId = +req.headers['x_tenant_id']; // + operator parses string -> number
       if (!tenantId) {
         throw new Error('Tenant ID not provided');
       }
@@ -107,7 +109,7 @@ export class TenantMiddlewareService implements NestMiddleware {
         const userToCreate: CreateTgUserDto = {
           username: 'randomCarlUsername',
           role: 'CUSTOMER',
-          tenantId: tenantId,
+          tenant_id: tenantId,
           platform: 'telegram',
           telegram_user_id: telegram_user_id,
         };

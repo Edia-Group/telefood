@@ -1,8 +1,8 @@
 import { Global, Injectable } from '@nestjs/common';
-import { CreateTgUserDto } from '../telegram/dto/create-tg-user.dto';
 import { User } from '@shared/entity/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { SupabaseService } from '../../utils/supabase.service';
+import { CreateTgUserDto } from './dto/create-user.dto';
 
 @Global()
 @Injectable()
@@ -12,18 +12,18 @@ export class UsersService {
 
   async create(userToCreate: CreateTgUserDto): Promise<CreateTgUserDto | null> {
     try {
-      const { data, error } = await this.SupabaseService.getClient().from('Users').insert(userToCreate);
+        const { data, error } = await this.SupabaseService.getClient().from('Users').insert(userToCreate).select().single();
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+            throw error;
+        }
+        console.log("User created.", data)
 
-      return userToCreate;
+        return data;
     } catch (error) {
-      console.error('Error creating user:', error);
-      return null;
+        console.error('Error creating user:', error);
+        return null;
     }
-
   }
 
   findAll() {
@@ -44,13 +44,21 @@ export class UsersService {
 
   // This function checks if there is an association in table public.users and if present returns the object
   async checkUserExistence(telegramUserId: number, tenantId: number): Promise<User> {
-    const spUser = await this.SupabaseService.getClient().from('Users')
+    const { data, error } = await this.SupabaseService.getClient().from('Users')
       .select('*')
       .eq('telegram_user_id', telegramUserId)
       .eq('tenant_id', tenantId)
       .single();
   
-    return plainToInstance(User, spUser?.[0] ?? null);
+      let userObj: User;
+
+      if (error) {
+        throw error;
+      } else if(data) {
+        userObj = plainToInstance(User, data);
+      }
+
+    return userObj;
   }
   
 }

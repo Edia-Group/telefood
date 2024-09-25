@@ -44,20 +44,16 @@ export class AppComponent implements OnInit {
 
     if (this.currentPlatform == 'telegram') {
       console.log('Retrieving InitData...');
-      const { initDataRaw } = retrieveLaunchParams();
-      console.log('initDataRaw: ', initDataRaw);
+      const { initDataRaw, initData } = retrieveLaunchParams();
+      const tenant_id = initData?.startParam
+
+      //console.log('initData: ', initData);
+      //console.log("currentPlatform: ", this.currentPlatform);
+      //console.log("window.Telegram.WebApp: ", window.Telegram.WebApp);
     
-      console.log("currentPlatform: ", this.currentPlatform);
-      console.log("window.Telegram.WebApp: ", window.Telegram.WebApp);
-    
-      const headers = new HttpHeaders({
-        Authorization: `tma ${initDataRaw}`
-      });
-    
-      this.http.post(environment.apiUrl, null, { 
-        headers: headers,
-        responseType: 'text' 
-      }).subscribe();
+      this.globalState.setInitDataRaw(initDataRaw == undefined ? 'null' : initDataRaw);
+      this.globalState.setTenantId(tenant_id == undefined ? 'null' : tenant_id);
+      console.log("a",this.globalState.getTenantId())
     }
 
   }

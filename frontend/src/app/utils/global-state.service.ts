@@ -1,16 +1,35 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalStateService {
-  private currentPlatformSubject = new BehaviorSubject<string>('unknown');
-  currentPlatform$: Observable<string> = this.currentPlatformSubject.asObservable();
+  private currentPlatform!: string;
+  private initDataRaw!: string;
+  private tenantId!: string;
 
   setCurrentPlatform(platform: string) {
-    this.currentPlatformSubject.next(platform);
+    this.currentPlatform = platform;
   }
 
-  
+  getCurrentPlatform(): string {
+    return this.currentPlatform;
+  }
+
+  setInitDataRaw(data: string) {
+    this.initDataRaw = data;
+  }
+
+  getInitDataRaw(): string {
+    return this.initDataRaw;
+  }
+
+  setTenantId(id: string) {
+    this.tenantId = id;
+  }
+
+  getTenantId(): string {
+    return this.tenantId;
+  }
 }
+

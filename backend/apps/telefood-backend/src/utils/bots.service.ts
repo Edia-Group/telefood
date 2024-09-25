@@ -8,6 +8,14 @@ export interface BotInstance {
   bot: Telegraf;
   isRunning: boolean;
 }
+
+interface MenuButton {
+  type: 'web_app';
+  text: string;
+  web_app: { url: string };
+}
+
+
 @Injectable()
 @Global()
 export class BotsService implements OnModuleDestroy {
@@ -101,11 +109,33 @@ export class BotsService implements OnModuleDestroy {
     throw new Error(`Bot instance not found for tenant n. ${tenantId}`);
   }
 
-  initBot(bot: Telegraf, tenant: Tenant) {
+
+  // BOT BEHAVIOURS HERE
+  async initBot(bot: Telegraf, tenant: Tenant) {
     bot.start((ctx) => ctx.reply('Welcome, CARL'));
     bot.help((ctx) => ctx.reply('Mandame uno sticchio'));
     bot.on('sticker', (ctx) => ctx.reply('👍'));
     bot.hears('ciao', (ctx) => ctx.reply('Bella a chicco'));
+    
+    // Get the current menu button text
+    const currentMenuButton = await bot.telegram.getChatMenuButton() as MenuButton;
+    const currentMenuButtonText = currentMenuButton.text
+
+    // Encode the tenantId in the Web App URL. Essential for including the X_tenant_id header in all requests from frontend.
+    // This URL is special because it serves only to open the bot and launch the miniapp But the main URL is still the one you set up inside BotFather settings, for example https://telefood.com
+    // https://docs.telegram-mini-apps.com/platform/start-parameter#start-parameter
+    const webAppUrl = `${tenant.mini_app_url}?startapp=${tenant.id}`;
+
+    bot.telegram.setChatMenuButton({
+      menuButton: {
+        type: 'web_app',
+        text: currentMenuButtonText,
+        web_app: { url: webAppUrl }
+      }
+    }).catch(err => {
+      this.logger.error(`Failed to set menu button for ${tenant.bot_username}: ${err.message}`);
+    }); 
+  
 
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
     const webhookUrl = `${process.env.WEBHOOK_URL}/telegram/${tenant.id}/bot`;
@@ -120,6 +150,8 @@ export class BotsService implements OnModuleDestroy {
       this.logger.error(`Failed to set webhook for ${tenant.bot_username}: ${err.message}`);
     });
   }
+
+
 
   onModuleDestroy() {
     this.botInstances.forEach(({ bot, isRunning }, tenantId) => {

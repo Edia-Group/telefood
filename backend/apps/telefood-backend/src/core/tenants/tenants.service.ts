@@ -42,7 +42,6 @@ export class TenantsService implements ITenantService {
 
   async findOne(id: number): Promise<Tenant> {
     let { data: tenant, error } = await this.supabaseService.getClient().from('Tenants').select("*").eq('id', id);
-    console.log("tenant supabase",tenant)
 
     if(tenant) {
       let tenantz = plainToInstance(Tenant, tenant)[0]
