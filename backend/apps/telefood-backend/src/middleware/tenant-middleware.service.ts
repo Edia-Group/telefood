@@ -37,7 +37,7 @@ export class TenantMiddlewareService implements NestMiddleware {
     this.logger.log('##### Tenant middleware triggered ######');
 
     // In development we ignore authentication checks
-    if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'test') {
+    if (process.env.ENVIRONMENT === 'dev') {
       return next();
     }
 
