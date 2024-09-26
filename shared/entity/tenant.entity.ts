@@ -9,4 +9,7 @@ export class Tenant {
   dev_owner!: string;
   mini_app_url!: string;
   logo_url!: string;
+  bot_token_owner!: string;
+  bot_username_owner!: string;
+  mini_app_url_owner!: string;
 }

@@ -6,9 +6,16 @@ import { BotsService } from '../../utils/bots.service';
 export class TelegramController {
   constructor(private readonly botsService: BotsService) {}
 
-  @Post(':tenantId/bot')
-  async handleUpdate(@Param('tenantId') tenantId: number, @Req() req: Request, @Res() res: Response) {
-    const bot = await this.botsService.getBotInstance(+tenantId);
+  @Post(':tenantId/bot/owner')
+  async handleUpdateOwner(@Param('tenantId') tenantId: number, @Req() req: Request, @Res() res: Response) {
+    const bot = await this.botsService.getBotInstance(+tenantId, true);
     bot.handleUpdate(req.body, res);
   }
+  @Post(':tenantId/bot')
+  async handleUpdate(@Param('tenantId') tenantId: number, @Req() req: Request, @Res() res: Response) {
+    const bot = await this.botsService.getBotInstance(+tenantId, false);
+    bot.handleUpdate(req.body, res);
+  }
+
+
 }

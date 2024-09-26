@@ -93,7 +93,7 @@ export class TenantMiddlewareService implements NestMiddleware {
         throw new Error('Tenant ID not provided');
       }
 
-      const bot = await this.botsService.getBotInstance(tenantId);
+      const bot = await this.botsService.getBotInstance(tenantId, false);
       const token = bot.telegram.token;
 
       // In case of tma, authData should be equal to tg initData: https://core.telegram.org/bots/webapps#initializing-mini-apps. Validate it:
