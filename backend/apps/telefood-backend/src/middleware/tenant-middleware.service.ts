@@ -10,6 +10,7 @@ import { BotsService } from '../utils/bots.service';
 import { UsersService } from '../core/users/users.service';
 import { User } from '@shared/entity/user.entity';
 import { CreateTgUserDto } from '../core/users/dto/create-user.dto';
+import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
 
 /**
  * This middleware is useful for identifying from which tenant the request is coming from.
@@ -36,7 +37,7 @@ export class TenantMiddlewareService implements NestMiddleware {
     this.logger.log('##### Tenant middleware triggered ######');
 
     // In development we ignore authentication checks
-    if (process.env.ENVIRONMENT === 'adev' || process.env.ENVIRONMENT === 'test') {
+    if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'test') {
       return next();
     }
 
@@ -49,10 +50,14 @@ export class TenantMiddlewareService implements NestMiddleware {
     switch (authType) {
       case 'tma':
         await this.handleTelegramAuth(req, res, next, authData);
+        return;
 
-      // TODO handle case of request coming from mobile app. This case requires that the user is already logged in before doing anything in the app
-      case 'mba':
+      case 'mba': // TODO handle case of request coming from mobile app. This case requires that the user is already logged in before doing anything in the app
         await this.handleMobileAuth(req, res, next, authData);
+        return;
+
+      default:
+        throw new Error('You do not have permission to request this');
     }
 
     throw new Error('You do not have permission to request this');
@@ -80,7 +85,7 @@ export class TenantMiddlewareService implements NestMiddleware {
 
 
   async handleTelegramAuth(req: Request, res: Response, next: NextFunction, authData: string) {
-    console.log("Request coming from telegram user captured...");
+    this.logger.log("Request coming from telegram user captured...");
 
     try {
       const tenantId = +req.headers['x_tenant_id']; // + operator parses string -> number
@@ -104,25 +109,24 @@ export class TenantMiddlewareService implements NestMiddleware {
       );
 
       // TODO If the user is not already associated with this tenant, we register it into the db.
-      // Else we provide the user data in the request object for the next functions.
+      // Then we provide the user data in the request object for the next functions.
       if (user == null) {
         const userToCreate: CreateTgUserDto = {
-          username: 'randomCarlUsername',
+          username: this.generateRandomUsername(),
           role: 'CUSTOMER',
           tenant_id: tenantId,
           platform: 'telegram',
           telegram_user_id: telegram_user_id,
         };
         await this.usersService.create(userToCreate);
-      } else {
-        req['userId'] = user.id;
       }
+      // Save tenantId and userId in the request object to make it available for the next functions
+      req['tenantId'] = tenantId;
+      req['userId'] = user.id;
 
       // Parse the auth data into type init data before setting it in the response.
       this.setInitData(res, parse(authData));
 
-      // Save tenantId in the request object to make it available for the next functions
-      req['tenantId'] = tenantId;
 
       return next();
     } catch (e) {
@@ -132,6 +136,17 @@ export class TenantMiddlewareService implements NestMiddleware {
 
   async handleMobileAuth(req: Request, res: Response, next: NextFunction, authData: string) {
     return next(new Error('Unauthorized'));
+  }
+
+  generateRandomUsername(): string {
+    const customConfig: Config = {
+      dictionaries: [adjectives, colors, animals],
+      separator: '',
+      length: 2,
+      style: 'capital'
+    };
+  
+    return uniqueNamesGenerator(customConfig);
   }
 
 }

@@ -18,18 +18,20 @@ export class LoggingMiddlewareService implements NestMiddleware {
       const timestamp = new Date().toLocaleString();
       const method = req.method;
       const url = req.url;
+      let messageStart = `[${method}] [START] ${url} - ${timestamp}`;
+      this.logger.log(messageStart);
   
       res.on('finish', () => {
         const status = res.statusCode;
-        let message = `[${method}] [${status}] ${url} - ${timestamp}`;
+        let messageEnd = `[${method}] [${status}] ${url} - ${timestamp}`;
 
         if (status >= HttpStatus.BAD_REQUEST) {
-          message = chalk.red(message);
+          messageEnd = chalk.red(messageEnd);
         } else if (status === HttpStatus.NOT_FOUND) {
-          message = chalk.yellow(message);
+          messageEnd = chalk.yellow(messageEnd);
         }
   
-        this.logger.log(message);
+        this.logger.log(messageEnd);
       });
   
       next();

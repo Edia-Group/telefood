@@ -40,14 +40,21 @@ async findNames(): Promise<Meal []> {
 }
 
 async findOne(id: number): Promise<Meal> {
-  let { data: meals, error } = await this.supabaseService.getClient().from('Meals').select("*, MealCategories(*)").eq('id', id).single();
+  const { data: meal, error } = await this.supabaseService.getClient()
+    .from('Meals')
+    .select("*, MealCategories(*)")
+    .eq('id', id)
+    .single();
 
-  if(meals) {
-    let mealz = plainToInstance(Meal, meals)[0]
-    return mealz;
-  } else {
+  if (error) {
     throw new Error(error.message);
   }
+
+  if (!meal) {
+    throw new Error('Meal not found');
+  }
+
+  return plainToInstance(Meal, meal);
 }
 
 async findCategoriesByTenant(idTenant: number): Promise<string []> {

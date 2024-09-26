@@ -37,6 +37,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: 'meals', method: RequestMethod.GET },
         'glovo/(.*)',
+        'telegram/(.*)'
       )
       .forRoutes({ path: '*', method: RequestMethod.ALL })
   }
