@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '@frontend/environments/environment';
 import { Tenant } from '@shared/entity/tenant.entity'
+import { GlobalStateService } from './global-state.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,10 +13,10 @@ import { Tenant } from '@shared/entity/tenant.entity'
     private tenantSubject = new BehaviorSubject<Tenant>({} as Tenant);
     tenant$ = this.tenantSubject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private globalStateService: GlobalStateService) {}
 
     fetchTenantInfo(): Observable<Tenant> {
-      return this.http.get<Tenant>(`${this.apiUrl}/tenants/5`).pipe(
+      return this.http.get<Tenant>(`${this.apiUrl}/tenants/${this.globalStateService.getTenantId()}`).pipe(
         tap(tenant => this.tenantSubject.next(tenant))
       );
     }

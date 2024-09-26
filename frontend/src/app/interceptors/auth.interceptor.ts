@@ -10,7 +10,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const initDataRaw = this.globalState.getInitDataRaw();
     const tenantId = this.globalState.getTenantId();
-    console.log("carl",tenantId)
     
     if (initDataRaw && tenantId) {
       request = request.clone({

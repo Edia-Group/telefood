@@ -15,18 +15,39 @@ export class DiscountsService {
     return 'This action adds a new discount';
   }
 
-  async findAll(): Promise<Discount []> {
-    let { data: discounts, error } = await this.supabaseService.getClient().from('Discounts').select("*, Meals(*)");
+  async findAll(): Promise<Discount[]> {
+    let { data: discounts, error } = await this.supabaseService.getClient()
+      .from('Discounts')
+      .select(` *, Meals!inner (*)`);
   
-    if(discounts) {
-      let mealz = plainToInstance(Discount, discounts)
-      return mealz;
-    } 
-    else {
-      throw new Error(error.message)
+    if (error) {
+      throw new Error(error.message);
     }
+  
+    if (!discounts) {
+      return [];
+    }
+  
+    return plainToInstance(Discount, discounts);
   }
   
+  async findAllByTenant(tenantId: number): Promise<Discount[]> {
+    let { data: discounts, error } = await this.supabaseService.getClient()
+      .from('Discounts')
+      .select(` *, Meals!inner (*)`)
+      .eq('Meals.id_tenant', tenantId);
+  
+    if (error) {
+      throw new Error(error.message);
+    }
+  
+    if (!discounts) {
+      return [];
+    }
+  
+    return plainToInstance(Discount, discounts);
+  }
+
   async findOne(id: number): Promise<Discount> {
     let { data: discount, error } = await this.supabaseService.getClient().from('Discounts').select("*, Meals(*)").eq('id', id).single();
   

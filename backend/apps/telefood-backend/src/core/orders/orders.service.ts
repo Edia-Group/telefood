@@ -15,15 +15,41 @@ export class OrdersService {
   }
 
   async findAll() :Promise<Order []> {
-    let {data: order, error} = await this.supabaseService.getClient().from('Orders').select("*, Meals_to_Order(*, Meals(*, MealCategories(name)))");
+    let {data, error} = await this.supabaseService.getClient().from('Orders').select("*, Meals_to_Order(*, Meals(*, MealCategories(name)))");
 
-    if(order){
-      let returnOrder = plainToInstance(Order,order);
-      return returnOrder;
+    if(data){
+      let orders = plainToInstance(Order,data);
+      return orders;
     }
     else{
       throw new Error(error.message);
     }
+  }
+
+  async findAllByTenant(tenantId: number): Promise<Order[]> {
+    let { data, error } = await this.supabaseService.getClient()
+      .from('Orders')
+      .select(`
+        *,
+        Meals_to_Order (
+          *,
+          Meals (
+            *,
+            MealCategories (name)
+          )
+        )
+      `)
+      .eq('id_tenant', tenantId);
+  
+    if (error) {
+      throw new Error(error.message);
+    }
+  
+    if (!data) {
+      return [];
+    }
+  
+    return plainToInstance(Order, data);
   }
 
   async findOne(id: number): Promise<Order> {

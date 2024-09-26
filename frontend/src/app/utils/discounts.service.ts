@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '@frontend/environments/environment';
 import { Discount } from '@shared/entity/discount.entity'
+import { GlobalStateService } from './global-state.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ import { Discount } from '@shared/entity/discount.entity'
     constructor(private http: HttpClient) {}
 
     fetchAllDiscounts(): Observable<Discount[]> {
-      return this.http.get<Discount[]>(`${this.apiUrl}/discounts`).pipe(
+      return this.http.get<Discount[]>(`${this.apiUrl}/discounts/by-tenant`).pipe(
         tap(discount => this.discountsSubject.next(discount))
       );
     }

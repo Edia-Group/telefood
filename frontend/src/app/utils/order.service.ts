@@ -16,7 +16,7 @@ import { Order } from '@shared/entity/order.entity'
     constructor(private http: HttpClient) {}
 
     fetchAllOrders(): Observable<Order[]> {
-      return this.http.get<Order[]>(`${this.apiUrl}/orders`).pipe(
+      return this.http.get<Order[]>(`${this.apiUrl}/orders/by-tenant`).pipe(
         tap(orders => {
           this.ordersSubject.next(orders);
           this.ordersLoaded = true;

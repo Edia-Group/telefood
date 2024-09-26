@@ -41,10 +41,10 @@ export class TenantsService implements ITenantService {
   }
 
   async findOne(id: number): Promise<Tenant> {
-    let { data: tenant, error } = await this.supabaseService.getClient().from('Tenants').select("*").eq('id', id);
+    let { data: tenant, error } = await this.supabaseService.getClient().from('Tenants').select("*").eq('id', id).single();
 
     if(tenant) {
-      let tenantz = plainToInstance(Tenant, tenant)[0]
+      let tenantz = plainToInstance(Tenant, tenant)
       return tenantz;
     } else {
       throw new Error(error.message)

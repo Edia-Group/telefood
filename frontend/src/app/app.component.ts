@@ -54,6 +54,12 @@ export class AppComponent implements OnInit {
     
       this.globalState.setInitDataRaw(initDataRaw == undefined ? 'null' : initDataRaw);
       this.globalState.setTenantId(tenant_id == undefined ? 'null' : tenant_id);
+
+    } else if(this.currentPlatform == 'browser' && environment.currentEnvironment == 'dev') {
+      this.globalState.setInitDataRaw('TESTGAGAG');
+      this.globalState.setTenantId('8'); //Set the tenantId as you wish
+
+      
     }
 
   }
