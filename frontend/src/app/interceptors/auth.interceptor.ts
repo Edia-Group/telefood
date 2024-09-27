@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GlobalStateService } from '../utils/global-state.service';
+import { GlobalStateService } from '../services/global-state.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

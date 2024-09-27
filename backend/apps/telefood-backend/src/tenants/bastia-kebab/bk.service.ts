@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TenantsService } from '../../core/tenants/tenants.service';
-import { CreateTenantDto } from '../../core/tenants/dto/create-tenant.dto';
-import { UpdateTenantDto } from '../../core/tenants/dto/update-tenant.dto';
+import { CreateTenantDto } from '@shared/dto/create-tenant.dto';
+import { UpdateTenantDto } from '@shared/dto/update-tenant.dto';
 import { Tenant } from '@shared/entity/tenant.entity';
 
 @Injectable()

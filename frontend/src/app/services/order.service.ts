@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '@frontend/environments/environment';
 import { Order } from '@shared/entity/order.entity'
+import { CreateOrderDto } from '@shared/dto/create-order.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -42,12 +43,12 @@ import { Order } from '@shared/entity/order.entity'
       return this.ordersLoaded;
     }
     
-    createOrder(meal: Omit<Order, 'id'>): Observable<Order> {
-      return this.http.post<Order>(this.apiUrl, meal);
+    createOrderAndSendNotification(order: CreateOrderDto): Observable<CreateOrderDto> {
+      return this.http.post<CreateOrderDto>(`${this.apiUrl}/create-and-send-notification`, order);
     }
   
-    updateOrder(id: number, meal: Partial<Order>): Observable<Order> {
-      return this.http.put<Order>(`${this.apiUrl}/${id}`, meal);
+    updateOrder(id: number, order: Partial<Order>): Observable<Order> {
+      return this.http.put<Order>(`${this.apiUrl}/${id}`, order);
     }
   
     deleteOrder(id: number): Observable<void> {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMealDto } from './dto/create-meal.dto';
+import { CreateMealDto } from '@shared/dto/create-meal.dto';
 import { Meal } from '@shared/entity/meal.entity';
 import { Category } from '@shared/entity/category.entity';
 import { SupabaseService } from '../../utils/supabase.service'

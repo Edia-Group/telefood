@@ -1,5 +1,5 @@
-import { CreateTenantDto } from "../dto/create-tenant.dto";
-import { UpdateTenantDto } from "../dto/update-tenant.dto";
+import { CreateTenantDto } from "@shared/dto/create-tenant.dto";
+import { UpdateTenantDto } from "@shared/dto/update-tenant.dto";
 import { Tenant } from "@shared/entity/tenant.entity";
 
 export interface ITenantService {

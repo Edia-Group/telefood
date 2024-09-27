@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, HttpCode } from '@nestjs/common';
 import { GlovoService } from './glovo.service';
-import { CreateGlovoDto } from './dto/create-glovo.dto';
-import { UpdateGlovoDto } from './dto/update-glovo.dto';
+import { CreateGlovoDto } from '@shared/dto/create-glovo.dto';
+import { UpdateGlovoDto } from '@shared/dto/update-glovo.dto';
 import { validate } from 'class-validator';
 
 @Controller('glovo')

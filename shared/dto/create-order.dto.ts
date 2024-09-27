@@ -1,5 +1,5 @@
 import { IsString,IsNumber } from "class-validator";
-import {Meal} from '@shared/entity/meal.entity';
+import { Meal } from '../entity/meal.entity';
 
 export class CreateOrderDto {
     @IsString()

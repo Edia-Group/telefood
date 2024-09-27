@@ -1,15 +1,21 @@
 import { Controller, Get, Headers, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { CreateOrderDto } from '@shared/dto/create-order.dto';
+import { UpdateOrderDto } from '@shared/dto/update-order.dto';
+import { Order } from '@shared/entity/order.entity';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
+  create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.ordersService.create(createOrderDto);
+  }
+
+  @Post('create-and-send-notification')
+  createOrderAndSendNotification(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
+    return this.ordersService.createAndSendNotification(createOrderDto);
   }
 
   @Get()

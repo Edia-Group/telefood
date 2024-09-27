@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DiscountsService } from '@frontend/app/utils/discounts.service';
-import { OrderService } from '@frontend/app/utils/order.service';
-import { TenantsService } from '@frontend/app/utils/tenants.service';
+import { DiscountsService } from '@frontend/app/services/discounts.service';
+import { OrderService } from '@frontend/app/services/order.service';
+import { TenantsService } from '@frontend/app/services/tenants.service';
 import { Order } from '@shared/entity/order.entity';
 import { Discount } from '@shared/entity/discount.entity';
 import { Tenant } from '@shared/entity/tenant.entity';

@@ -2,7 +2,7 @@ import { Global, Injectable } from '@nestjs/common';
 import { User } from '@shared/entity/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { SupabaseService } from '../../utils/supabase.service';
-import { CreateTgUserDto } from './dto/create-user.dto';
+import { CreateTgUserDto } from '@shared/dto/create-user.dto';
 
 @Global()
 @Injectable()

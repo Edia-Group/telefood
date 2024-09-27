@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TenantsService } from '@frontend/app/utils/tenants.service';
+import { TenantsService } from '@frontend/app/services/tenants.service';
 import { Tenant } from '@shared/entity/tenant.entity';
 import { Observable } from 'rxjs';
 

@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Headers, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DiscountsService } from './discounts.service';
-import { CreateDiscountDto } from './dto/create-discount.dto';
-import { UpdateDiscountDto } from './dto/update-discount.dto';
+import { CreateDiscountDto } from '@shared/dto/create-discount.dto';
+import { UpdateDiscountDto } from '@shared/dto/update-discount.dto';
 
 @Controller('discounts')
 export class DiscountsController {

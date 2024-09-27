@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OrderService } from '@frontend/app/utils/order.service';
-import { ToastService } from '@frontend/app/utils/toast.service';
+import { OrderService } from '@frontend/app/services/order.service';
+import { ToastService } from '@frontend/app/services/toast.service';
 import { Order } from '@shared/entity/order.entity';
 
 interface CartItem {

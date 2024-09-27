@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MealService } from '../../utils/meal.service';
+import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
-import { ToastService } from '@frontend/app/utils/toast.service';
+import { ToastService } from '@frontend/app/services/toast.service';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

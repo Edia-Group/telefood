@@ -9,7 +9,7 @@ import { validate, parse, type InitDataParsed } from '@tma.js/init-data-node';
 import { BotsService } from '../utils/bots.service';
 import { UsersService } from '../core/users/users.service';
 import { User } from '@shared/entity/user.entity';
-import { CreateTgUserDto } from '../core/users/dto/create-user.dto';
+import { CreateTgUserDto } from '@shared/dto/create-user.dto';
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
 
 /**

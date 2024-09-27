@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDiscountDto } from './dto/create-discount.dto';
-import { UpdateDiscountDto } from './dto/update-discount.dto';
+import { CreateDiscountDto } from '@shared/dto/create-discount.dto';
+import { UpdateDiscountDto } from '@shared/dto/update-discount.dto';
 import { SupabaseService } from '../../utils/supabase.service';
 import { Discount } from '@shared/entity/discount.entity';
 import { plainToInstance } from 'class-transformer';

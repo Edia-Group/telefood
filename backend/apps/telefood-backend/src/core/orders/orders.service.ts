@@ -1,20 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { CreateOrderDto } from '@shared/dto/create-order.dto';
+import { UpdateOrderDto } from '@shared/dto/update-order.dto';
 import { SupabaseService } from '../../utils/supabase.service';
+import { MockService } from '../../utils/mock.service';
 import { plainToInstance } from 'class-transformer';
 import {Order} from '@shared/entity/order.entity';
 
 @Injectable()
 export class OrdersService {
 
-  constructor(private readonly supabaseService: SupabaseService ) {}
+  constructor(private readonly supabaseService: SupabaseService, private mockService: MockService ) {}
   
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  create(createOrderDto: CreateOrderDto): Promise<Order> {
+    const mockOrder: Order = {
+      id: 1,
+      created_at: new Date,
+      id_user: 3,
+      type: 'DELIVERY',
+      state: 'SUSPENDED',
+      id_tenant: 9,
+      notes: '',
+      total: 1,
+      Meals_to_Order: []
+    
+    }
+    return new Promise(resolve => mockOrder);
   }
 
-  async findAll() :Promise<Order []> {
+  createAndSendNotification(createOrderDto: CreateOrderDto): Promise<Order> {
+    const mockOrder = this.mockService.generateOrder();
+
+    return new Promise(resolve => mockOrder);
+  }
+
+  async findAll(): Promise<Order []> {
     let {data, error} = await this.supabaseService.getClient().from('Orders').select("*, Meals_to_Order(*, Meals(*, MealCategories(name)))");
 
     if(data){

@@ -1,6 +1,6 @@
 import { Global, Injectable } from '@nestjs/common';
-import { CreateTenantDto } from './dto/create-tenant.dto';
-import { UpdateTenantDto } from './dto/update-tenant.dto';
+import { CreateTenantDto } from '@shared/dto/create-tenant.dto';
+import { UpdateTenantDto } from '@shared/dto/update-tenant.dto';
 import { plainToInstance } from 'class-transformer';
 import { Tenant } from '@shared/entity/tenant.entity';
 import { SupabaseService } from '../../utils/supabase.service';

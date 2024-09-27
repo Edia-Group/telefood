@@ -3,7 +3,7 @@ import { Platform } from '@ionic/angular';
 import { retrieveLaunchParams } from '@tma.js/sdk';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { GlobalStateService } from './utils/global-state.service';
+import { GlobalStateService } from './services/global-state.service';
 import { register } from 'swiper/element/bundle';
 
 register();

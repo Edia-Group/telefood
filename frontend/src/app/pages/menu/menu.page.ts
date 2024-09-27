@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { MealService } from '../../utils/meal.service';
+import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
 import { NavController } from '@ionic/angular';
