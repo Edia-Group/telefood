@@ -33,12 +33,15 @@ import { TenantsModule } from './tenants/tenants.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(LoggingMiddlewareService, TenantMiddlewareService)
+      .apply(TenantMiddlewareService)
       .exclude(
         { path: 'meals', method: RequestMethod.GET },
         'glovo/(.*)',
         'telegram/(.*)'
       )
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
+
+      .apply(LoggingMiddlewareService)
       .forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }
