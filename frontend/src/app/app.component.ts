@@ -37,10 +37,7 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
 
-    // GET test call
-    // this.http.get(environment.apiUrl, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
-    // POST test call
-    // this.http.post(environment.apiUrl + '/glovo/orders/dispatched', null, { responseType: 'text' }).subscribe(res => console.log("successo:", res), err => console.log("errore",err))
+    this.globalState.setCurrentPlatform(this.currentPlatform);
 
     if (this.currentPlatform == 'telegram') {
       console.log('Retrieving InitData...');
@@ -56,10 +53,9 @@ export class AppComponent implements OnInit {
       this.globalState.setTenantId(tenant_id == undefined ? 'null' : tenant_id);
 
     } else if(this.currentPlatform == 'browser' && (environment.currentEnvironment == 'dev' || environment.currentEnvironment == 'test')) {
-      this.globalState.setInitDataRaw('TESTGAGAG');
+      this.globalState.setInitDataRaw('TESTGAGAG BROWSER');
       this.globalState.setTenantId('8'); //Set the tenantId as you wish
-
-      
+      this.globalState.setUserId('13'); //Set the userId as you wish
     }
 
   }

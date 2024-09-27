@@ -10,12 +10,14 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const initDataRaw = this.globalState.getInitDataRaw();
     const tenantId = this.globalState.getTenantId();
+    const userId = this.globalState.getUserId();
     
     if (initDataRaw && tenantId) {
       request = request.clone({
         setHeaders: {
           Authorization: `tma ${initDataRaw}`,
-          X_tenant_id: `${tenantId}`
+          X_tenant_id: `${tenantId}`,
+          X_user_id: `${userId}`
         }
       });
     }

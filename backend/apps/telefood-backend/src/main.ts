@@ -28,7 +28,7 @@ async function bootstrap() {
   app.enableCors({
     origin: '*', // Allowed origins
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, responseType, Accept, Authorization, x_tenant_id',
+    allowedHeaders: 'Content-Type, responseType, Accept, Authorization, x_tenant_id, x_user_id',
   });
 
   // Access the application context and the service AFTER the app is created

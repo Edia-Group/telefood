@@ -31,7 +31,7 @@ export class MealService {
     return this.meals$.asObservable();
   }
 
-  getAllCategories(): Observable<string[]> {
+  getAllCategories(): Observable<string[]> { 
     return this.categories$.asObservable();
   }
 

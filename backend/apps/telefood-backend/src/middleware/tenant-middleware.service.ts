@@ -56,11 +56,13 @@ export class TenantMiddlewareService implements NestMiddleware {
         await this.handleMobileAuth(req, res, next, authData);
         return;
 
+      case 'bro':
+        await this.handleBrowserAuth(req, res, next, authData);
+        return;
+
       default:
         throw new Error('You do not have permission to request this');
     }
-
-    throw new Error('You do not have permission to request this');
   }
 
   
@@ -124,6 +126,9 @@ export class TenantMiddlewareService implements NestMiddleware {
       req['tenantId'] = tenantId;
       req['userId'] = user.id;
 
+      // Add userId to response headers
+      res.setHeader('x_user_id', user.id.toString()); res
+
       // Parse the auth data into type init data before setting it in the response.
       this.setInitData(res, parse(authData));
 
@@ -136,6 +141,11 @@ export class TenantMiddlewareService implements NestMiddleware {
 
   async handleMobileAuth(req: Request, res: Response, next: NextFunction, authData: string) {
     return next(new Error('Unauthorized'));
+  }
+
+
+  async handleBrowserAuth(req: Request, res: Response, next: NextFunction, authData: string) {
+    return next(new Error('Unauthorized')); //TODO for testing purposes
   }
 
   generateRandomUsername(): string {

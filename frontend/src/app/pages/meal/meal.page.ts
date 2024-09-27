@@ -5,6 +5,7 @@ import { Meal } from '@shared/entity/meal.entity';
 import { ToastService } from '@frontend/app/services/toast.service';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { CartService } from '@frontend/app/services/cart.service';
 
 @Component({
   selector: 'app-meal',
@@ -18,6 +19,7 @@ export class MealPage implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private mealService: MealService, 
+    private cartService: CartService, //TODO finish
     private toastService: ToastService
   ) {}
 

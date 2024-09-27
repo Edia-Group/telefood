@@ -7,6 +7,7 @@ export class GlobalStateService {
   private currentPlatform!: string;
   private initDataRaw!: string;
   private tenantId!: string;
+  private userId!: string;
 
   setCurrentPlatform(platform: string) {
     this.currentPlatform = platform;
@@ -30,6 +31,14 @@ export class GlobalStateService {
 
   getTenantId(): string {
     return this.tenantId;
+  }
+
+  setUserId(id: string) {
+    this.userId = id;
+  }
+
+  getUserId(): string {
+    return this.userId;
   }
 }
 
