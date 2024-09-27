@@ -2,14 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "command": "npm run start:debug",
+            "name": "start:debug",
             "request": "launch",
-            "name": "Debug NestJS",
-            "args": ["${workspaceFolder}/backend/apps/telefood-backend/src/main.ts"],
-            "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
-            "sourceMaps": true,
-            "cwd": "${workspaceRoot}",
-            "protocol": "inspector"
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/backend"
         }
     ]
-}
+  }
