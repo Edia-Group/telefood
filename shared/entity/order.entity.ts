@@ -33,4 +33,5 @@ export class Order {
   get total(): number {
     return this.Meals_to_Order?.reduce((sum, item) => sum + item.Meals.price * item.quantity, 0) || 0;
   }
+
 }

@@ -14,8 +14,28 @@ export class OrdersController {
   }
 
   @Post('create-and-send-notification')
-  createOrderAndSendNotification(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
-    return this.ordersService.createAndSendNotification(createOrderDto);
+  createOrderAndSendNotification(@Headers('x_tenant_id') tenantId: string/*, @Body() createOrderDto: CreateOrderDto*/): string{
+    const createOrderDto = {
+      type: 'DELIVERY',
+      meals: [
+        {
+          id: 1,
+          created_at: new Date(),
+          name: 'Pizza',
+          description: 'Pizza with cheese',
+          price: 10,
+          id_category: 1,
+          image_url: 'https://www.cameo.it/assets/hygraph/output=format:webp/resize=fit:clip,height:662,width:662/quality=value:75/compress/M0nW5tI9TNiWbyWdxlAY',
+          id_tenant: 1,
+          MealCategories: {
+            id: 1,
+            name: 'Fast Food'
+          }
+        }
+      ]
+    };
+    const chatId = 1121569142;
+    return this.ordersService.createAndSendNotification(+tenantId, chatId, createOrderDto);
   }
 
   @Get()

@@ -2,6 +2,7 @@ import { Global, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { TenantsService } from '../core/tenants/tenants.service';
 import { Tenant } from '@shared/entity/tenant.entity';
+import { Order } from '@shared/entity/order.entity';
 const chalk = require('chalk');
 
 export interface BotInstance {
@@ -183,6 +184,11 @@ export class BotsService implements OnModuleDestroy {
       bot.help((ctx) => ctx.reply('Mandame uno sticchio'));
       bot.on('sticker', (ctx) => ctx.reply('👍'));
       bot.hears('ciao', (ctx) => ctx.reply('Bella a chicco'));
+      bot.command('register', async (ctx) => {
+        const chatId = ctx.message.chat.id;
+        ctx.reply(`Your chat ID is ${chatId}`);
+      })
+
     }      
 
     // We need to use webhooks because we cannot use polling for multiple instances of tg bots running on the same node instance
@@ -198,6 +204,11 @@ export class BotsService implements OnModuleDestroy {
       this.logger.error(`Failed to set webhook for ${isOwner ? tenant.bot_username_owner : tenant.bot_username}: ${err.message}`);
     });
     
+  }
+
+  async sendNotification(tenantId: number, chatId:number, order: Order) {
+    const botInstance = await this.getBotInstance(tenantId, true);
+    botInstance.telegram.sendMessage(chatId, JSON.stringify(order, null, 2));
   }
 
 

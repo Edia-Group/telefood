@@ -5,11 +5,12 @@ import { SupabaseService } from '../../utils/supabase.service';
 import { MockService } from '../../utils/mock.service';
 import { plainToInstance } from 'class-transformer';
 import {Order} from '@shared/entity/order.entity';
+import { BotsService } from '../../utils/bots.service';
 
 @Injectable()
 export class OrdersService {
 
-  constructor(private readonly supabaseService: SupabaseService, private mockService: MockService ) {}
+  constructor(private readonly supabaseService: SupabaseService, private mockService: MockService, private botService: BotsService) {}
   
   create(createOrderDto: CreateOrderDto): Promise<Order> {
     const mockOrder: Order = {
@@ -27,10 +28,22 @@ export class OrdersService {
     return new Promise(resolve => mockOrder);
   }
 
-  createAndSendNotification(createOrderDto: CreateOrderDto): Promise<Order> {
-    const mockOrder = this.mockService.generateOrder();
+  createAndSendNotification(tenantId: number, chatId: number, createOrderDto: CreateOrderDto): string{
+    const mockOrder: Order = {
+      id: 1,
+      created_at: new Date,
+      id_user: 3,
+      type: 'DELIVERY',
+      state: 'SUSPENDED',
+      id_tenant: 9,
+      notes: '',
+      total: 1,
+      Meals_to_Order: []
+    
+    }
+    this.botService.sendNotification(tenantId, chatId, mockOrder);
 
-    return new Promise(resolve => mockOrder);
+    return "ciao";
   }
 
   async findAll(): Promise<Order []> {
