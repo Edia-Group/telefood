@@ -7,6 +7,7 @@ import { register } from 'swiper/element/bundle';
 import { DiscountsService } from './services/discounts.service';
 import { OrderService } from './services/order.service';
 import { TenantsService } from './services/tenants.service';
+import { MealService } from './services/meal.service';
 
 register();
 
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit {
     private globalState: GlobalStateService, 
     private discountService: DiscountsService,
     private orderService: OrderService,
-    private tenantsService: TenantsService
+    private tenantsService: TenantsService,
+    private mealService: MealService
   ) { }
 
   ngOnInit() {
@@ -71,7 +73,31 @@ export class AppComponent implements OnInit {
 
   }
 
-  fetchInitialData() { //TODO move all initial data fetching here
-    this.discountService.fetchAllDiscounts().subscribe();
+  // This is where all data is loaded initially from the server, everytime the app is opened, from any url
+  fetchInitialData() {
+    this.mealService.fetchAllMeals().subscribe({
+      next: () => console.log('Meals fetched successfully'),
+      error: (error) => console.error('Error fetching meals:', error)
+    });
+
+    this.mealService.fetchAllCategoriesByTenant(+this.globalState.getTenantId()).subscribe({
+      next: () => console.log('Categories fetched successfully'),
+      error: (error) => console.error('Error fetching categories:', error)
+    });
+
+    this.discountService.fetchAllDiscounts().subscribe({
+      next: () => console.log('Discounts fetched successfully'),
+      error: (error) => console.error('Error fetching discounts:', error)
+    });
+
+    this.orderService.fetchAllOrders().subscribe({
+      next: () => console.log('Orders fetched successfully'),
+      error: (error) => console.error('Error fetching orders:', error)
+    });
+
+    this.tenantsService.fetchTenantInfo().subscribe({
+      next: () => console.log('Tenant info fetched successfully'),
+      error: (error) => console.error('Error fetching tenant info:', error)
+    });
   }
 }

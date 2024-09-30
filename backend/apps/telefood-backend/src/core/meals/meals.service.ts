@@ -17,57 +17,71 @@ export class MealsService {
 
 
  async findAll(): Promise<Meal []> {
-  let { data: meals, error } = await this.supabaseService.getClient().from('Meals').select("*, MealCategories(*)");
+    let { data: meals, error } = await this.supabaseService.getClient().from('Meals').select("*, MealCategories(*)");
 
-  if(meals) {
-    let mealz = plainToInstance(Meal, meals)
-    return mealz;
-  } 
-  else {
-    throw new Error(error.message)
-  }
-}
-
-async findNames(): Promise<Meal []> {
-  let { data: spMeals, error } = await this.supabaseService.getClient().from('Meals').select("name");
-  if(spMeals) {
-    let meals = plainToInstance(Meal, spMeals);
-    return meals;
-  } else {
-    throw new Error(error.message)
+    if(meals) {
+      let mealz = plainToInstance(Meal, meals)
+      return mealz;
+    } 
+    else {
+      throw new Error(error.message)
+    }
   }
 
-}
+  async findAllByTenant(idTenant: number): Promise<Meal []> {
+    let { data: meals, error } = await this.supabaseService.getClient().from('Meals')
+      .select("*, MealCategories(*)")
+      .eq('id_tenant', idTenant);
 
-async findOne(id: number): Promise<Meal> {
-  const { data: meal, error } = await this.supabaseService.getClient()
-    .from('Meals')
-    .select("*, MealCategories(*)")
-    .eq('id', id)
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
+    if(meals) {
+      let mealz = plainToInstance(Meal, meals)
+      return mealz;
+    } 
+    else {
+      throw new Error(error.message)
+    }
   }
 
-  if (!meal) {
-    throw new Error('Meal not found');
+  async findNames(): Promise<Meal []> {
+    let { data: spMeals, error } = await this.supabaseService.getClient().from('Meals').select("name");
+    if(spMeals) {
+      let meals = plainToInstance(Meal, spMeals);
+      return meals;
+    } else {
+      throw new Error(error.message)
+    }
+
   }
 
-  return plainToInstance(Meal, meal);
-}
+  async findOne(id: number): Promise<Meal> {
+    const { data: meal, error } = await this.supabaseService.getClient()
+      .from('Meals')
+      .select("*, MealCategories(*)")
+      .eq('id', id)
+      .single();
 
-async findCategoriesByTenant(idTenant: number): Promise<string []> {
-  let { data: spCategories, error } = await this.supabaseService.getClient().from('MealCategories_to_Tenants').select("MealCategories(*)").eq('id_tenant', idTenant);
-  if(spCategories) {
-    let formattedCategories = spCategories.map(spcategory => spcategory.MealCategories);
-    let categories = plainToInstance(Category, formattedCategories);
+    if (error) {
+      throw new Error(error.message);
+    }
 
-    return categories.map(category => category.name); // This is beacuse i want to return only a plain string array
-  } else {
-    throw new Error(error.message)
+    if (!meal) {
+      throw new Error('Meal not found');
+    }
+
+    return plainToInstance(Meal, meal);
   }
 
-}
+  async findCategoriesByTenant(idTenant: number): Promise<string []> {
+    let { data: spCategories, error } = await this.supabaseService.getClient().from('MealCategories_to_Tenants').select("MealCategories(*)").eq('id_tenant', idTenant);
+    if(spCategories) {
+      let formattedCategories = spCategories.map(spcategory => spcategory.MealCategories);
+      let categories = plainToInstance(Category, formattedCategories);
+
+      return categories.map(category => category.name); // This is beacuse i want to return only a plain string array
+    } else {
+      throw new Error(error.message)
+    }
+
+  }
 
 }

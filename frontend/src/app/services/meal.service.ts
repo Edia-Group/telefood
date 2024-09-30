@@ -8,7 +8,7 @@ import { environment } from '@frontend/environments/environment';
   providedIn: 'root'
 })
 export class MealService {
-  private apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `${environment.apiUrl}/meals`;
   
   private meals$ = new BehaviorSubject<Meal[]>([]);
   private categories$ = new BehaviorSubject<string[]>([]);
@@ -16,13 +16,13 @@ export class MealService {
   constructor(private http: HttpClient) { }
 
   fetchAllMeals(): Observable<Meal[]> {
-    return this.http.get<Meal[]>(`${this.apiUrl}/meals`).pipe(
+    return this.http.get<Meal[]>(`${this.apiUrl}/tenant-meals`).pipe(
       tap(meals => this.meals$.next(meals))
     );
   }
 
-  fetchAllCategoriesByTenant(tenantId: number): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/meals/categories?tenantId=${tenantId}`).pipe(
+  fetchAllCategoriesByTenant(tenantId: number): Observable<string[]> { //change using header x_tenant_id
+    return this.http.get<string[]>(`${this.apiUrl}/categories?tenantId=${tenantId}`).pipe(
       tap(categories => this.categories$.next(categories))
     );
   }

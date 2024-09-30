@@ -12,7 +12,7 @@
         <div class="p-4">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-xl font-bold">{{meal.name}}</h2>
-            <span class="text-xl font-bold">{{meal.price}} €</span>
+            <span class="text-xl font-bold">{{meal.price | currency:'EUR':'symbol':'1.2-2'}}</span>
           </div>
           <p class="text-gray-400 mb-8">{{meal.description}}</p>
           
@@ -20,7 +20,7 @@
           <div class="mb-8">
             <p class="mb-2">Seleziona Quantità</p>
             <div class="flex items-center">
-              <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">
+              <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl" [disabled]="quantity <= 1">
                 <ion-ripple-effect></ion-ripple-effect> -
               </button>
               <span class="mx-4 text-xl">{{quantity}}</span>
@@ -44,6 +44,7 @@
   <ng-template #loading>
     <div class="flex items-center justify-center h-full">
       <ion-spinner></ion-spinner>
+      <p class="ml-2">Caricamento...</p>
     </div>
   </ng-template>
 </ion-content>
