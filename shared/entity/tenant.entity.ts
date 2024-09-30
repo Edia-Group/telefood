@@ -11,5 +11,6 @@ export class Tenant {
   logo_url!: string;
   bot_token_owner!: string;
   bot_username_owner!: string;
-  mini_app_url_owner!: string;
+  mini_app_url_owner?: string;
+  chat_ids_owner?: number[];
 }

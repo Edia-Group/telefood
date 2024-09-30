@@ -14,11 +14,13 @@ import { BotsController } from './bots/bots.controller';
 import { TelegramController } from './telegram/telegram.controller';
 import { DiscountsController } from './discounts/discounts.controller';
 import { DiscountsService } from './discounts/discounts.service';
+import { CartController } from './cart/cart.controller';
+import { CartService } from './cart/cart.service';
 
 @Module({
-  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController, TelegramController, DiscountsController],
+  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController, TelegramController, DiscountsController, CartController],
   imports: [UtilsModule, ],
-  providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService, DiscountsService],
+  providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService, DiscountsService, CartService],
   exports: []
 })
 export class CoreModule {}
