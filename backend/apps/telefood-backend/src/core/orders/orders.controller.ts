@@ -15,7 +15,7 @@ export class OrdersController {
 
   @Post('create-and-send-notification')
   createOrderAndSendNotification(@Headers('x_tenant_id') tenantId: string/*, @Body() createOrderDto: CreateOrderDto*/): string{
-    const createOrderDto = {
+    const mockCreateOrderDto = {
       type: 'DELIVERY',
       meals: [
         {
@@ -35,7 +35,7 @@ export class OrdersController {
       ]
     };
     const chatId = 1121569142;
-    return this.ordersService.createAndSendNotification(+tenantId, chatId, createOrderDto);
+    return this.ordersService.createAndSendNotification(+tenantId, chatId, mockCreateOrderDto);
   }
 
   @Get()

@@ -4,8 +4,10 @@ import { UpdateOrderDto } from '@shared/dto/update-order.dto';
 import { SupabaseService } from '../../utils/supabase.service';
 import { MockService } from '../../utils/mock.service';
 import { plainToInstance } from 'class-transformer';
-import {Order} from '@shared/entity/order.entity';
+import {Order, OrderItem} from '@shared/entity/order.entity';
 import { BotsService } from '../../utils/bots.service';
+import { Meal } from '@shared/entity/meal.entity';
+import { mock } from 'node:test';
 
 @Injectable()
 export class OrdersService {
@@ -29,18 +31,36 @@ export class OrdersService {
   }
 
   createAndSendNotification(tenantId: number, chatId: number, createOrderDto: CreateOrderDto): string{
-    const mockOrder: Order = {
+    const mockMeal = new Meal({
       id: 1,
-      created_at: new Date,
+      created_at: new Date(),
+      name: 'Mock Pizza',
+      price: 20, 
+      description: 'A tasty mock pizza with tomato sauce and mozzarella cheese.',
+      id_tenant: 9,
+      image_url: 'https://www.cameo.it/assets/hygraph/output=format:webp/resize=fit:clip,height:662,width:662/quality=value:75/compress/M0nW5tI9TNiWbyWdxlAY',
+      MealCategories: {
+        id: 2,
+        name: 'Pizza',
+      },
+    });
+    const mockOrderItem = new OrderItem({
+      id_meal: mockMeal.id,
+      id_order: 1,
+      quantity: 2,
+      Meals: mockMeal
+    });
+    const mockOrder = new Order({
+      id: 1,
+      created_at: new Date(),
       id_user: 3,
       type: 'DELIVERY',
       state: 'SUSPENDED',
       id_tenant: 9,
       notes: '',
-      total: 1,
-      Meals_to_Order: []
-    
-    }
+      Meals_to_Order: [mockOrderItem]
+    });
+    console.log(mockOrder.ownerVisualize());
     this.botService.sendNotification(tenantId, chatId, mockOrder);
 
     return "ciao";

@@ -10,4 +10,9 @@ export class Meal {
     id: number;
     name: string;
   };
+
+
+  constructor(partial: Partial<Meal>) {
+    Object.assign(this, partial);
+  }
 }
