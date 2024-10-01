@@ -74,7 +74,19 @@ export class CartService {
 
   getCartTotal(): Observable<number> {
     return this.cart$.pipe(
-      map(cart => cart.Meals_to_Cart.reduce((total, item) => total + (item.Meals.price * item.quantity), 0))
+      map(cart => {
+        if (!cart || !cart.Meals_to_Cart) {
+          return 0;
+        }
+        const total = cart.Meals_to_Cart.reduce((sum, item) => {
+          return sum + (item.quantity * (item.Meals?.price || 0));
+        }, 0);
+        console.log('Calculated total:', total);
+        return total;
+      })
     );
   }
+
+  confirmOrder() { }
+
 }

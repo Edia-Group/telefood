@@ -16,10 +16,8 @@ ion-content {
     box-sizing: border-box;
   }
 
-
-  
   .custom-ripple {
-    color: #b4b2b2;
+    color: #f8f8f8;
   }
 
 
@@ -27,3 +25,53 @@ ion-content {
     background-color: black !important;
     color: white;
   }
+
+  .custom-item {
+    --background: #8b4f9a;
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 1rem; 
+  }
+  
+  .custom-item::part(native) {
+    padding: 0;
+  }
+  
+  ion-item {
+    --background: transparent;
+  }
+  
+  ion-ripple-effect {
+    color: rgba(255, 255, 255, 0.1);
+  }
+
+
+  .relative {
+    position: relative;
+  }
+  
+  .absolute {
+    position: absolute;
+  }
+  
+  .left-0 {
+    left: 0;
+  }
+  
+  .right-0 {
+    right: 0;
+  }
+  
+  .z-10 {
+    z-index: 10;
+  }
+  
+  .flex-grow {
+    flex-grow: 1;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  

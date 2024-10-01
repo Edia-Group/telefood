@@ -11,7 +11,6 @@ export class TabsComponent {
   tab: string = 'home';
 
   setSelectedTab(event: any) {
-    console.log("carl",event)
     this.tab = event.tab;
   }
 

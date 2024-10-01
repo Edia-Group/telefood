@@ -8,6 +8,7 @@ import { DiscountsService } from './services/discounts.service';
 import { OrderService } from './services/order.service';
 import { TenantsService } from './services/tenants.service';
 import { MealService } from './services/meal.service';
+import { CartService } from './services/cart.service';
 
 register();
 
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
     private discountService: DiscountsService,
     private orderService: OrderService,
     private tenantsService: TenantsService,
-    private mealService: MealService
+    private mealService: MealService,
+    private cartService: CartService
   ) { }
 
   ngOnInit() {
@@ -93,6 +95,11 @@ export class AppComponent implements OnInit {
     this.orderService.fetchAllOrders().subscribe({
       next: () => console.log('Orders fetched successfully'),
       error: (error) => console.error('Error fetching orders:', error)
+    });
+
+    this.cartService.fetchCart().subscribe({
+      next: () => console.log('Cart fetched successfully'),
+      error: (error) => console.error('Error fetching cart:', error)
     });
 
     this.tenantsService.fetchTenantInfo().subscribe({

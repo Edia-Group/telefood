@@ -9,14 +9,15 @@ import { OrderCardComponent } from './order-card/order-card.component';
 import { MenuComponent } from './menu/menu.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { DiscountCardComponent } from './discount-card/discount-card.component';
-
+import { BackButtonComponent } from './back-button/back-button.component';
 
 @NgModule({
   declarations: [
     OrderCardComponent,
     MenuComponent,
     TabsComponent,
-    DiscountCardComponent
+    DiscountCardComponent,
+    BackButtonComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +31,8 @@ import { DiscountCardComponent } from './discount-card/discount-card.component';
     OrderCardComponent,
     MenuComponent,
     TabsComponent,
-    DiscountCardComponent
+    DiscountCardComponent,
+    BackButtonComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

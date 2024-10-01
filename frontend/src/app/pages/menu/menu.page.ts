@@ -4,6 +4,7 @@ import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { CartService } from '@frontend/app/services/cart.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,11 +14,20 @@ import { NavController } from '@ionic/angular';
     trigger('expandSearch', [
       state('collapsed', style({
         width: '0px',
-        visibility: 'hidden'
+        opacity: 0
       })),
       state('expanded', style({
         width: '200px',
-        visibility: 'visible'
+        opacity: 1
+      })),
+      transition('collapsed <=> expanded', animate('300ms ease-in-out'))
+    ]),
+    trigger('titlePosition', [
+      state('collapsed', style({
+        transform: 'translateX(0)'
+      })),
+      state('expanded', style({
+        transform: 'translateX(-15px)'
       })),
       transition('collapsed <=> expanded', animate('300ms ease-in-out'))
     ])
@@ -31,13 +41,19 @@ export class MenuPage implements OnInit {
   searchState = 'collapsed';
 
   meals$: Observable<Meal[]>;
+  cartTotal$: Observable<number>;
   filteredMeals$: Observable<Meal[]>;
   categories$ = new BehaviorSubject<string[]>([]);
   selectedCategory$ = new BehaviorSubject<string | null>(null);
 
-  constructor(private mealService: MealService, private navCtrl: NavController) {
+  constructor(private mealService: MealService, private cartService: CartService, private navCtrl: NavController) {
+    // Load cart
+    this.cartTotal$ = this.cartService.getCartTotal();
+
+    // Load meals
     this.meals$ = this.mealService.getAllMeals();
     
+    // Load categories
     this.mealService.getAllCategories().subscribe(categories => {
       this.categories$.next(categories);
       if (categories.length > 0 && this.selectedCategory$.value === null) {
@@ -58,9 +74,7 @@ export class MenuPage implements OnInit {
     );
   }
 
-  ngOnInit() {
-    // No initialization needed here
-  }
+  ngOnInit() { }
 
   private filterMeals(meals: Meal[], category: string | null, searchTerm: string): Meal[] {
     if (searchTerm) {
