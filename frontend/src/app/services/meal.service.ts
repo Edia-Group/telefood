@@ -21,7 +21,7 @@ export class MealService {
     );
   }
 
-  fetchAllCategoriesByTenant(tenantId: number): Observable<string[]> { //change using header x_tenant_id
+  fetchAllCategoriesByTenant(tenantId: number): Observable<string[]> { //TODO change using header x_tenant_id
     return this.http.get<string[]>(`${this.apiUrl}/categories?tenantId=${tenantId}`).pipe(
       tap(categories => this.categories$.next(categories))
     );

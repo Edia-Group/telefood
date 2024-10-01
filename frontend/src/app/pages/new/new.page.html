@@ -1,19 +1,25 @@
-<ion-content>
-  <div class="flex flex-col items-center text-center p-5">
-    <div class="relative w-full mb-10">
-      <img [src]="tenant.logo_url || 'assets/default-meal-image.jpg'" [alt]="tenant.name" class="shadow-xl rounded-sm" >      
+<ion-content class="bg-purple-700 text-white">
+  <div class="flex flex-col items-center h-full p-4">
+    <!-- Logo container -->
+    <div class="w-full aspect-square flex items-center justify-center">
+      <img [src]="tenant.logo_url || 'assets/default-meal-image.jpg'" [alt]="tenant.name" class="max-w-[70%] max-h-[70%] object-contain ">
     </div>
 
-    <h1 class="text-2xl font-bold mb-5">{{ tenant.name }}</h1>
-    <button [routerLink]="['/menu/ASPORTO']" class="w-full bg-pastel-blue text-black py-4 rounded-full mb-6 shadow-[0_6px_0_0_#b3cde0] hover:shadow-[0_4px_0_0_#b3cde0] active:shadow-[0_0_0_0_#b3cde0] transition-all duration-150 relative overflow-hidden transform hover:-translate-y-0.5 active:translate-y-1.5">
-      ASPORTO
-    </button>
-    <button [routerLink]="['/menu/DELIVERY']" class="w-full bg-pastel-green text-black py-4 rounded-full mb-6 shadow-[0_6px_0_0_#b4e6b4] hover:shadow-[0_4px_0_0_#b4e6b4] active:shadow-[0_0_0_0_#b4e6b4] transition-all duration-150 relative overflow-hidden transform hover:-translate-y-0.5 active:translate-y-1.5">
-      DELIVERY
-    </button>
-    <p class="text-gray-500 my-4">Se sei seduto al ristorante</p>
-    <button [routerLink]="['/menu/TAVOLO']" class="w-full bg-pastel-yellow text-black py-4 rounded-full shadow-[0_6px_0_0_#f9e8a5] hover:shadow-[0_4px_0_0_#f9e8a5] active:shadow-[0_0_0_0_#f9e8a5] transition-all duration-150 relative overflow-hidden transform hover:-translate-y-0.5 active:translate-y-1.5">
-      TAVOLO
-    </button>
+    <!-- Tenant name -->
+    <h1 class="text-3xl font-bold mb-6 text-white">{{ tenant.name }}</h1>
+
+    <!-- Buttons container -->
+    <div class="w-full flex flex-col gap-4 pb-4">
+      <ion-button expand="block" class="h-16 px-10 text-xl text-black custom-button" [routerLink]="['/menu/ASPORTO']">
+        ASPORTO
+      </ion-button>
+      <ion-button expand="block" class="h-16 px-10 text-xl text-black custom-button" [routerLink]="['/menu/DELIVERY']">
+        DELIVERY
+      </ion-button>
+      <p class="text-center my-2 text-white">Se sei seduto al ristorante</p>
+      <ion-button expand="block" class="h-16 px-10 text-xl text-black custom-button " [routerLink]="['/menu/TAVOLO']">
+        TAVOLO
+      </ion-button>
+    </div>
   </div>
 </ion-content>

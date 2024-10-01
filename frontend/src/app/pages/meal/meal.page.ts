@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { ToastService } from '@frontend/app/services/toast.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { CartService } from '@frontend/app/services/cart.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-meal',
@@ -18,9 +19,10 @@ export class MealPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute, 
+    private location: Location,
     private mealService: MealService, 
     private cartService: CartService,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {
     this.meal$ = this.route.params.pipe(
       switchMap(params => {
@@ -107,4 +109,9 @@ export class MealPage implements OnInit {
       }
     );
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 }

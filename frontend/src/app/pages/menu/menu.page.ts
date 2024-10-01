@@ -32,34 +32,46 @@ export class MenuPage implements OnInit {
 
   meals$: Observable<Meal[]>;
   filteredMeals$: Observable<Meal[]>;
-  categories$: Observable<string[]>;
-  selectedCategory$ = new BehaviorSubject<string>('Antipasti');
+  categories$ = new BehaviorSubject<string[]>([]);
+  selectedCategory$ = new BehaviorSubject<string | null>(null);
 
   constructor(private mealService: MealService, private navCtrl: NavController) {
     this.meals$ = this.mealService.getAllMeals();
-    this.categories$ = this.mealService.getAllCategories();
+    
+    this.mealService.getAllCategories().subscribe(categories => {
+      this.categories$.next(categories);
+      if (categories.length > 0 && this.selectedCategory$.value === null) {
+        this.selectedCategory$.next(categories[0]);
+      }
+    });
 
     this.filteredMeals$ = combineLatest([
       this.meals$,
+      this.categories$,
       this.selectedCategory$,
       this.searchTerm$
     ]).pipe(
-      map(([meals, category, searchTerm]) => 
-        this.filterMeals(meals, category, searchTerm)
-      )
+      map(([meals, categories, selectedCategory, searchTerm]) => {
+        const category = selectedCategory || (categories.length > 0 ? categories[0] : null);
+        return this.filterMeals(meals, category, searchTerm);
+      })
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // No initialization needed here
+  }
 
-  private filterMeals(meals: Meal[], category: string, searchTerm: string): Meal[] {
+  private filterMeals(meals: Meal[], category: string | null, searchTerm: string): Meal[] {
     if (searchTerm) {
       return meals.filter(item => 
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (item.description?.toLowerCase() ?? '').includes(searchTerm.toLowerCase())
       );
-    } else {
+    } else if (category) {
       return meals.filter(item => item.MealCategories?.name === category);
+    } else {
+      return meals;
     }
   }
 

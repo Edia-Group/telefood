@@ -1,4 +1,14 @@
-<ion-content class="bg-gray-400 text-white">
+<ion-content class="text-white">
+  <!-- Back Button -->
+  <ion-button 
+    fill="solid" 
+    shape="round" 
+    color="light" 
+    class="absolute top-4 left-4 z-10 custom-back-button"
+    (click)="goBack()">
+    <ion-icon slot="icon-only" name="arrow-back-outline" color="dark"></ion-icon>
+  </ion-button>
+
   <ng-container *ngIf="meal$ | async as meal; else loading">
     <div class="flex flex-col h-full">
       <!-- Image Container -->
@@ -9,21 +19,23 @@
       <!-- Scrollable Content Area -->
       <div class="flex-grow overflow-y-auto">
         <!-- Dish Details -->
-        <div class="p-4">
-          <div class="flex justify-between items-center mb-2">
-            <h2 class="text-xl font-bold">{{meal.name}}</h2>
-            <span class="text-xl font-bold">{{meal.price | currency:'EUR':'symbol':'1.2-2'}}</span>
+        <div class="py-4">
+          <div class="flex justify-between items-center px-4 mb-2">
+            <h2 class="text-xl text-white font-bold">{{meal.name}}</h2>
+            <span class="text-xl text-white font-bold">{{meal.price | currency:'EUR':'symbol':'1.2-2'}}</span>
           </div>
-          <p class="text-gray-400 mb-8">{{meal.description}}</p>
-          
+          <div class="border-t border-white bg-purple-800 bg-opacity-50 px-4">
+            <p class="text-white text-opacity-90 py-2">{{meal.description}}</p>
+          </div>
+                
           <!-- Quantity Selector -->
-          <div class="mb-8">
-            <p class="mb-2">Seleziona Quantità</p>
+          <div class="mb-8 px-4">
+            <p class="mb-2 text-white ">Seleziona Quantità</p>
             <div class="flex items-center">
               <button (click)="decrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl" [disabled]="quantity <= 1">
                 <ion-ripple-effect></ion-ripple-effect> -
               </button>
-              <span class="mx-4 text-xl">{{quantity}}</span>
+              <span class="mx-4 text-xl text-white ">{{quantity}}</span>
               <button (click)="incrementQuantity()" class="ion-activatable ripple-parent relative overflow-hidden bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-2xl">
                 <ion-ripple-effect></ion-ripple-effect> +
               </button>

@@ -1,20 +1,36 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom" class="green-tabs">
-    <ion-tab-button tab="home">
-      <ion-icon name="play-circle"></ion-icon>
-      HOME
+<ion-tabs (ionTabsWillChange)="setSelectedTab($event)">
+  <ion-tab-bar slot="bottom" class="bg-black">
+    <ion-tab-button tab="home" class="bg-black flex flex-col items-center justify-center py-1">
+      <ion-icon [name]="tab === 'home' ? 'home' : 'home-outline'" 
+                [class]="tab === 'home' ? 'text-white text-2xl mb-1' : 'text-white text-2xl mb-1'">
+      </ion-icon>
+      <ion-label [class]="tab === 'home' ? 'text-white font-bold text-xs uppercase' : 'text-gray-200 text-xs uppercase'">
+        HOME
+      </ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="new">
-      <ion-icon name="pizza"></ion-icon>
-      NEW
+    <ion-tab-button tab="new" class="bg-black flex flex-col items-center justify-center py-1">
+      <ion-icon [name]="tab === 'new' ? 'add-circle' : 'add-circle-outline'" 
+                [class]="tab === 'new' ? 'text-white text-2xl mb-1' : 'text-white text-2xl mb-1'">
+      </ion-icon>
+      <ion-label [class]="tab === 'new' ? 'text-white font-bold text-xs uppercase' : 'text-gray-200 text-xs uppercase'">
+        NEW
+      </ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="promotions">
-      <ion-icon name="pricetags"></ion-icon>
-      PROMOZIONI
+    <ion-tab-button tab="promotions" class="bg-black flex flex-col items-center justify-center py-1">
+      <ion-icon [name]="tab === 'promotions' ? 'bookmark' : 'bookmark-outline'" 
+                [class]="tab === 'promotions' ? 'text-white text-2xl mb-1' : 'text-white text-2xl mb-1'">
+      </ion-icon>
+      <ion-label [class]="tab === 'promotions' ? 'text-white font-bold text-xs uppercase' : 'text-gray-200 text-xs uppercase'">
+        PROMOZIONI
+      </ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="profile">
-      <ion-icon name="person"></ion-icon>
-      PROFILO
+    <ion-tab-button tab="profile" class="bg-black flex flex-col items-center justify-center py-1">
+      <ion-icon [name]="tab === 'profile' ? 'person' : 'person-outline'" 
+                [class]="tab === 'profile' ? 'text-white text-2xl mb-1' : 'text-white text-2xl mb-1'">
+      </ion-icon>
+      <ion-label [class]="tab === 'profile' ? 'text-white font-bold text-xs uppercase' : 'text-gray-200 text-xs uppercase'">
+        PROFILO
+      </ion-label>
     </ion-tab-button>
   </ion-tab-bar>  
 </ion-tabs>
