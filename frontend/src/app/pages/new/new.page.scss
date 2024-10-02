@@ -1,4 +1,11 @@
 ion-content {
-    --background: #ecfdf5;
+    --background: #8b4f9a;
   }
-  
+
+  .custom-button {
+    --background: #9FE3FA; 
+    --background-activated: #9FD5D9; 
+    --background-hover: #A5D8DE;
+    --color: black;
+    margin: 0;
+  }

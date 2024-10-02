@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Headers, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MealsService } from './meals.service';
 import { CreateMealDto } from '@shared/dto/create-meal.dto';
 import { UpdateMealDto } from '@shared/dto/update-meal.dto';
@@ -7,25 +7,27 @@ import { UpdateMealDto } from '@shared/dto/update-meal.dto';
 export class MealsController {
   constructor(private readonly mealsService: MealsService) {}
 
-  @Get('categories')
+  @Get()
+  findAll() {
+    return this.mealsService.findAll();
+  }
+
+  @Get('tenant-meals')
+  findAllMealsByTenant(@Headers('x_tenant_id') idTenant: string) {
+    return this.mealsService.findAllByTenant(+idTenant);
+  }
+
+  @Get('categories') //TODO not really coerente ma vabbeh
   findCategories(@Query('tenantId') idTenant: string) {
     return this.mealsService.findCategoriesByTenant(+idTenant);
   }
 
-  @Get('nomi')
-  findNames() {
-    return this.mealsService.findNames();
-  }
 
   @Post()
   create(@Body() createMealDto: CreateMealDto) {
     return this.mealsService.create(createMealDto);
   }
 
-  @Get()
-  findAll() {
-    return this.mealsService.findAll();
-  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

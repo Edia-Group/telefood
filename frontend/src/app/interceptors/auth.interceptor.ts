@@ -11,11 +11,12 @@ export class AuthInterceptor implements HttpInterceptor {
     const initDataRaw = this.globalState.getInitDataRaw();
     const tenantId = this.globalState.getTenantId();
     const userId = this.globalState.getUserId();
-    
+    const AuthorizationPrefix = this.globalState.getCurrentAuthorizationPrefix();
+
     if (initDataRaw && tenantId) {
       request = request.clone({
         setHeaders: {
-          Authorization: `tma ${initDataRaw}`,
+          Authorization: `${AuthorizationPrefix} ${initDataRaw}`,
           X_tenant_id: `${tenantId}`,
           X_user_id: `${userId}`
         }

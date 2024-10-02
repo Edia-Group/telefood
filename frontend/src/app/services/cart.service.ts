@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '@frontend/environments/environment';
 import { Cart, CartItem } from '@shared/entity/cart.entity';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, map } from 'rxjs';
-import { Meal } from '@shared/entity/meal.entity';
+import { BehaviorSubject, Observable, tap, map, of, catchError } from 'rxjs';
+import { GlobalStateService } from './global-state.service';
+import { AddToCartDto } from '@shared/dto/create-add-to-cart.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -19,35 +20,49 @@ export class CartService {
     Meals_to_Cart: []
   }));
 
-  constructor(private http: HttpClient) {
-    this.fetchCart().subscribe();
+  constructor(private http: HttpClient, private globalStateService: GlobalStateService) { 
+    this.fetchCart();
   }
 
   fetchCart(): Observable<Cart> {
-    return this.http.get<Cart>(`${this.apiUrl}/carts`).pipe(
+    const userId = this.globalStateService.getUserId();
+
+    return this.http.get<Cart>(`${this.apiUrl}/user-cart?userId=${userId}`).pipe(
       tap(cart => this.cart$.next(cart))
     );
   }
 
-  getCart(): Observable<Cart> {
-    return this.cart$.asObservable();
+  getCart(): Cart {
+    return this.cart$.getValue();
   }
 
-  addMealToCart(meal: Meal): Observable<Cart> {
-    return this.http.post<Cart>(`${this.apiUrl}/add`, meal).pipe(
+  addMealToCart(mealId: number, quantity: number): Observable<Cart> {
+    const cartId = this.cart$.getValue().id;
+    const addToCartDto: AddToCartDto = new AddToCartDto(mealId, cartId, quantity);
+
+    return this.http.post<Cart>(`${this.apiUrl}/add-meal`, addToCartDto).pipe(
       tap(updatedCart => this.cart$.next(updatedCart))
     );
   }
 
   removeMealFromCart(mealId: number): Observable<Cart> {
-    return this.http.delete<Cart>(`${this.apiUrl}/remove/${mealId}`).pipe(
+    const cartId = this.cart$.getValue().id;
+
+    return this.http.delete<Cart>(`${this.apiUrl}/remove/${mealId}/${cartId}`).pipe(
       tap(updatedCart => this.cart$.next(updatedCart))
     );
   }
 
-  updateMealQuantity(mealId: number, quantity: number): Observable<Cart> {
-    return this.http.put<Cart>(`${this.apiUrl}/update/${mealId}`, { quantity }).pipe(
-      tap(updatedCart => this.cart$.next(updatedCart))
+  updateMealQuantity(mealId: number, quantity: number): Observable<boolean> {
+    const cartId = this.cart$.getValue().id;
+  
+    return this.http.put<Cart>(`${this.apiUrl}/update/${mealId}/${cartId}`, { quantity }).pipe(
+      tap(updatedCart => this.cart$.next(updatedCart)),
+      map(() => true),
+      catchError(error => {
+        console.error('Error updating meal quantity:', error);
+        return of(false); 
+      })
     );
   }
 
@@ -59,7 +74,19 @@ export class CartService {
 
   getCartTotal(): Observable<number> {
     return this.cart$.pipe(
-      map(cart => cart.Meals_to_Cart.reduce((total, item) => total + (item.Meals.price * item.quantity), 0))
+      map(cart => {
+        if (!cart || !cart.Meals_to_Cart) {
+          return 0;
+        }
+        const total = cart.Meals_to_Cart.reduce((sum, item) => {
+          return sum + (item.quantity * (item.Meals?.price || 0));
+        }, 0);
+        console.log('Calculated total:', total);
+        return total;
+      })
     );
   }
+
+  confirmOrder() { }
+
 }

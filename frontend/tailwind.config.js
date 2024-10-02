@@ -8,6 +8,7 @@ module.exports = {
         'pastel-blue': '#AEC6CF',
         'pastel-green': '#77DD77',
         'pastel-yellow': '#FFB347',
+        'custom-ripple': '#b4b2b2',
       },
       fontFamily: {
         sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif']

@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class TabsComponent {
   constructor() {}
+
+  tab: string = 'home';
+
+  setSelectedTab(event: any) {
+    this.tab = event.tab;
+  }
+
 }

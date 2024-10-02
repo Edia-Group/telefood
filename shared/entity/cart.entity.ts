@@ -1,4 +1,4 @@
-import { Expose, Type, Transform } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { Meal } from './meal.entity';
 
 export class CartItem {
@@ -19,7 +19,6 @@ export class Cart {
     created_at!: Date;
     id_tenant!: number;
     id_user!: number;
-    meals!: CartItem[];
 
     @Type(() => CartItem)
     Meals_to_Cart!: CartItem[];
@@ -27,7 +26,11 @@ export class Cart {
     constructor(partial: Partial<Cart>) {
         Object.assign(this, partial);
     }
+
+    get total(): number {
+        return this.Meals_to_Cart?.reduce((sum, cartItem) => {
+            const itemTotal = cartItem.quantity * cartItem.Meals.price;
+            return sum + itemTotal;
+        }, 0) || 0;
+    }
 }
-
-
-

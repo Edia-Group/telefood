@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
 import { ToastService } from '@frontend/app/services/toast.service';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { CartService } from '@frontend/app/services/cart.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-meal',
@@ -13,17 +14,16 @@ import { CartService } from '@frontend/app/services/cart.service';
   styleUrls: ['./meal.page.scss'],
 })
 export class MealPage implements OnInit {
-  meal$: Observable<Meal | undefined> | undefined;
+  meal$: Observable<Meal | undefined>;
   quantity = 1;
 
   constructor(
     private route: ActivatedRoute, 
+    private location: Location,
     private mealService: MealService, 
-    private cartService: CartService, //TODO finish
-    private toastService: ToastService
-  ) {}
-
-  ngOnInit() {
+    private cartService: CartService,
+    private toastService: ToastService,
+  ) {
     this.meal$ = this.route.params.pipe(
       switchMap(params => {
         const mealId = +params['id'];
@@ -32,13 +32,9 @@ export class MealPage implements OnInit {
         );
       })
     );
-
-    // Fetch meals if they haven't been loaded yet
-    this.mealService.fetchAllMeals().subscribe(
-      () => {},
-      error => console.error('Error fetching meals:', error)
-    );
   }
+
+  ngOnInit() { }
 
   incrementQuantity() {
     this.quantity++;
@@ -50,7 +46,72 @@ export class MealPage implements OnInit {
     }
   }
 
-  addToCart() {
-    this.toastService.showToast('Toast pollo pane acqua', 'info');
+  // Not used for now
+  updateMealQuantity(newQuantity: number) {
+    this.meal$.pipe(
+      take(1),
+      switchMap(meal => {
+        if (meal) {
+          return this.cartService.updateMealQuantity(meal.id, newQuantity);
+        }
+        return of(false);
+      })
+    ).subscribe(
+      success => {
+        if (success) {
+          this.quantity = newQuantity;
+          this.toastService.showToast('Quantità aggiornata', 'success');
+        } else {
+          this.toastService.showToast('Errore durante aggiornamento della quantità', 'error');
+        }
+      }
+    );
   }
+  
+  addToCart() {
+    this.meal$.pipe(
+      take(1),
+      switchMap(meal => {
+        if (meal) {
+          return this.cartService.addMealToCart(meal.id, this.quantity);
+        }
+        return throwError(() => new Error('Meal not found'));
+      }),
+      catchError(error => {
+        this.toastService.showToast('Errore durante aggiunta al carrello', 'error');
+        return throwError(error); // Re-throw the error for further handling (optional)
+      })
+    ).subscribe(
+      cart => {
+        if (cart) {
+          this.toastService.showToast('Aggiunto al carrello', 'success');
+        }
+      }
+    );
+  }
+
+  removeFromCart() {
+    this.meal$.pipe(
+      take(1),
+      switchMap(meal => {
+        if (meal) {
+          return this.cartService.removeMealFromCart(meal.id);
+        }
+        return of(null);
+      })
+    ).subscribe(
+      cart => {
+        if (cart) {
+          this.toastService.showToast('Rimosso dal carrello', 'success');
+        } else {
+          this.toastService.showToast('Errore durante rimozione dal carrello', 'error');
+        }
+      }
+    );
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
 }

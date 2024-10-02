@@ -22,6 +22,7 @@ export class Order {
   state!: string;
   id_tenant!: number;
   notes?: string;
+  payment_status?: string;
 
   @Type(() => OrderItem)
   Meals_to_Order!: OrderItem[];

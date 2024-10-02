@@ -10,19 +10,18 @@ import { GlobalStateService } from './global-state.service';
 })
   export class DiscountsService { 
     private apiUrl = `${environment.apiUrl}`;
-    private discountsSubject = new BehaviorSubject<Discount[]>([]);
-    discounts$ = this.discountsSubject.asObservable();
+    private discounts$ = new BehaviorSubject<Discount[]>([]);
 
     constructor(private http: HttpClient) {}
 
     fetchAllDiscounts(): Observable<Discount[]> {
       return this.http.get<Discount[]>(`${this.apiUrl}/discounts/by-tenant`).pipe(
-        tap(discount => this.discountsSubject.next(discount))
+        tap(discount => this.discounts$.next(discount))
       );
     }
   
     getAllDiscounts(): Observable<Discount[]> {
-      return this.discounts$;
+      return this.discounts$.asObservable();
     }
-    
+      
 }

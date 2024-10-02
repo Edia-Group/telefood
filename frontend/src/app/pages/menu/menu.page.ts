@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MealService } from '../../services/meal.service';
 import { Meal } from '@shared/entity/meal.entity';
-import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
-import { switchMap, catchError, tap } from 'rxjs/operators';
+import { CartService } from '@frontend/app/services/cart.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,11 +14,20 @@ import { switchMap, catchError, tap } from 'rxjs/operators';
     trigger('expandSearch', [
       state('collapsed', style({
         width: '0px',
-        visibility: 'hidden'
+        opacity: 0
       })),
       state('expanded', style({
         width: '200px',
-        visibility: 'visible'
+        opacity: 1
+      })),
+      transition('collapsed <=> expanded', animate('300ms ease-in-out'))
+    ]),
+    trigger('titlePosition', [
+      state('collapsed', style({
+        transform: 'translateX(0)'
+      })),
+      state('expanded', style({
+        transform: 'translateX(-15px)'
       })),
       transition('collapsed <=> expanded', animate('300ms ease-in-out'))
     ])
@@ -32,44 +41,51 @@ export class MenuPage implements OnInit {
   searchState = 'collapsed';
 
   meals$: Observable<Meal[]>;
+  cartTotal$: Observable<number>;
   filteredMeals$: Observable<Meal[]>;
-  categories$: Observable<string[]>;
-  selectedCategory$ = new BehaviorSubject<string>('Antipasti');
+  categories$ = new BehaviorSubject<string[]>([]);
+  selectedCategory$ = new BehaviorSubject<string | null>(null);
 
-  constructor(private mealService: MealService, private navCtrl: NavController) {
+  constructor(private mealService: MealService, private cartService: CartService, private navCtrl: NavController) {
+    // Load cart
+    this.cartTotal$ = this.cartService.getCartTotal();
+
+    // Load meals
     this.meals$ = this.mealService.getAllMeals();
-    this.categories$ = this.mealService.getAllCategories();
-    this.searchTerm$.pipe(tap(term => console.log(term)))
+    
+    // Load categories
+    this.mealService.getAllCategories().subscribe(categories => {
+      this.categories$.next(categories);
+      if (categories.length > 0 && this.selectedCategory$.value === null) {
+        this.selectedCategory$.next(categories[0]);
+      }
+    });
 
     this.filteredMeals$ = combineLatest([
       this.meals$,
+      this.categories$,
       this.selectedCategory$,
       this.searchTerm$
     ]).pipe(
-      map(([meals, category, searchTerm]) => 
-        this.filterMeals(meals, category, searchTerm)
-      )
+      map(([meals, categories, selectedCategory, searchTerm]) => {
+        const category = selectedCategory || (categories.length > 0 ? categories[0] : null);
+        return this.filterMeals(meals, category, searchTerm);
+      })
     );
   }
 
-  ngOnInit() {
-    this.mealService.fetchAllCategoriesByTenant(5).pipe(
-      switchMap(() => this.mealService.fetchAllMeals()),
-      catchError(error => {
-        console.error('Error fetching categories:', error);
-        return of([]);  // Return an empty array in case of error
-      })
-    ).subscribe();
-  }
+  ngOnInit() { }
 
-  private filterMeals(meals: Meal[], category: string, searchTerm: string): Meal[] {
+  private filterMeals(meals: Meal[], category: string | null, searchTerm: string): Meal[] {
     if (searchTerm) {
       return meals.filter(item => 
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (item.description?.toLowerCase() ?? '').includes(searchTerm.toLowerCase())
       );
-    } else {
+    } else if (category) {
       return meals.filter(item => item.MealCategories?.name === category);
+    } else {
+      return meals;
     }
   }
 

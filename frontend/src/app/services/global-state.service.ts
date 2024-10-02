@@ -5,9 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class GlobalStateService {
   private currentPlatform!: string;
-  private initDataRaw!: string;
   private tenantId!: string;
-  private userId!: string;
+  private userId!: string; //this is the id of the 'users' table in supabase
+  private telegramUserId!: string; //this is the id of the telegram user passed by telegram when opening the mini app
+  private chatId!: string; //TODO fill this this is the id of the chat where the miniapp was opened from. 
+  private initDataRaw!: string;
 
   setCurrentPlatform(platform: string) {
     this.currentPlatform = platform;
@@ -15,6 +17,16 @@ export class GlobalStateService {
 
   getCurrentPlatform(): string {
     return this.currentPlatform;
+  }
+
+  getCurrentAuthorizationPrefix(): string {
+    if(this.currentPlatform == 'telegram') {
+      return 'tma';
+    } else if(this.currentPlatform == 'mobile') {
+      return 'mba';
+    } else {
+      return 'bro';
+    }
   }
 
   setInitDataRaw(data: string) {
@@ -39,6 +51,22 @@ export class GlobalStateService {
 
   getUserId(): string {
     return this.userId;
+  }
+
+  getTelegramUserId(): string {
+    return this.telegramUserId;
+  }
+
+  setTelegramUserId(id: string) {
+    this.telegramUserId = id;
+  }
+
+  getChatId(): string {
+    return this.chatId;
+  }
+
+  setChatId(id: string) {
+    this.chatId = id;
   }
 }
 

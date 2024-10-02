@@ -1,15 +1,15 @@
-<ion-card class="min-w-60 flex-shrink-0 h-24 ion-activatable ripple-parent" [routerLink]="['/orders', order_id]">
+<ion-card class="min-w-60 flex-shrink-0 h-24 m-2 ion-activatable ripple-parent bg-[#e8e8e8]" [routerLink]="['/orders', order_id]">
   <ion-ripple-effect class="custom-ripple"></ion-ripple-effect>
 
-  <ion-card-header class="p-1">
-    <ion-card-subtitle [ngClass]="statusColor" class="font-bold p-0" [class]="statusColor">{{ statusText }}</ion-card-subtitle>
+  <ion-card-header class="p-1 bg-[#dad6bd]">
+    <ion-card-subtitle [ngClass]="statusColor" class="font-bold text-sm p-0" [class]="statusColor">{{ statusText }}</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content class="pl-1 py-0 m-0">
     <ul>
-      <li *ngFor="let item of items" class="m-0 text-xs">
+      <li *ngFor="let item of items" class="m-0 text-sm">
         x{{ item.quantity }} {{ item.Meals.name }} {{ item.Meals.price * item.quantity | currency:'EUR':'symbol':'1.0-0' }}
       </li>
     </ul>
-    <div class="mt-1 text-xs font-bold">TOTALE {{ calculateTotal | currency:'EUR':'symbol':'1.0-0' }}</div>
+    <div class="mt-1 text-sm font-bold">TOTALE {{ calculateTotal | currency:'EUR':'symbol':'1.0-0' }}</div>
   </ion-card-content>
 </ion-card>

@@ -1,43 +1,61 @@
 <ion-content>
-  <div *ngIf="loading" class="absolute inset-0 flex items-center justify-center z-10 bg-white">
+  <div *ngIf="!(discounts$ | async)" class="absolute inset-0 flex items-center justify-center z-10 bg-white">
     <ion-spinner></ion-spinner>
     <p class="ml-2">Loading menu...</p>
   </div>
 
   <div class="flex flex-col h-full">
-    <div class="bg-gray-400 h-60 flex-shrink-0 overflow-hidden relative">
-      <img 
-        [src]="tenant.logo_url || 'assets/default-meal-image.jpg'" 
-        [alt]="tenant.name" 
-        class="w-full h-full object-cover absolute inset-0"
-      >
-    </div>
-  
-    <div class="flex-grow overflow-y-auto mt-2">
-      <div *ngIf="orders.length > 0" class="px-4">
-        <h2 class="text-lg">Ordini Recenti</h2>
-        <div class="overflow-x-auto flex pb-2 category-scroll">
-          <app-order-card *ngFor="let order of orders"
-            [status]="order.state"
-            [items]="order.Meals_to_Order"
-            [orderId]="order.id"
-          ></app-order-card>
-        </div>
+    <ng-container *ngIf="tenant$ | async as tenant">
+      <div class="bg-gray-400 h-60 flex-shrink-0 overflow-hidden relative">
+        <img 
+          [src]="tenant.logo_url || 'assets/default-meal-image.jpg'" 
+          [alt]="tenant.name" 
+          class="w-full h-full object-cover absolute inset-0"
+        >
       </div>
-    
+    </ng-container>
+  
+    <!-- ORDER CARDS-->
+    <div class="flex-grow overflow-y-auto mt-2">
+      <ng-container *ngIf="orders$ | async as orders">
+        <div *ngIf="orders.length > 0" class="px-4">
+          <h2 class="text-xl text-white font-bold">Ordini Recenti</h2>
+          <div class="overflow-x-auto flex category-scroll">
+            <app-order-card *ngFor="let order of orders"
+              [status]="order.state"
+              [items]="order.Meals_to_Order"
+              [orderId]="order.id"
+            ></app-order-card>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- MENU BUTTON -->
+      <div class="px-4 py-2 my-2">
+        <button class="bg-[#9FE3FA] py-3 rounded-lg font-semibold w-full relative" [routerLink]="['/new']">
+          <div class="flex justify-center items-center w-full">
+            <span class="text-black text-xl tracking-[0.25em] uppercase">MENU</span>
+          </div>
+          <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+            <ion-icon name="chevron-forward-outline" class="text-2xl"></ion-icon>
+          </div>
+        </button>
+      </div>
+
+      <!-- PROMOTIONS -->
       <div class="px-4 pb-4">
-        <h2 class="text-lg mb-2">MENU</h2>
-        <h6 class="text-gray-400 text-sm mb-2">Promozioni</h6>
+        <h6 class="text-xl text-white font-bold mb-2">Promozioni</h6>
         
         <div class="grid grid-cols-2 gap-4">
-          <ng-container *ngIf="discounts.length > 0">
-            <ng-container *ngFor="let discount of discounts">
-              <app-discount-card [discount]="discount"></app-discount-card>
+          <ng-container *ngIf="discounts$ | async as discounts">
+            <ng-container *ngIf="discounts.length > 0">
+              <ng-container *ngFor="let discount of discounts">
+                <app-discount-card [discount]="discount"></app-discount-card>
+              </ng-container>
             </ng-container>
           </ng-container>
         </div>
       </div>
-      
     </div>
   </div>
 </ion-content>

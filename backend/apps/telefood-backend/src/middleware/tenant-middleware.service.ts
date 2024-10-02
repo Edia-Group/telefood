@@ -56,7 +56,7 @@ export class TenantMiddlewareService implements NestMiddleware {
         await this.handleMobileAuth(req, res, next, authData);
         return;
 
-      case 'bro':
+      case 'bro': // TODO handle case of request coming from browser (usually testing)
         await this.handleBrowserAuth(req, res, next, authData);
         return;
 
@@ -122,9 +122,6 @@ export class TenantMiddlewareService implements NestMiddleware {
         };
         await this.usersService.create(userToCreate);
       }
-      // Save tenantId and userId in the request object to make it available for the next functions
-      req['tenantId'] = tenantId;
-      req['userId'] = user.id;
 
       // Add userId to response headers
       res.setHeader('x_user_id', user.id.toString()); res
@@ -145,7 +142,12 @@ export class TenantMiddlewareService implements NestMiddleware {
 
 
   async handleBrowserAuth(req: Request, res: Response, next: NextFunction, authData: string) {
-    return next(new Error('Unauthorized')); //TODO for testing purposes
+    console.log("CARL BROWSER AUTH");
+    const user = await this.usersService.checkUserExistence(999999999, 9);
+    res.setHeader('x_user_id', user.id.toString());
+
+
+    return next(); //TODO when finally done and deploying to production, return next(new Error('Unauthorized'));
   }
 
   generateRandomUsername(): string {
