@@ -60,7 +60,7 @@ export class OrdersService {
       notes: '',
       Meals_to_Order: [mockOrderItem]
     });
-    console.log(mockOrder.ownerVisualize());
+    console.log(mockOrder.visualizeOrder());
     this.botService.sendNotification(tenantId, chatId, mockOrder);
 
     return "ciao";

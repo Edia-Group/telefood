@@ -208,7 +208,7 @@ export class BotsService implements OnModuleDestroy {
 
   async sendNotification(tenantId: number, chatId: number, order: Order) {
     const botInstance = await this.getBotInstance(tenantId, true);
-    botInstance.telegram.sendMessage(chatId, order.ownerVisualize());
+    botInstance.telegram.sendMessage(chatId, order.visualizeOrder());
   }
 
 
