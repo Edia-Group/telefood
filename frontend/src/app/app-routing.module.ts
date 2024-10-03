@@ -8,6 +8,7 @@ import { ProfilePage } from './pages/profile/profile.page';
 import { OrderPage } from './pages/order/order.page';
 import { MenuPage } from './pages/menu/menu.page';
 import { PromotionsPage } from './pages/promotion/promotions.page';
+import { CheckoutPage } from './pages/checkout/checkout.page';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'promotions',
     component: PromotionsPage
+  },
+  {
+    path: 'checkout',
+    component: CheckoutPage
   },
 ];
 

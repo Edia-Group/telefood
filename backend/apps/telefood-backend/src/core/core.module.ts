@@ -16,11 +16,13 @@ import { DiscountsController } from './discounts/discounts.controller';
 import { DiscountsService } from './discounts/discounts.service';
 import { CartController } from './cart/cart.controller';
 import { CartService } from './cart/cart.service';
+import { StripeController } from './stripe/stripe.controller';
+import { StripeService } from './stripe/stripe.service';
 
 @Module({
-  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController, TelegramController, DiscountsController, CartController],
+  controllers: [TenantsController, UsersController, MealsController, OrdersController, GlovoController, BotsController, TelegramController, DiscountsController, CartController, StripeController],
   imports: [UtilsModule, ],
-  providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService, DiscountsService, CartService],
+  providers: [TenantsService, UsersService, MealsService, OrdersService, GlovoService, DiscountsService, CartService, StripeService],
   exports: []
 })
 export class CoreModule {}

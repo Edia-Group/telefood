@@ -66,6 +66,7 @@ export class AppComponent implements OnInit {
       this.globalState.setInitDataRaw(initDataRaw == undefined ? 'null' : initDataRaw);
       this.globalState.setTenantId(tenant_id == undefined ? 'null' : tenant_id);
       this.globalState.setTelegramUserId(telegramUserId == undefined ? 'null' : telegramUserId);
+      this.globalState.setUserId('23'); //TODO ONLY FOR TESTING
 
     } else if(this.currentPlatform == 'browser' && (environment.currentEnvironment == 'dev' || environment.currentEnvironment == 'test')) {
       this.globalState.setInitDataRaw('TESTGAGAG BROWSER');

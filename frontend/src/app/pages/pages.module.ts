@@ -14,6 +14,7 @@ import { PromotionsPage } from './promotion/promotions.page';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from '../components/components.module';
+import { CheckoutPage } from './checkout/checkout.page';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ComponentsModule } from '../components/components.module';
     ProfilePage,
     OrderPage,
     MenuPage,
-    PromotionsPage
+    PromotionsPage,
+    CheckoutPage
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { ComponentsModule } from '../components/components.module';
     ProfilePage,
     OrderPage,
     MenuPage,
-    PromotionsPage
+    PromotionsPage,
+    CheckoutPage
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

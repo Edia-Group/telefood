@@ -1,0 +1,12 @@
+<ion-content class="ion-padding">
+  <h1>Checkout</h1>
+
+  <div class="payment-form">
+    <div #cardElement></div>
+    <ion-button expand="block" (click)="handlePayment()" [disabled]="loading">
+      {{ loading ? 'Caricamento...' : 'Paga' }}
+    </ion-button>
+    <p *ngIf="error" class="error-message">{{ error }}</p>
+  </div>
+
+</ion-content>
