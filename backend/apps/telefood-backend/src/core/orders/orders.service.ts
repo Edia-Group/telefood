@@ -15,7 +15,7 @@ export class OrdersService {
   constructor(private readonly supabaseService: SupabaseService, private mockService: MockService, @Inject(forwardRef(() => BotsService)) private botService: BotsService) {}
   
   create(createOrderDto: CreateOrderDto): Promise<Order> {
-    const mockOrder: Order = {
+    const mockOrder: Order = new Order({
       id: 1,
       created_at: new Date,
       id_user: 3,
@@ -26,7 +26,7 @@ export class OrdersService {
       total: 1,
       Meals_to_Order: []
     
-    }
+    })
     return new Promise(resolve => mockOrder);
   }
 
