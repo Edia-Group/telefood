@@ -2,8 +2,8 @@
   <app-back-button></app-back-button>
 
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Carrello</h1>
-    
+    <h1 class="text-2xl font-bold mb-4 text-center">Carrello</h1>
+          
     <div class="mb-2">
       <p class="text-sm text-gray-400">Tavolo</p>
     </div>
@@ -33,10 +33,9 @@
       <textarea rows="3" placeholder="Note..." class="w-full rounded p-2"></textarea>
     </div>
 
-    <div class="mt-6">
-      <button class="w-full bg-white text-black py-3 rounded text-lg font-semibold" style="border: 1px solid black;" (click)="confirmOrder()">
-        Conferma ordine
-      </button>
-    </div>
+    <button class="w-full bg-white text-black py-3 rounded text-lg font-semibold mt-6" style="border: 1px solid black;" [routerLink]="['/payment-choice']">
+      Conferma ordine
+    </button>
+
   </div>
 </ion-content>

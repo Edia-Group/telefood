@@ -1,8 +1,10 @@
-import { Global, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
+import { forwardRef, Global, Inject, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 import { TenantsService } from '../core/tenants/tenants.service';
 import { Tenant } from '@shared/entity/tenant.entity';
 import { Order } from '@shared/entity/order.entity';
+import { OrdersService } from '../core/orders/orders.service';
+
 const chalk = require('chalk');
 
 export interface BotInstance {
@@ -23,7 +25,7 @@ export class BotsService implements OnModuleDestroy {
   private readonly logger = new Logger('HTTP');
   private botInstances: Map<number, BotInstance[]> = new Map();
 
-  constructor(private readonly tenantsService: TenantsService) {}
+  constructor(private readonly tenantsService: TenantsService, @Inject(forwardRef(() => OrdersService)) private ordersService: OrdersService ) {}
 
   async startAllBots(): Promise<boolean> {
     const tenants = await this.tenantsService.findAll();
@@ -160,6 +162,68 @@ export class BotsService implements OnModuleDestroy {
       bot.on('sticker', (ctx) => ctx.reply('👍'));
       bot.hears('ciao', (ctx) => ctx.reply('Bella a chicco'));
     
+      // TODO PAYMENT HANDLING
+      bot.on('web_app_data', async (ctx) => {
+        if ('web_app_data' in ctx.message) {
+          try {
+            const data = JSON.parse(ctx.message.web_app_data.data);
+            if (data.action === 'pay') {
+              const orderId = data.orderId;
+              
+              // I think here comes from google/apple pay
+              // For now, we assume the payment is always successful
+              const order = await this.ordersService.finalizeOrder(orderId);
+              
+              // Send a confirmation message back to the user
+              await bot.telegram.answerWebAppQuery(data.queryId, {
+                type: 'article',
+                id: orderId.toString(),
+                title: 'Order Confirmed',
+                input_message_content: {
+                  message_text: `Your order #${orderId} has been confirmed and paid for. Thank you!`
+                }
+              });
+      
+              // Send a notification to the restaurant owner
+              if (tenant.chat_ids_owner && tenant.chat_ids_owner.length > 0) {
+                for (const chatId of tenant.chat_ids_owner) {
+                  await this.sendNotification(tenant.id, chatId, order);
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error processing web_app_data:', error);
+            // Handle the error appropriately
+          }
+        }
+      });
+
+      // For credit card payments
+      bot.on('pre_checkout_query', async (ctx) => {
+        await ctx.answerPreCheckoutQuery(true);
+      });
+      
+      bot.on('successful_payment', async (ctx) => {
+        const paymentInfo = ctx.message.successful_payment;
+        const payload = JSON.parse(paymentInfo.invoice_payload);
+        const orderId = payload.orderId;
+      
+        // Finalize the order
+        const order = await this.ordersService.finalizeOrder(orderId);
+      
+        // Send confirmation to user
+        await ctx.reply(`Your order #${orderId} has been confirmed and paid for. Thank you!`);
+      
+        // Notify restaurant owner
+        if (tenant.chat_ids_owner && tenant.chat_ids_owner.length > 0) {
+          for (const chatId of tenant.chat_ids_owner) {
+            await this.sendNotification(tenant.id, chatId, order);
+          }
+        }
+      });
+      
+      
+
       // Get the current menu button text
       const currentMenuButton = await bot.telegram.getChatMenuButton() as MenuButton;
       const currentMenuButtonText = currentMenuButton.text

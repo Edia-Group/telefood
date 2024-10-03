@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from '@shared/dto/create-order.dto';
 import { UpdateOrderDto } from '@shared/dto/update-order.dto';
 import { SupabaseService } from '../../utils/supabase.service';
@@ -10,7 +10,7 @@ import { BotsService } from '../../utils/bots.service';
 @Injectable()
 export class OrdersService {
 
-  constructor(private readonly supabaseService: SupabaseService, private mockService: MockService, private botService: BotsService) {}
+  constructor(private readonly supabaseService: SupabaseService, private mockService: MockService, @Inject(forwardRef(() => BotsService)) private botService: BotsService) {}
   
   create(createOrderDto: CreateOrderDto): Promise<Order> {
     const mockOrder: Order = {
@@ -103,6 +103,18 @@ export class OrdersService {
   async remove(id: number): Promise<Order> {
     //Verifica permessi
     let{data:order, error} = await this.supabaseService.getClient().from('Orders').delete().eq('id',id);
+    
+    if(order){
+      let returnOrder = plainToInstance(Order,order)[0];
+      return returnOrder;
+    }
+    else{
+      throw new Error(error.message);
+    }
+  }
+
+  async finalizeOrder(orderId: number): Promise<Order> {
+    let {data:order, error} = await this.supabaseService.getClient().from('Orders').update({state: 'CONFIRMED'}).eq('id',orderId);
     
     if(order){
       let returnOrder = plainToInstance(Order,order)[0];

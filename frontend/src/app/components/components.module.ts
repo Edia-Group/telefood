@@ -10,6 +10,8 @@ import { MenuComponent } from './menu/menu.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { DiscountCardComponent } from './discount-card/discount-card.component';
 import { BackButtonComponent } from './back-button/back-button.component';
+import { GooglePayButtonComponent } from './google-pay-button/google-pay-button.component';
+import { GooglePayButtonModule } from "@google-pay/button-angular";
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { BackButtonComponent } from './back-button/back-button.component';
     MenuComponent,
     TabsComponent,
     DiscountCardComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    GooglePayButtonComponent
   ],
   imports: [
     CommonModule,
@@ -25,14 +28,16 @@ import { BackButtonComponent } from './back-button/back-button.component';
     IonicModule.forRoot(), 
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    GooglePayButtonModule
   ],
   exports: [
     OrderCardComponent,
     MenuComponent,
     TabsComponent,
     DiscountCardComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    GooglePayButtonComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

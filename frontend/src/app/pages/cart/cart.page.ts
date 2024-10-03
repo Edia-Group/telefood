@@ -24,8 +24,4 @@ export class CartPage implements OnInit {
   decrementQuantity(itsem: any) { /* ... */ }
   editItem(item: any) { /* ... */ }
   
-  confirmOrder() { 
-    this.cartService.confirmOrder();
-  }
-
 }

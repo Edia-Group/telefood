@@ -1,0 +1,14 @@
+<google-pay-button
+    environment="TEST"
+    [buttonType]="buttonType"
+    [buttonColor]="buttonColor"
+    [buttonRadius]="buttonRadius"
+    [buttonLocale]="buttonLocale"
+    [existingPaymentMethodRequired]="existingPaymentMethodRequired"
+    [paymentRequest]="paymentRequest"
+    (loadpaymentdata)="onLoadPaymentData($event)"
+    [paymentAuthorizedCallback]="onPaymentDataAuthorized"
+    (readytopaychange)="onReadyToPayChange($event)"
+    (click)="onClick()"
+    (error)="onError($event)"
+></google-pay-button>
