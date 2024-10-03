@@ -49,6 +49,13 @@ If you are using windows, you must use WSL.
 
     ```
 
+## Install shared module dependencies:
+All the ts types are inside the shared folder, both the frontend and backend uses the same types. You need to install dependencies here first
+    ```bash
+    cd shared
+    npm install
+    ```
+
 ## Configure and Start the Backend
 
 1. **Environment Variables**: Create a file named `.env` inside the backend folder and add the required environment variables. You can find the required content [here](https://drive.google.com/drive/folders/1puRkZH-ib7z6U-0h4_ra6CioTms1ikdO).
