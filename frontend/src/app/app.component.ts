@@ -70,8 +70,8 @@ export class AppComponent implements OnInit {
 
     } else if(this.currentPlatform == 'browser' && (environment.currentEnvironment == 'dev' || environment.currentEnvironment == 'test')) {
       this.globalState.setInitDataRaw('TESTGAGAG BROWSER');
-      this.globalState.setTenantId('9'); //Set the tenantId as you wish
-      this.globalState.setUserId('23'); //Set the userId as you wish
+      this.globalState.setTenantId('4'); //Set the tenantId as you wish
+      this.globalState.setUserId('24'); //Set the userId as you wish
     }
 
   }

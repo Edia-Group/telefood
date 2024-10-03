@@ -133,6 +133,18 @@ export class OrdersService {
     }
   }
 
+  async confirmOrder(orderId: number): Promise<Order> {
+    let {data:order, error} = await this.supabaseService.getClient().from('Orders').update({payment_status: 'CONFIRMED'}).eq('id',orderId);
+    
+    if(order){
+      let returnOrder = plainToInstance(Order,order)[0];
+      return returnOrder;
+    }
+    else{
+      throw new Error(error.message);
+    }
+  }
+
   async finalizeOrder(orderId: number): Promise<Order> {
     let {data:order, error} = await this.supabaseService.getClient().from('Orders').update({state: 'CONFIRMED'}).eq('id',orderId);
     

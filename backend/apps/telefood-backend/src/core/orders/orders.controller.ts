@@ -13,8 +13,9 @@ export class OrdersController {
     return this.ordersService.create(createOrderDto);
   }
 
-  @Post('create-and-send-notification')
-  createOrderAndSendNotification(@Headers('x_tenant_id') tenantId: string/*, @Body() createOrderDto: CreateOrderDto*/): string{
+  @Post('send-notification')
+  SendNotification(@Headers('x_tenant_id') tenantId: string/*, @Body() createOrderDto: CreateOrderDto*/): string{
+    
     const mockCreateOrderDto = {
       type: 'DELIVERY',
       meals: [
@@ -34,7 +35,8 @@ export class OrdersController {
         }
       ]
     };
-    const chatId = 1121569142;
+    //this.ordersService.confirmOrder(mockCreateOrderDto["meals"]["id"]);
+    const chatId = 457112916;
     return this.ordersService.createAndSendNotification(+tenantId, chatId, mockCreateOrderDto);
   }
 
