@@ -54,6 +54,15 @@ export class CartService {
     );
   }
 
+  // This is the equivalent of "removeAllMealsFromCart". The cart should never be deleted, only cleared of its contents.
+  clearCart(): Observable<Cart> {
+    const cartId = this.cart$.getValue().id;
+
+    return this.http.delete<Cart>(`${this.apiUrl}/clear/${cartId}`).pipe(
+      tap(emptyCart => this.cart$.next(emptyCart))
+    );
+  }
+
   updateMealQuantity(mealId: number, quantity: number): Observable<boolean> {
     const cartId = this.cart$.getValue().id;
   
@@ -67,11 +76,7 @@ export class CartService {
     );
   }
 
-  clearCart(): Observable<Cart> {
-    return this.http.delete<Cart>(`${this.apiUrl}/clear`).pipe(
-      tap(emptyCart => this.cart$.next(emptyCart))
-    );
-  }
+
 
   getCartTotal(): Observable<number> {
     return this.cart$.pipe(
@@ -87,80 +92,6 @@ export class CartService {
       })
     );
   }
-
-  confirmOrder(): Observable<Order> {
-    const cart = this.cart$.getValue();
-    const userId = this.globalStateService.getUserId();
-
-    // Step 1: Create a pending order
-    return this.http.post<Order>(`${this.apiUrl}/create-order`, { cartId: cart.id, userId }).pipe(
-      switchMap(pendingOrder => {
-        // Step 2: Initialize Telegram payment
-        return this.initializeTelegramPayment(pendingOrder).pipe(
-          switchMap(paymentResult => {
-            if (paymentResult.success) {
-              // Step 3: Confirm the order
-              return this.finalizeOrder(pendingOrder.id);
-            } else {
-              return throwError(() => new Error('Payment failed'));
-            }
-          })
-        );
-      }),
-      tap(() => {
-        // Clear the cart after successful order
-        this.clearCart().subscribe();
-      }),
-      catchError(error => {
-        console.error('Error during order confirmation:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  private initializeTelegramPayment(order: Order): Observable<any> {
-    const telegram = (window as any).Telegram.WebApp;
-    
-    return new Observable(observer => {
-      telegram.MainButton.setText("Pay with Telegram");
-      telegram.MainButton.show();
-      telegram.MainButton.onClick(() => {
-        telegram.openInvoice({
-          title: `Order #${order.id}`,
-          description: 'Your order payment',
-          payload: JSON.stringify({
-            orderId: order.id,
-            action: 'pay'
-          }),
-          provider_token: 'YOUR_PROVIDER_TOKEN',
-          currency: 'USD',
-          prices: [{ label: 'Total', amount: Math.floor(order.total * 100) }],
-          max_tip_amount: 5000,
-          suggested_tip_amounts: [500, 1000, 2000],
-          need_name: true,
-          need_phone_number: true,
-          need_email: true,
-          send_phone_number_to_provider: false,
-          send_email_to_provider: false,
-        }, (status: boolean) => {
-          if (status) {
-            observer.next({ success: true, payload: JSON.stringify({ orderId: order.id }) });
-          } else {
-            observer.next({ success: false });
-          }
-          observer.complete();
-        });
-      });
-  
-      telegram.onEvent('invoiceClosed', (status: any) => {
-        if (!status) {
-          observer.next({ success: false });
-          observer.complete();
-        }
-      });
-    });
-  }
-
 
   private finalizeOrder(orderId: number): Observable<Order> {
     return this.http.post<Order>(`${this.apiUrl}/finalize-order/${orderId}`, {});

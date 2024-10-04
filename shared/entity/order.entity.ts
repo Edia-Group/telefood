@@ -19,7 +19,7 @@ export class Order {
   created_at!: Date;
   id_user!: number;
   type!: string;
-  state!: string;
+  confirmation_status?: string;
   id_tenant!: number;
   notes?: string;
   payment_status?: string;

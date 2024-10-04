@@ -23,6 +23,7 @@ export class PromotionsPage implements OnInit {
             description: 'carl',
             id_tenant: 5,
             image_url: 'https://cvguhrjtntwddxptzhhg.supabase.co/storage/v1/object/public/meals/nigiri_salmone5.jpg',
+            is_available: true
         }
     },
     {
@@ -37,6 +38,7 @@ export class PromotionsPage implements OnInit {
             description: 'carlistohst',
             id_tenant: 5,
             image_url: 'https://cvguhrjtntwddxptzhhg.supabase.co/storage/v1/object/public/meals/nigiri_tonno5.jpg',
+            is_available: true
         }
     },
     {
@@ -51,6 +53,7 @@ export class PromotionsPage implements OnInit {
             description: 'carl',
             id_tenant: 5,
             image_url: 'https://cvguhrjtntwddxptzhhg.supabase.co/storage/v1/object/public/meals/nigiri_salmone5.jpg',
+            is_available: true
         }
     },
   ];

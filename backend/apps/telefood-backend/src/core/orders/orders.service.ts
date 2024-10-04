@@ -20,7 +20,7 @@ export class OrdersService {
       created_at: new Date,
       id_user: 3,
       type: 'DELIVERY',
-      state: 'SUSPENDED',
+      confirmation_status: 'SUSPENDED',
       id_tenant: 9,
       notes: '',
       total: 1,
@@ -55,7 +55,7 @@ export class OrdersService {
       created_at: new Date(),
       id_user: 3,
       type: 'DELIVERY',
-      state: 'SUSPENDED',
+      confirmation_status: 'SUSPENDED',
       id_tenant: 9,
       notes: '',
       Meals_to_Order: [mockOrderItem]

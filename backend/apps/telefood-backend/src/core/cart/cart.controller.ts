@@ -29,13 +29,14 @@ export class CartController {
         return this.cartService.removeMealFromCart(mealId, cartId);
     }
 
+    @Post('clear/:cartId')
+    clearCart(@Param('cartId') cartId: number) {
+        return this.cartService.clearCart(cartId);
+    }
+
     @Put('update/:mealId/:cartId')
     updateMealQuantity(@Param('mealId') mealId: number, @Param('cartId') cartId: number, @Body() quantityObj: Quantity ) {
         return this.cartService.updateMealQuantity(mealId, cartId, quantityObj.quantity);
     }
 
-    @Delete()
-    clearCart() {
-        return `This action clears the cart`;
-    }
 }

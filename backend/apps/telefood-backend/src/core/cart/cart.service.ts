@@ -80,6 +80,22 @@ export class CartService {
 
   }
 
+  async clearCart(cartId: number): Promise<Cart> {
+    let {data, error} = await this.supabaseService.getClient().from('Meals_to_Cart')
+      .delete()
+      .eq('id_cart', cartId)
+      .select("*, Meals_to_Cart(*, Meals(*, MealCategories(name)))")
+      .single();
+
+    if(data){
+      let cart = plainToInstance(Cart,data);
+      return cart;
+    }
+    else {
+      throw new Error(error.message);
+    }
+  }
+
   async updateMealQuantity(mealId: number, cartId: number, quantity: number): Promise<Cart> {
     let {data, error} = await this.supabaseService.getClient().from('Meals_to_Cart')
       .update({quantity: quantity})

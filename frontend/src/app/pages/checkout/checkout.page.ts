@@ -1,9 +1,13 @@
+import { ToastService } from '@frontend/app/services/toast.service';
+import { CreateOrderDto } from '@shared/dto/create-order.dto';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CartService } from '../../services/cart.service';
+import { OrderService } from '@frontend/app/services/order.service';
 import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, switchMap, tap } from 'rxjs';
 import { environment } from '@frontend/environments/environment';
+import { Order } from '@shared/entity/order.entity';
 
 @Component({
   selector: 'app-checkout',
@@ -21,7 +25,7 @@ export class CheckoutPage implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  constructor(private cartService: CartService, private http: HttpClient) {}
+  constructor(private orderService: OrderService, private cartService: CartService, private toastService: ToastService, private http: HttpClient) {}
 
   async ngOnInit() {
     try {
@@ -50,12 +54,22 @@ export class CheckoutPage implements OnInit, AfterViewInit {
     this.error = null;
 
     if (!this.stripe || !this.card) {
-      this.error = 'Payment system is not ready. Please try again.';
+      this.error = 'Sistema di pagamento non funzionante. Riprova.';
+      this.loading = false;
+      return;
+    }
+
+    // Step 1: Create Order in DB with pending payment status
+    const createOrderDto = await this.orderService.createOrderDtoFromCart(this.cartService.getCart());
+    const orderCreated = await firstValueFrom(this.orderService.createOrder(createOrderDto));
+    if(!orderCreated) {
+      this.error = 'Errore nella creazione dell\'ordine';
       this.loading = false;
       return;
     }
 
     try {
+      // Step 2: Create PaymentIntent in Stripe
       const cartTotal = await firstValueFrom(this.cartService.getCartTotal());
       const amount = Math.round(cartTotal * 100);
 
@@ -63,7 +77,13 @@ export class CheckoutPage implements OnInit, AfterViewInit {
         amount,
         currency: 'eur'
       }));
+      if(!clientSecret) {
+        this.error = 'Errore nella creazione dell\'intento di pagamento';
+        this.loading = false;
+        return;
+      }
 
+      // Step 3: Confirm PaymentIntent in Stripe
       const result = await this.stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: this.card,
@@ -74,7 +94,7 @@ export class CheckoutPage implements OnInit, AfterViewInit {
         this.error = result.error.message || 'An error occurred during payment';
       } else if (result.paymentIntent.status === 'succeeded') {
         console.log('Payment successful');
-        // TODO Handle successful payment (e.g., show confirmation, clear cart)
+        this.handleSuccessfulPayment(orderCreated.id);
       }
     } catch (err) {
       this.error = 'An error occurred while processing the payment';
@@ -83,4 +103,22 @@ export class CheckoutPage implements OnInit, AfterViewInit {
 
     this.loading = false;
   }
+
+  // Clear cart, next finalize Order (update order payment status and then add order details to history)
+  handleSuccessfulPayment(orderId: number) {
+    this.toastService.showToast('Ordine inviato con successo', 'success');
+
+    this.cartService.clearCart().pipe(
+      tap(() => console.log('Cart cleared successfully')),
+      switchMap(() => this.orderService.finalizeOrder(orderId))
+    ).subscribe(
+      order => {
+        console.log('Order finalized:', order);
+      },
+      error => {
+        console.error('Error in payment process:', error);
+      }
+    );
+  }
+
 }
