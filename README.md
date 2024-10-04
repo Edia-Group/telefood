@@ -42,7 +42,7 @@ If you are using windows, you must use WSL.
     git checkout dev
     ```
 2. **Install Node.js**: Ensure you have Node.js version `v20.12.2` installed. Use [nvm](https://nvm.sh) command line to manage nodejs versions
-3. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic, Angular, Javascript debugger, **Thunder Client**.
+3. **VSCode Extensions**: Install the recommended VSCode extensions for Ionic, Angular, Javascript debugger, indent-rainbow, **Thunder Client, Todo Tree**.
 4. **Global CLI Tools**: Install Ionic and Nest CLI globally by running the following commands:
     ```bash
     npm install -g @ionic/cli @nestjs/cli localtunnel
